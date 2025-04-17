@@ -19,6 +19,14 @@ st.title("Streamlit 初心者向けデモ")
 st.markdown("### コメントを解除しながらStreamlitの機能を学びましょう")
 st.markdown("このデモコードでは、コメントアウトされた部分を順番に解除しながらUIの変化を確認できます。")
 
+st.markdown("""
+    <style>
+        .stApp {
+            background-color: #e6f0ff;
+        }
+    </style>
+""", unsafe_allow_html=True)
+
 # ============================================
 # サイドバー 
 # ============================================
