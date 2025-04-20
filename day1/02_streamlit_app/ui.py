@@ -39,7 +39,7 @@ def display_chat_page(pipe):
 
     # 回答が表示されるべきか判断 (質問があり、回答が生成済みで、まだフィードバックされていない)
     if st.session_state.current_question and st.session_state.current_answer:
-        st.subheader("回答:")
+        st.subheader("こんな感じ？")
         st.markdown(st.session_state.current_answer) # Markdownで表示
         st.info(f"応答時間: {st.session_state.response_time:.2f}秒")
 
