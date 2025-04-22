@@ -1,5 +1,6 @@
 # metrics.py
 import streamlit as st
+import difflib      
 import nltk
 from janome.tokenizer import Tokenizer
 import re
@@ -40,9 +41,11 @@ def calculate_metrics(answer, correct_answer):
     bleu_score = 0.0
     similarity_score = 0.0
     relevance_score = 0.0
+    edit_similarity = 0.0
+    
 
     if not answer: # 回答がない場合は計算しない
-        return bleu_score, similarity_score, word_count, relevance_score
+        return bleu_score, similarity_score, word_count, relevance_score,  edit_similarity
 
     # 単語数のカウント
     tokenizer = Tokenizer()
@@ -92,8 +95,14 @@ def calculate_metrics(answer, correct_answer):
         except Exception as e:
             # st.warning(f"関連性スコア計算エラー: {e}")
             relevance_score = 0.0 # エラー時は0
+        
+        #編集距離ベースの類似度
+        try:
+          edit_similarity = difflib.SequenceMatcher(None, answer_lower, correct_answer_lower).ratio()
+        except Exception:
+          edit_similarity = 0.0
 
-    return bleu_score, similarity_score, word_count, relevance_score
+    return bleu_score, similarity_score, word_count, relevance_score, edit_similarity
 
 def get_metrics_descriptions():
     """評価指標の説明を返す"""
@@ -104,5 +113,6 @@ def get_metrics_descriptions():
         "類似度スコア (similarity_score)": "TF-IDFベクトルのコサイン類似度による、正解と回答の意味的な類似性 (0〜1の値)",
         "単語数 (word_count)": "回答に含まれる単語の数。情報量や詳細さの指標",
         "関連性スコア (relevance_score)": "正解と回答の共通単語の割合。トピックの関連性を表す (0〜1の値)",
-        "効率性スコア (efficiency_score)": "正確性を応答時間で割った値。高速で正確な回答ほど高スコア"
-    }
+        "効率性スコア (efficiency_score)": "正確性を応答時間で割った値。高速で正確な回答ほど高スコア",
+        "編集距離類似度 (edit_similarity)": "回答と正解の文字列を編集距離で比較した類似度 (0〜1)。語順や表記ゆれを含めた近さを測る",
+        }

@@ -48,7 +48,7 @@ def save_to_db(question, answer, feedback, correct_answer, is_correct, response_
         timestamp = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
 
         # 追加の評価指標を計算
-        bleu_score, similarity_score, word_count, relevance_score = calculate_metrics(
+        bleu_score, similarity_score, word_count, relevance_score, edit_similarity = calculate_metrics(
             answer, correct_answer
         )
 
