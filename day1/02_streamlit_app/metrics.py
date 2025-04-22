@@ -59,7 +59,7 @@ def calculate_metrics(answer, correct_answer):
             reference = [nltk_word_tokenize(correct_answer_lower)]
             candidate = nltk_word_tokenize(answer_lower)
             # ゼロ除算エラーを防ぐ
-            if candidate:j
+            if candidate:
                 fn = bleu_score.SmoothingFunction().method7
                 bleu_score = nltk_sentence_bleu(reference, candidate, weights=(0.25, 0.25, 0.25, 0.25), smoothing_function=fn) # 4-gram BLEU
             else:
