@@ -36,9 +36,9 @@ name = st.text_input("あなたの名前", "ゲスト")
 st.write(f"こんにちは、{name}さん！")
 
 # ボタン
-# st.subheader("ボタン")
-# if st.button("クリックしてください"):
-#     st.success("ボタンがクリックされました！")
+ st.subheader("ボタン")
+ if st.button("クリックしてください"):
+     st.success("ボタンがクリックされました！")
 
 # チェックボックス
 # st.subheader("チェックボックス")
@@ -74,12 +74,12 @@ st.write(f"こんにちは、{name}さん！")
 #     st.metric("メトリクス", "42", "2%")
 
 # タブ
-# st.subheader("タブ")
-# tab1, tab2 = st.tabs(["第1タブ", "第2タブ"])
-# with tab1:
-#     st.write("これは第1タブの内容です")
-# with tab2:
-#     st.write("これは第2タブの内容です")
+ st.subheader("タブ")
+ tab1, tab2 = st.tabs(["第1タブ", "第2タブ"])
+ with tab1:
+     st.write("これは第1タブの内容です")
+ with tab2:
+     st.write("これは第2タブの内容です")
 
 # エクスパンダー
 # st.subheader("エクスパンダー")
