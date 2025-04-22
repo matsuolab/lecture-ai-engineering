@@ -12,6 +12,30 @@ import time
 #     initial_sidebar_state="expanded"
 # )
 
+st.set_page_config(page_title="自己紹介カード", layout="centered")
+
+st.title("🎴 自己紹介カードジェネレーター")
+
+with st.form("profile_form"):
+    name = st.text_input("あなたの名前を入力してください")
+    age = st.slider("あなたの年齢を選んでください", 10, 100, 20)
+    hobby = st.text_input("趣味はなんですか？")
+    language = st.selectbox("好きなプログラミング言語は？", 
+                            ["Python", "JavaScript", "C++", "Rust", "Go", "まだ学習中"])
+    submitted = st.form_submit_button("カードを作成！")
+
+if submitted:
+    st.success("🎉 あなたのプロフィールカードが完成しました！")
+    st.markdown("---")
+    st.markdown(f"""
+    <div style='background-color:#f0f8ff; padding:20px; border-radius:10px; border: 1px solid #ccc'>
+        <h2 style='color:#4169e1;'>👤 {name}</h2>
+        <p><strong>年齢:</strong> {age} 歳</p>
+        <p><strong>趣味:</strong> {hobby}</p>
+        <p><strong>好きな言語:</strong> {language}</p>
+    </div>
+    """, unsafe_allow_html=True)
+
 # ============================================
 # タイトルと説明
 # ============================================
