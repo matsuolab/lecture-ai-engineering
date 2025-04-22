@@ -41,9 +41,9 @@ st.write(f"こんにちは、{name}さん！")
      st.success("ボタンがクリックされました！")
 
 # チェックボックス
-# st.subheader("チェックボックス")
-# if st.checkbox("チェックを入れると追加コンテンツが表示されます"):
-#     st.info("これは隠れたコンテンツです！")
+ st.subheader("チェックボックス")
+ if st.checkbox("チェックを入れると追加コンテンツが表示されます"):
+     st.info("これは隠れたコンテンツです！")
 
 # スライダー
 # st.subheader("スライダー")
