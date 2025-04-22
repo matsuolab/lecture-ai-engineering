@@ -120,11 +120,11 @@ col3.metric("気圧", "1013hPa", "0.1hPa")
 # st.header("グラフの表示")
 
 # ラインチャート
-# st.subheader("ラインチャート")
-# chart_data = pd.DataFrame(
-#     np.random.randn(20, 3),
-#     columns=['A', 'B', 'C'])
-# st.line_chart(chart_data)
+st.subheader("ラインチャート")
+chart_data = pd.DataFrame(
+    np.random.randn(20, 3),
+    columns=['A', 'B', 'C'])
+st.line_chart(chart_data)
 
 # バーチャート
 # st.subheader("バーチャート")
