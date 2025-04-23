@@ -22,10 +22,10 @@ CREATE TABLE IF NOT EXISTS {TABLE_NAME} (
     similarity_score REAL,
     word_count INTEGER,
     relevance_score REAL,
-    1_gram_score REAL,
-    2_gram_score REAL,
-    3_gram_score REAL,
-    4_gram_score REAL
+    gram1_score REAL,
+    gram2_score REAL,
+    gram3_score REAL,
+    gram4_score REAL
 )
 '''
 
@@ -65,7 +65,7 @@ def save_to_db(question, answer, feedback, correct_answer, is_correct, response_
         INSERT INTO {TABLE_NAME} (
             timestamp, question, answer, feedback, correct_answer, is_correct,
             response_time, bleu_score, similarity_score, word_count, relevance_score,
-            1_gram_score, 2_gram_score, 3_gram_score, 4_gram_score
+            gram1_score, gram2_score, gram3_score, gram4_score
         ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
         ''', (
             timestamp, question, answer, feedback, correct_answer, is_correct,
