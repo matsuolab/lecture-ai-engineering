@@ -133,16 +133,16 @@ def display_history_list(history_df):
             cols[0].metric("正確性スコア", f"{row['is_correct']:.1f}")
             cols[1].metric("応答時間(秒)", f"{row['response_time']:.2f}")
             cols[2].metric("単語数", f"{row['word_count']}")
-            cols[3].metric("1-gram一致率", f"{row['1_gram_score']:.4f}" if pd.notna(row.get('1_gram_score')) else "-")
+            cols[3].metric("1-gram一致率", f"{row['gram1_score']:.4f}" if pd.notna(row.get('gram1_score')) else "-")
             cols = st.columns(4)
             cols[0].metric("BLEU", f"{row['bleu_score']:.4f}" if pd.notna(row['bleu_score']) else "-")
             cols[1].metric("類似度", f"{row['similarity_score']:.4f}" if pd.notna(row['similarity_score']) else "-")
             cols[2].metric("関連性", f"{row['relevance_score']:.4f}" if pd.notna(row['relevance_score']) else "-")
-            cols[3].metric("2-gram一致率", f"{row['2_gram_score']:.4f}" if pd.notna(row.get('2_gram_score')) else "-")
+            cols[3].metric("2-gram一致率", f"{row['gram2_score']:.4f}" if pd.notna(row.get('gram2_score')) else "-")
             # 3-gram, 4-gram
             cols = st.columns(2)
-            cols[0].metric("3-gram一致率", f"{row['3_gram_score']:.4f}" if pd.notna(row.get('3_gram_score')) else "-")
-            cols[1].metric("4-gram一致率", f"{row['4_gram_score']:.4f}" if pd.notna(row.get('4_gram_score')) else "-")
+            cols[0].metric("3-gram一致率", f"{row['gram3_score']:.4f}" if pd.notna(row.get('gram3_score')) else "-")
+            cols[1].metric("4-gram一致率", f"{row['gram4_score']:.4f}" if pd.notna(row.get('gram4_score')) else "-")
     st.caption(f"{total_items} 件中 {start_idx+1} - {min(end_idx, total_items)} 件を表示")
 
 
@@ -166,7 +166,7 @@ def display_metrics_analysis(history_df):
     st.write("##### 応答時間とその他の指標の関係")
     metric_options = [
         "bleu_score", "similarity_score", "relevance_score", "word_count",
-        "1_gram_score", "2_gram_score", "3_gram_score", "4_gram_score"
+        "gram1_score", "gram2_score", "gram3_score", "gram4_score"
     ]
     valid_metric_options = [m for m in metric_options if m in analysis_df.columns and analysis_df[m].notna().any()]
     if valid_metric_options:
@@ -179,7 +179,7 @@ def display_metrics_analysis(history_df):
     st.write("##### 評価指標の統計")
     stats_cols = [
         'response_time', 'bleu_score', 'similarity_score', 'word_count', 'relevance_score',
-        '1_gram_score', '2_gram_score', '3_gram_score', '4_gram_score'
+        'gram1_score', 'gram2_score', 'gram3_score', 'gram4_score'
     ]
     valid_stats_cols = [c for c in stats_cols if c in analysis_df.columns and analysis_df[c].notna().any()]
     if valid_stats_cols:
