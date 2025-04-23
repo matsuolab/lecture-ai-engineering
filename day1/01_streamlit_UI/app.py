@@ -108,11 +108,11 @@ with tab2:
 # st.table(df)
 
 # メトリクス表示
-# st.subheader("メトリクス")
-# col1, col2, col3 = st.columns(3)
-# col1.metric("温度", "23°C", "1.5°C")
-# col2.metric("湿度", "45%", "-5%")
-# col3.metric("気圧", "1013hPa", "0.1hPa")
+st.subheader("メトリクス")
+col1, col2, col3 = st.columns(3)
+col1.metric("温度", "23°C", "1.5°C")
+col2.metric("湿度", "45%", "-5%")
+col3.metric("気圧", "1013hPa", "0.1hPa")
 
 # ============================================
 # グラフ表示
