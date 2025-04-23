@@ -82,8 +82,8 @@ def calculate_metrics(answer, correct_answer):
         # n-gram一致率の計算 (Janomeによる形態素トークンを使用)
         try:
             janome_tok = Tokenizer()
-            ref_tokens = janome_tok.tokenize(correct_text, wakati=True)
-            cand_tokens = janome_tok.tokenize(answer_text, wakati=True)
+            ref_tokens = list(janome_tok.tokenize(correct_text, wakati=True))
+            cand_tokens = list(janome_tok.tokenize(answer_text, wakati=True))
             for n in range(1, 5):
                 if len(ref_tokens) < n:
                     ngram_scores[f"{n}-gram_score"] = 0.0
