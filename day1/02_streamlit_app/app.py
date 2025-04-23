@@ -1,17 +1,36 @@
 # app.py
 import streamlit as st
 import ui                   # UIモジュール
-import llm                  # LLMモジュール
+from llm import load_model  # LLMモジュール
 import database             # データベースモジュール
 import metrics              # 評価指標モジュール
 import data                 # データモジュール
 import torch
 from transformers import pipeline
-from config import MODEL_NAME
+from config import MODEL_GEMMA, MODEL_SB
 from huggingface_hub import HfFolder
 
 # --- アプリケーション設定 ---
-st.set_page_config(page_title="Gemma Chatbot", layout="wide")
+st.set_page_config(page_title="Gemma / SB Intuitions  Chatbot", layout="wide")
+
+
+# --- （追加）モデル選択 ---
+MODEL_OPTIONS = {
+    "google/gemma-2-2b-jpn-it": MODEL_GEMMA,
+    "sbintuitions/sarashina2.2-1b-instruct-v0.1": MODEL_SB,
+}
+
+# （追加）モデル選択用サイドバー
+st.sidebar.title("ナビゲーション")
+selected_model_label = st.sidebar.selectbox(
+    "使用するモデルを選択",
+    list(MODEL_OPTIONS.keys()),
+    index=0,
+)
+MODEL_NAME = MODEL_OPTIONS[selected_model_label]
+
+st.sidebar.markdown(f"**現在のモデル:** `{MODEL_NAME}`")
+
 
 # --- 初期化処理 ---
 # NLTKデータのダウンロード（初回起動時など）
@@ -25,29 +44,30 @@ data.ensure_initial_data()
 
 # LLMモデルのロード（キャッシュを利用）
 # モデルをキャッシュして再利用
-@st.cache_resource
-def load_model():
-    """LLMモデルをロードする"""
+@st.cache_resource(show_spinner="モデルをロード中です…")
+def load_model(model_name: str):
+    """指定された model_name をロードして返す。キャッシュされる。"""
     try:
         device = "cuda" if torch.cuda.is_available() else "cpu"
-        st.info(f"Using device: {device}") # 使用デバイスを表示
+        st.info(f"Using device: {device}")  # 使用デバイスを表示
+
         pipe = pipeline(
             "text-generation",
-            model=MODEL_NAME,
+            model=model_name,
             model_kwargs={"torch_dtype": torch.bfloat16},
-            device=device
+            device=device,
         )
-        st.success(f"モデル '{MODEL_NAME}' の読み込みに成功しました。")
+        st.success(f"モデル '{model_name}' の読み込みに成功しました。")
         return pipe
     except Exception as e:
-        st.error(f"モデル '{MODEL_NAME}' の読み込みに失敗しました: {e}")
+        st.error(f"モデル '{model_name}' の読み込みに失敗しました: {e}")
         st.error("GPUメモリ不足の可能性があります。不要なプロセスを終了するか、より小さいモデルの使用を検討してください。")
         return None
-pipe = llm.load_model()
+pipe = load_model(MODEL_NAME)
 
 # --- Streamlit アプリケーション ---
-st.title("🤖 Gemma 2 Chatbot with Feedback")
-st.write("Gemmaモデルを使用したチャットボットです。回答に対してフィードバックを行えます。")
+st.title("🤖 Gemma / SB Intuitions  Chatbot with Feedback")
+st.write("Gemma / SB Intuitions  モデルを使用したチャットボットです。回答に対してフィードバックを行えます。")
 st.markdown("---")
 
 # --- サイドバー ---
@@ -76,6 +96,7 @@ elif st.session_state.page == "履歴閲覧":
 elif st.session_state.page == "サンプルデータ管理":
     ui.display_data_page()
 
+
 # --- フッターなど（任意） ---
 st.sidebar.markdown("---")
-st.sidebar.info("開発者: [Your Name]")
+st.sidebar.info("開発者: Shibayuuuu")

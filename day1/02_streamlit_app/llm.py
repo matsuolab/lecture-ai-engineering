@@ -1,87 +1,74 @@
 # llm.py
 import os
-import torch
-from transformers import pipeline
-import streamlit as st
 import time
-from config import MODEL_NAME
+import torch
+import streamlit as st
+from transformers import pipeline
 from huggingface_hub import login
 
-# モデルをキャッシュして再利用
-@st.cache_resource
-def load_model():
-    """LLMモデルをロードする"""
+# -------------------------------------------------------------------
+# 1. Hugging Face アクセストークンのログイン
+# -------------------------------------------------------------------
+@st.cache_resource(show_spinner=False)
+def _hf_login():
+    """Hugging Face のアクセストークンで一度だけログインする"""
     try:
-
-        # アクセストークンを保存
         hf_token = st.secrets["huggingface"]["token"]
-        
-        device = "cuda" if torch.cuda.is_available() else "cpu"
-        st.info(f"Using device: {device}") # 使用デバイスを表示
+        login(token=hf_token, add_to_git_credential=True)
+    except Exception as e:
+        st.warning(f"Hugging Face へのログインに失敗しました: {e}")
+
+# -------------------------------------------------------------------
+# 2. モデルのロード
+# -------------------------------------------------------------------
+@st.cache_resource(show_spinner="モデルをロード中です…")
+def load_model(model_name: str):
+    """model_name を指定して text-generation パイプをロード"""
+    _hf_login()                          # ← 一度だけ実行
+    device = "cuda" if torch.cuda.is_available() else "cpu"
+    st.info(f"Using device: {device}")
+
+    try:
         pipe = pipeline(
             "text-generation",
-            model=MODEL_NAME,
+            model=model_name,
             model_kwargs={"torch_dtype": torch.bfloat16},
-            device=device
+            device=device,
         )
-        st.success(f"モデル '{MODEL_NAME}' の読み込みに成功しました。")
+        st.success(f"モデル '{model_name}' を読み込みました。")
         return pipe
     except Exception as e:
-        st.error(f"モデル '{MODEL_NAME}' の読み込みに失敗しました: {e}")
-        st.error("GPUメモリ不足の可能性があります。不要なプロセスを終了するか、より小さいモデルの使用を検討してください。")
+        st.error(f"モデル '{model_name}' の読み込みに失敗: {e}")
         return None
 
-def generate_response(pipe, user_question):
-    """LLMを使用して質問に対する回答を生成する"""
+# -------------------------------------------------------------------
+# 3. 文章生成
+# -------------------------------------------------------------------
+def generate_response(pipe, user_question: str):
+    """与えられた pipe で回答を生成し、(text, 秒) を返す"""
     if pipe is None:
-        return "モデルがロードされていないため、回答を生成できません。", 0
+        return "モデルがロードされていないため、回答を生成できません。", 0.0
 
     try:
-        start_time = time.time()
-        messages = [
-            {"role": "user", "content": user_question},
-        ]
-        # max_new_tokensを調整可能にする（例）
-        outputs = pipe(messages, max_new_tokens=512, do_sample=True, temperature=0.7, top_p=0.9)
+        start = time.time()
+        messages = [{"role": "user", "content": user_question}]
+        outputs  = pipe(messages, max_new_tokens=512,
+                        do_sample=True, temperature=0.7, top_p=0.9)
 
-        # Gemmaの出力形式に合わせて調整が必要な場合がある
-        # 最後のassistantのメッセージを取得
+        # --- Gemma / Llama-3 で共通的に“最後の assistant 出力”を抽出 ---
         assistant_response = ""
-        if outputs and isinstance(outputs, list) and outputs[0].get("generated_text"):
-           if isinstance(outputs[0]["generated_text"], list) and len(outputs[0]["generated_text"]) > 0:
-               # messages形式の場合
-               last_message = outputs[0]["generated_text"][-1]
-               if last_message.get("role") == "assistant":
-                   assistant_response = last_message.get("content", "").strip()
-           elif isinstance(outputs[0]["generated_text"], str):
-               # 単純な文字列の場合（古いtransformers？） - プロンプト部分を除く処理が必要かも
-               # この部分はモデルやtransformersのバージョンによって調整が必要
-               full_text = outputs[0]["generated_text"]
-               # 簡単な方法：ユーザーの質問以降の部分を取得
-               prompt_end = user_question
-               response_start_index = full_text.find(prompt_end) + len(prompt_end)
-               # 応答部分のみを抽出（より堅牢な方法が必要な場合あり）
-               possible_response = full_text[response_start_index:].strip()
-               # 特定の開始トークンを探すなど、モデルに合わせた調整
-               if "<start_of_turn>model" in possible_response:
-                    assistant_response = possible_response.split("<start_of_turn>model\n")[-1].strip()
-               else:
-                    assistant_response = possible_response # フォールバック
+        if outputs and isinstance(outputs, list):
+            gen = outputs[0].get("generated_text")
+            if isinstance(gen, list) and gen and gen[-1].get("role") == "assistant":
+                assistant_response = gen[-1].get("content", "").strip()
+            elif isinstance(gen, str):
+                assistant_response = gen.strip()
 
         if not assistant_response:
-             # 上記で見つからない場合のフォールバックやデバッグ
-             print("Warning: Could not extract assistant response. Full output:", outputs)
-             assistant_response = "回答の抽出に失敗しました。"
+            assistant_response = "回答の抽出に失敗しました。"
 
-
-        end_time = time.time()
-        response_time = end_time - start_time
-        print(f"Generated response in {response_time:.2f}s") # デバッグ用
-        return assistant_response, response_time
+        return assistant_response, (time.time() - start)
 
     except Exception as e:
-        st.error(f"回答生成中にエラーが発生しました: {e}")
-        # エラーの詳細をログに出力
-        import traceback
-        traceback.print_exc()
-        return f"エラーが発生しました: {str(e)}", 0
+        st.error(f"回答生成中にエラー: {e}")
+        return f"エラーが発生しました: {e}", 0.0
