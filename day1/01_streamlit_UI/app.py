@@ -168,17 +168,17 @@ if uploaded_file is not None:
 st.header("スタイルのカスタマイズ")
 
 # カスタムCSS
-# st.markdown("""
-# <style>
-# .big-font {
-#     font-size:20px ！important;
-#     font-weight: bold;
-#     color: #0066cc;
-# }
-# </style>
-# """, unsafe_allow_html=True)
-# 
-# st.markdown('<p class="big-font">これはカスタムCSSでスタイリングされたテキストです！</p>', unsafe_allow_html=True)
+st.markdown("""
+<style>
+.big-font {
+    font-size:20px ！important;
+    font-weight: bold;
+    color: #0066cc;
+}
+</style>
+""", unsafe_allow_html=True)
+
+st.markdown('<p class="big-font">これはカスタムCSSでスタイリングされたテキストです！</p>', unsafe_allow_html=True)
 
 # ============================================
 # デモの使用方法
