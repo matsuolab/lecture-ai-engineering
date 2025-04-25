@@ -10,26 +10,24 @@ from huggingface_hub import login
 # モデルをキャッシュして再利用
 @st.cache_resource
 def load_model():
-    """LLMモデルをロードする"""
+    """rinnaの日本語GPT-2をロードする版"""
     try:
-
-        # アクセストークンを保存
-        hf_token = st.secrets["huggingface"]["token"]
-        
         device = "cuda" if torch.cuda.is_available() else "cpu"
-        st.info(f"Using device: {device}") # 使用デバイスを表示
+        st.info(f"Using device: {device}")
+
+        # rinnaの日本語GPT-2モデルをロード
         pipe = pipeline(
             "text-generation",
-            model=MODEL_NAME,
-            model_kwargs={"torch_dtype": torch.bfloat16},
-            device=device
+            model="rinna/japanese-gpt2-medium",
+            device=0 if device == "cuda" else -1
         )
-        st.success(f"モデル '{MODEL_NAME}' の読み込みに成功しました。")
+        st.success("rinnaの日本語GPT-2モデルの読み込みに成功しました！")
         return pipe
+
     except Exception as e:
-        st.error(f"モデル '{MODEL_NAME}' の読み込みに失敗しました: {e}")
-        st.error("GPUメモリ不足の可能性があります。不要なプロセスを終了するか、より小さいモデルの使用を検討してください。")
+        st.error(f"モデルのロードに失敗しました: {e}")
         return None
+
 
 def generate_response(pipe, user_question):
     """LLMを使用して質問に対する回答を生成する"""
@@ -85,3 +83,27 @@ def generate_response(pipe, user_question):
         import traceback
         traceback.print_exc()
         return f"エラーが発生しました: {str(e)}", 0
+
+def generate_batch_response(pipe, user_questions):
+    """複数の質問を一括で処理して応答を返す（パッチサービング）"""
+    if pipe is None:
+        return ["モデル未ロード"] * len(user_questions), 0
+
+    try:
+        start_time = time.time()
+
+        # user_questions: List[str] 形式を想定
+        outputs = pipe(user_questions, max_new_tokens=100, do_sample=True, temperature=0.7)
+
+        responses = []
+        for out in outputs:
+            if isinstance(out, dict) and "generated_text" in out:
+                responses.append(out["generated_text"].strip())
+            else:
+                responses.append("出力形式エラー")
+
+        response_time = time.time() - start_time
+        return responses, response_time
+
+    except Exception as e:
+        return [f"エラー: {e}"], 0
