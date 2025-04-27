@@ -170,11 +170,32 @@ async def generate_simple(request: SimpleGenerationRequest):
     try:
         start_time = time.time()
         print(f"シンプルなリクエストを受信: prompt={request.prompt[:100]}..., max_new_tokens={request.max_new_tokens}")  # 長いプロンプトは切り捨て
+        print(request)
+
+        ''''''
+        # 会話履歴を保持するために、過去のやり取り（messages）を取得
+        # ここでは仮に会話履歴を管理するグローバル変数を使います
+        conversation_history = []  # 会話履歴のリスト（最初は空）
+        # ユーザーメッセージを会話履歴に追加
+        conversation_history.append({
+            "role": "user",
+            "content": request.prompt
+        })
+        # モデルに渡すメッセージ構造を整える
+        fastapi_messages = []
+        for msg in conversation_history:
+            fastapi_messages.append({
+                "role": msg["role"],
+                "content": msg["content"]
+            })
+        print("Formatted messages for FastAPI:", fastapi_messages)
+        ''''''
 
         # プロンプトテキストで直接応答を生成
         print("モデル推論を開始...")
         outputs = model(
-            request.prompt,
+            # request.prompt,
+            fastapi_messages,
             max_new_tokens=request.max_new_tokens,
             do_sample=request.do_sample,
             temperature=request.temperature,
