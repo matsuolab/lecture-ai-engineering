@@ -2,6 +2,7 @@ import streamlit as st
 import pandas as pd
 import numpy as np
 import time
+import requests
 
 # ============================================
 # ページ設定
@@ -108,7 +109,40 @@ st.write(f"こんにちは、{name}さん！")
 # st.table(df)
 
 # メトリクス表示
-# st.subheader("メトリクス")
+st.subheader("明日の天気")
+
+jma_url = "http://www.jma.go.jp/bosai/common/const/area.json"
+jma_json = requests.get(jma_url).json()
+
+regions = {region["name"] : region["children"]  for region in jma_json["centers"].values()}
+col1, col2, col3 = st.columns(3)
+option_region = col1.selectbox("地方", regions.keys(), index=2)
+
+prefectures = {jma_json["offices"][prefecture]["name"] : prefecture for prefecture in regions[option_region]}
+index = 5 if option_region=="関東甲信地方" else 0
+option_prefecture = col2.selectbox("県", prefectures.keys(), index=index)
+
+jma_url = f"https://www.jma.go.jp/bosai/forecast/data/forecast/{prefectures[option_prefecture]}.json"
+jma_json = requests.get(jma_url).json()
+area = {area["area"]["name"] : i for i, area in enumerate(jma_json[0]["timeSeries"][0]["areas"])}
+option_area = col3.selectbox("地域", area.keys())
+
+weather = jma_json[0]["timeSeries"][0]["areas"][area[option_area]]["weathers"][1].split("　")[0]
+weather_img = "☀️" if weather=="晴れ" else "☁️" if weather=="くもり" else "☔️" if weather=="雨"else weather
+
+temp = jma_json[0]["timeSeries"][2]["areas"][area[option_area]]["temps"]
+temp_tomorrow = temp[-1]
+temp_diff = f"{int(temp_tomorrow) - int(temp[0])}°C" if len(temp)==4 else ""
+
+pops = jma_json[0]["timeSeries"][1]["areas"][area[option_area]]["pops"]
+pops_tomorrow = pops[-1]
+pops_diff = int(pops_tomorrow) - int(pops[0])
+
+col1, col2, col3 = st.columns(3)
+col1.metric("天気", weather_img, "")
+col2.metric("気温", f"{temp_tomorrow}°C", temp_diff)
+col3.metric("降水確率", f"{pops_tomorrow}%", f"{pops_diff}%")
+
 # col1, col2, col3 = st.columns(3)
 # col1.metric("温度", "23°C", "1.5°C")
 # col2.metric("湿度", "45%", "-5%")
