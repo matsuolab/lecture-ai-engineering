@@ -177,3 +177,6 @@ cython_debug/
 
 # PyPI configuration file
 .pypirc
+
+# Virtual environment folder (commonly used for isolating dependencies)
+.venv/
