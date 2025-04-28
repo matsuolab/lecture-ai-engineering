@@ -9,6 +9,15 @@ import torch
 from transformers import pipeline
 from config import MODEL_NAME
 from huggingface_hub import HfFolder
+import datetime
+import pytz  # タイムゾーン用ライブラリ
+
+
+
+# --- セッション状態 ---
+if 'page' not in st.session_state:
+    st.session_state.page = "チャット" # デフォルトページ
+
 
 # --- アプリケーション設定 ---
 st.set_page_config(page_title="Gemma Chatbot", layout="wide")
@@ -22,7 +31,14 @@ database.init_db()
 
 # データベースが空ならサンプルデータを投入
 data.ensure_initial_data()
+# --- サイドバー ---
+st.sidebar.title("ナビゲーション")
 
+# 🕒 現在時刻表示
+if st.sidebar.button("現在時刻を表示"):
+    jst = pytz.timezone('Asia/Tokyo')
+    now = datetime.datetime.now(jst)
+    st.sidebar.success(f"現在時刻: {now.strftime('%Y-%m-%d %H:%M:%S')}")
 # LLMモデルのロード（キャッシュを利用）
 # モデルをキャッシュして再利用
 @st.cache_resource
