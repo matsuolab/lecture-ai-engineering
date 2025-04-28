@@ -12,6 +12,7 @@ import time
 #     initial_sidebar_state="expanded"
 # )
 
+
 st.set_page_config(page_title="自己紹介カード", layout="centered")
 
 st.title("🎴 自己紹介カードジェネレーター")
