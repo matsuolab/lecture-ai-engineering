@@ -137,30 +137,30 @@ st.bar_chart(chart_data)
 # ============================================
 # インタラクティブ機能
 # ============================================
-# st.header("インタラクティブ機能")
+st.header("インタラクティブ機能")
 
 # プログレスバー
-# st.subheader("プログレスバー")
-# progress = st.progress(0)
-# if st.button("進捗をシミュレート"):
-#     for i in range(101):
-#         time.sleep(0.01)
-#         progress.progress(i / 100)
-#     st.balloons()
+st.subheader("プログレスバー")
+progress = st.progress(0)
+if st.button("進捗をシミュレート"):
+    for i in range(101):
+        time.sleep(0.01)
+        progress.progress(i / 100)
+    st.balloons()
 
 # ファイルアップロード
-# st.subheader("ファイルアップロード")
-# uploaded_file = st.file_uploader("ファイルをアップロード", type=["csv", "txt"])
-# if uploaded_file is not None:
-#     # ファイルのデータを表示
-#     bytes_data = uploaded_file.getvalue()
-#     st.write(f"ファイルサイズ: {len(bytes_data)} bytes")
-#     
-#     # CSVの場合はデータフレームとして読み込む
-#     if uploaded_file.name.endswith('.csv'):
-#         df = pd.read_csv(uploaded_file)
-#         st.write("CSVデータのプレビュー:")
-#         st.dataframe(df.head())
+st.subheader("ファイルアップロード")
+uploaded_file = st.file_uploader("ファイルをアップロード", type=["csv", "txt"])
+if uploaded_file is not None:
+    # ファイルのデータを表示
+    bytes_data = uploaded_file.getvalue()
+    st.write(f"ファイルサイズ: {len(bytes_data)} bytes")
+    
+    # CSVの場合はデータフレームとして読み込む
+    if uploaded_file.name.endswith('.csv'):
+        df = pd.read_csv(uploaded_file)
+        st.write("CSVデータのプレビュー:")
+        st.dataframe(df.head())
 
 # ============================================
 # カスタマイズ
