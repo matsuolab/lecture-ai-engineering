@@ -69,12 +69,17 @@ def history_ui():
         st.info("まだ履歴がありません。")
         return
 
+    # --- timestamp を datetime 型に変換 ---
+    df["timestamp"] = pd.to_datetime(df["timestamp"])
+
     # フィルタ：日付レンジ＋テキスト検索
-    col1, col2 = st.columns([1,2])
+    min_date = df["timestamp"].min().date()
+    max_date = df["timestamp"].max().date()
+    col1, col2 = st.columns([1, 2])
     with col1:
         date_range = st.date_input(
             "日付で絞り込み",
-            value=(df["timestamp"].min().date(), df["timestamp"].max().date())
+            value=(min_date, max_date)
         )
     with col2:
         keyword = st.text_input("質問 or フィードバックで検索")
