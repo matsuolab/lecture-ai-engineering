@@ -46,8 +46,8 @@ def load_model():
 pipe = llm.load_model()
 
 # --- Streamlit アプリケーション ---
-st.title("🤖 Elyza Chatbot with Feedback")
-st.write("Elyzaモデルを使用したチャットボットです。回答に対してフィードバックを行えます。")
+st.title("🤖 TinySwallow Chatbot with Feedback")
+st.write("TinySwallowモデルを使用したチャットボットです。回答に対してフィードバックを行えます。")
 st.markdown("---")
 
 # --- サイドバー ---
