@@ -34,7 +34,7 @@ data.ensure_initial_data()
 # --- サイドバー ---
 st.sidebar.title("ナビゲーション")
 
-# 🕒 現在時刻表示
+
 if st.sidebar.button("現在時刻を表示"):
     jst = pytz.timezone('Asia/Tokyo')
     now = datetime.datetime.now(jst)
