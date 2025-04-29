@@ -1,3 +1,3 @@
 # config.py
 DB_FILE = "chat_feedback.db"
-MODEL_NAME = "elyza/ELYZA-japanese-Llama-2-7b-fast-instruct"
+MODEL_NAME = "SakanaAI/TinySwallow-1.5B-Instruct"
