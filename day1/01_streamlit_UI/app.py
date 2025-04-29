@@ -15,7 +15,7 @@ import time
 # ============================================
 # タイトルと説明
 # ============================================
-st.title("Streamlit 初心者向けデモ")
+st.title("Streamlit 改良版")
 st.markdown("### コメントを解除しながらStreamlitの機能を学びましょう")
 st.markdown("このデモコードでは、コメントアウトされた部分を順番に解除しながらUIの変化を確認できます。")
 
@@ -36,27 +36,27 @@ name = st.text_input("あなたの名前", "ゲスト")
 st.write(f"こんにちは、{name}さん！")
 
 # ボタン
-# st.subheader("ボタン")
-# if st.button("クリックしてください"):
-#     st.success("ボタンがクリックされました！")
+st.subheader("ボタン")
+if st.button("クリックしてください"):
+   st.success("ボタンがクリックされました！")
 
 # チェックボックス
-# st.subheader("チェックボックス")
-# if st.checkbox("チェックを入れると追加コンテンツが表示されます"):
-#     st.info("これは隠れたコンテンツです！")
+st.subheader("チェックボックス")
+if st.checkbox("チェックを入れると追加コンテンツが表示されます"):
+   st.info("これは隠れたコンテンツです！")
 
 # スライダー
-# st.subheader("スライダー")
-# age = st.slider("年齢", 0, 100, 25)
-# st.write(f"あなたの年齢: {age}")
+st.subheader("スライダー")
+age = st.slider("年齢", 0, 100, 25)
+st.write(f"あなたの年齢: {age}")
 
 # セレクトボックス
-# st.subheader("セレクトボックス")
-# option = st.selectbox(
-#     "好きなプログラミング言語は?",
-#     ["Python", "JavaScript", "Java", "C++", "Go", "Rust"]
-# )
-# st.write(f"あなたは{option}を選びました")
+st.subheader("セレクトボックス")
+option = st.selectbox(
+    "好きなプログラミング言語は?",
+    ["Python", "JavaScript", "Java", "C++", "Go", "Rust"]
+ )
+st.write(f"あなたは{option}を選びました")
 
 # ============================================
 # レイアウト
@@ -90,22 +90,22 @@ st.write(f"こんにちは、{name}さん！")
 # ============================================
 # データ表示
 # ============================================
-# st.header("データの表示")
+st.header("データの表示")
 
 # サンプルデータフレームを作成
-# df = pd.DataFrame({
-#     '名前': ['田中', '鈴木', '佐藤', '高橋', '伊藤'],
-#     '年齢': [25, 30, 22, 28, 33],
-#     '都市': ['東京', '大阪', '福岡', '札幌', '名古屋']
-# })
+df = pd.DataFrame({
+    '名前': ['田中', '鈴木', '佐藤', '高橋', '伊藤'],
+    '年齢': [25, 30, 22, 28, 33],
+    '都市': ['東京', '大阪', '福岡', '札幌', '名古屋']
+ })
 
 # データフレーム表示
-# st.subheader("データフレーム")
-# st.dataframe(df, use_container_width=True)
+st.subheader("データフレーム")
+st.dataframe(df, use_container_width=True)
 
 # テーブル表示
-# st.subheader("テーブル")
-# st.table(df)
+st.subheader("テーブル")
+st.table(df)
 
 # メトリクス表示
 # st.subheader("メトリクス")
@@ -117,14 +117,14 @@ st.write(f"こんにちは、{name}さん！")
 # ============================================
 # グラフ表示
 # ============================================
-# st.header("グラフの表示")
+st.header("グラフの表示")
 
 # ラインチャート
-# st.subheader("ラインチャート")
-# chart_data = pd.DataFrame(
-#     np.random.randn(20, 3),
-#     columns=['A', 'B', 'C'])
-# st.line_chart(chart_data)
+st.subheader("ラインチャート")
+chart_data = pd.DataFrame(
+    np.random.randn(20, 3),
+    columns=['A', 'B', 'C'])
+st.line_chart(chart_data)
 
 # バーチャート
 # st.subheader("バーチャート")
@@ -139,14 +139,14 @@ st.write(f"こんにちは、{name}さん！")
 # ============================================
 # st.header("インタラクティブ機能")
 
-# プログレスバー
-# st.subheader("プログレスバー")
-# progress = st.progress(0)
-# if st.button("進捗をシミュレート"):
-#     for i in range(101):
-#         time.sleep(0.01)
-#         progress.progress(i / 100)
-#     st.balloons()
+#　プログレスバー
+st.subheader("プログレスバー")
+progress = st.progress(0)
+if st.button("進捗をシミュレート"):
+    for i in range(101):
+        time.sleep(0.01)
+        progress.progress(i / 100)
+    st.balloons()
 
 # ファイルアップロード
 # st.subheader("ファイルアップロード")
