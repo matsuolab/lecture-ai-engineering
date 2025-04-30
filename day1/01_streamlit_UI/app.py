@@ -15,25 +15,29 @@ import time
 # ============================================
 # タイトルと説明
 # ============================================
-st.title("Streamlit 初心者向けデモ")
-st.markdown("### コメントを解除しながらStreamlitの機能を学びましょう")
-st.markdown("このデモコードでは、コメントアウトされた部分を順番に解除しながらUIの変化を確認できます。")
+st.title("gitのprofileのreadmeジェネレーター")
+st.markdown("## 以下のフォームを入力することでgitのprofileのReadMeを作成することができます。")
 
 # ============================================
 # サイドバー 
 # ============================================
-st.sidebar.header("デモのガイド")
-st.sidebar.info("コードのコメントを解除して、Streamlitのさまざまな機能を確認しましょう。")
+st.sidebar.header("サイドバー")
+st.sidebar.info("info")
+st.sidebar.markdown('ユーザー登録')
+st.sidebar.markdown('プログラミング歴')
+st.sidebar.markdown('得意な言語1')
+st.sidebar.markdown('得意な言語2')
+st.sidebar.markdown('得意な言語3')
 
 # ============================================
 # 基本的なUI要素
 # ============================================
-st.header("基本的なUI要素")
+# st.header("基本的なUI要素")
 
 # テキスト入力
-st.subheader("テキスト入力")
-name = st.text_input("あなたの名前", "ゲスト")
-st.write(f"こんにちは、{name}さん！")
+st.subheader("ユーザー名登録")
+name = st.text_input("あなたの名前", "ユーザー名")
+st.write(f"Welcome to my page, I'm {name}！")
 
 # ボタン
 # st.subheader("ボタン")
@@ -46,17 +50,40 @@ st.write(f"こんにちは、{name}さん！")
 #     st.info("これは隠れたコンテンツです！")
 
 # スライダー
-# st.subheader("スライダー")
-# age = st.slider("年齢", 0, 100, 25)
-# st.write(f"あなたの年齢: {age}")
+import streamlit as st
 
-# セレクトボックス
-# st.subheader("セレクトボックス")
-# option = st.selectbox(
-#     "好きなプログラミング言語は?",
-#     ["Python", "JavaScript", "Java", "C++", "Go", "Rust"]
-# )
-# st.write(f"あなたは{option}を選びました")
+# スライダー
+st.subheader("プログラミング歴")
+age = st.slider("programming age", 0, 100, 25)
+st.write(f"Programming age: {age}")
+
+# セレクトボックス1
+st.subheader("得意な言語1")
+option1 = st.selectbox("得意なプログラミング言語（その1）", 
+    ["Python", "JavaScript", "Java", "C++", "Go", "Rust", "PHP", "Kotlin", "C"])
+st.write(f"My favorite language is {option1}")
+
+# セレクトボックス2
+st.subheader("得意な言語2")
+option2 = st.selectbox("得意なプログラミング言語（その2）", 
+    ["Python", "JavaScript", "Java", "C++", "Go", "Rust", "PHP", "Kotlin", "C"])
+st.write(f"My favorite language is {option2}")
+
+# セレクトボックス3
+st.subheader("得意な言語3")
+option3 = st.selectbox("得意なプログラミング言語（その3）", 
+    ["Python", "JavaScript", "Java", "C++", "Go", "Rust", "PHP", "Kotlin", "C"])
+st.write(f"My favorite language is {option3}")
+
+message = (
+    f"Welcome to my page, I'm {name}!<br>"
+    f"Programming age: {age}<br>"
+    f"My favorite language is {option1}<br>"
+    f"My second favorite language is {option2}<br>"
+    f"My therd favorite language is {option3}"
+)
+
+st.markdown(message, unsafe_allow_html=True)
 
 # ============================================
 # レイアウト
@@ -168,36 +195,36 @@ st.write(f"こんにちは、{name}さん！")
 # st.header("スタイルのカスタマイズ")
 
 # カスタムCSS
-# st.markdown("""
-# <style>
-# .big-font {
-#     font-size:20px ！important;
-#     font-weight: bold;
-#     color: #0066cc;
-# }
-# </style>
-# """, unsafe_allow_html=True)
-# 
-# st.markdown('<p class="big-font">これはカスタムCSSでスタイリングされたテキストです！</p>', unsafe_allow_html=True)
+st.markdown("""
+<style>
+.big-font {
+    font-size:20px ！important;
+    font-weight: bold;
+    color: #0066cc;
+}
+</style>
+""", unsafe_allow_html=True)
+
+st.markdown('<p class="big-font">これはカスタムCSSでスタイリングされたテキストです！</p>', unsafe_allow_html=True)
 
 # ============================================
 # デモの使用方法
 # ============================================
-st.divider()
-st.subheader("このデモの使い方")
-st.markdown("""
-1. コードエディタでコメントアウトされた部分を見つけます（#で始まる行）
-2. 確認したい機能のコメントを解除します（先頭の#を削除）
-3. 変更を保存して、ブラウザで結果を確認します
-4. 様々な組み合わせを試して、UIがどのように変化するか確認しましょう
-""")
+# st.divider()
+# st.subheader("このデモの使い方")
+# st.markdown("""
+# 1. コードエディタでコメントアウトされた部分を見つけます（#で始まる行）
+# 2. 確認したい機能のコメントを解除します（先頭の#を削除）
+# 3. 変更を保存して、ブラウザで結果を確認します
+# 4. 様々な組み合わせを試して、UIがどのように変化するか確認しましょう
+# """)
 
-st.code("""
-# コメントアウトされた例:
+# st.code("""
+# # コメントアウトされた例:
+# # if st.button("クリックしてください"):
+# #     st.success("ボタンがクリックされました！")
+
+# # コメントを解除した例:
 # if st.button("クリックしてください"):
 #     st.success("ボタンがクリックされました！")
-
-# コメントを解除した例:
-if st.button("クリックしてください"):
-    st.success("ボタンがクリックされました！")
-""")
+#""")
