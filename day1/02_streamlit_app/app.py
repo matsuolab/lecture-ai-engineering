@@ -46,22 +46,39 @@ def load_model():
 pipe = llm.load_model()
 
 # --- Streamlit アプリケーション ---
-st.title("🤖 Gemma 2 Chatbot with Feedback")
-st.write("Gemmaモデルを使用したチャットボットです。回答に対してフィードバックを行えます。")
+st.markdown(
+    """
+    <style>
+    .main-title {
+        font-size: 36px;
+        font-weight: bold;
+        color: #4A90E2;
+        margin-bottom: 0.2em;
+    }
+    .sub-text {
+        font-size: 16px;
+        color: #555;
+    }
+    </style>
+    """, unsafe_allow_html=True)
+
+st.markdown('<div class="main-title">🤖 Gemma 2 Chatbot with Feedback</div>', unsafe_allow_html=True)
+st.markdown('<div class="sub-text">Gemmaモデルを使用したチャットボットです。回答に対してフィードバックを行えます。</div>', unsafe_allow_html=True)
 st.markdown("---")
 
 # --- サイドバー ---
 st.sidebar.title("ナビゲーション")
+st.sidebar.markdown("### ⬇ ページを選択してください")
 # セッション状態を使用して選択ページを保持
 if 'page' not in st.session_state:
     st.session_state.page = "チャット" # デフォルトページ
 
 page = st.sidebar.radio(
     "ページ選択",
-    ["チャット", "履歴閲覧", "サンプルデータ管理"],
+    ["💬 チャット", "📜 履歴閲覧", "🗂 サンプルデータ管理"],
     key="page_selector",
-    index=["チャット", "履歴閲覧", "サンプルデータ管理"].index(st.session_state.page), # 現在のページを選択状態にする
-    on_change=lambda: setattr(st.session_state, 'page', st.session_state.page_selector) # 選択変更時に状態を更新
+    index=["💬 チャット", "📜 履歴閲覧", "🗂 サンプルデータ管理"].index(st.session_state.page),
+    on_change=lambda: setattr(st.session_state, 'page', st.session_state.page_selector)
 )
 
 
@@ -78,4 +95,4 @@ elif st.session_state.page == "サンプルデータ管理":
 
 # --- フッターなど（任意） ---
 st.sidebar.markdown("---")
-st.sidebar.info("開発者: [Your Name]")
+st.sidebar.info("開発者: Urara")
