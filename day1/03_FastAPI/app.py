@@ -10,10 +10,14 @@ from typing import Optional, List, Dict, Any
 import uvicorn
 import nest_asyncio
 from pyngrok import ngrok
+from dotenv import load_dotenv
+
+# 環境変数の読み込み
+load_dotenv()
 
 # --- 設定 ---
 # モデル名を設定
-MODEL_NAME = "google/gemma-2-2b-jpn-it"  # お好みのモデルに変更可能です
+MODEL_NAME = os.getenv("MODEL_NAME", "Qwen/Qwen3-4B")  # お好みのモデルに変更可能です
 print(f"モデル名を設定: {MODEL_NAME}")
 
 # --- モデル設定クラス ---
