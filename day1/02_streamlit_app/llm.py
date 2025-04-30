@@ -21,7 +21,7 @@ def load_model():
         pipe = pipeline(
             "text-generation",
             model=MODEL_NAME,
-            model_kwargs={"torch_dtype": torch.bfloat16},
+            model_kwargs={"torch_dtype": torch.float16},
             device=device
         )
         st.success(f"モデル '{MODEL_NAME}' の読み込みに成功しました。")
@@ -38,11 +38,8 @@ def generate_response(pipe, user_question):
 
     try:
         start_time = time.time()
-        messages = [
-            {"role": "user", "content": user_question},
-        ]
         # max_new_tokensを調整可能にする（例）
-        outputs = pipe(messages, max_new_tokens=512, do_sample=True, temperature=0.7, top_p=0.9)
+        outputs = pipe(user_question, max_new_tokens=256, do_sample=True, temperature=0.7, top_p=0.9)
 
         # Gemmaの出力形式に合わせて調整が必要な場合がある
         # 最後のassistantのメッセージを取得
