@@ -7,3 +7,4 @@ scikit-learn
 accelerate
 janome
 pyngrok
+xgboost
