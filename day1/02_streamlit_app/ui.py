@@ -97,6 +97,22 @@ def display_history_page():
 
     if history_df.empty:
         st.info("まだチャット履歴がありません。")
+        return # Exit if no history
+
+    # --- Add Download Button ---
+    # Convert DataFrame to CSV string
+    csv = history_df.to_csv(index=False).encode('utf-8') # Ensure UTF-8 encoding for Japanese characters
+
+    st.download_button(
+        label="履歴をCSVでダウンロード",
+        data=csv,
+        file_name='chat_history.csv',
+        mime='text/csv',
+    )
+    # --- End Download Button ---
+
+    if history_df.empty: # Re-check just in case (though unlikely after the first check)
+        st.info("まだチャット履歴がありません。")
         return
 
     # タブでセクションを分ける
