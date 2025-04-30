@@ -6,11 +6,11 @@ import time
 # ============================================
 # ページ設定
 # ============================================
-# st.set_page_config(
-#     page_title="Streamlit デモ",
-#     layout="wide",
-#     initial_sidebar_state="expanded"
-# )
+st.set_page_config(
+     page_title="Streamlit デモ",
+     layout="wide",
+     initial_sidebar_state="expanded"
+ )
 
 # ============================================
 # タイトルと説明
