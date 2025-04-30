@@ -3,10 +3,12 @@ import torch
 from transformers import pipeline
 import time
 import traceback
-from fastapi import FastAPI, HTTPException, BackgroundTasks
+# from fastapi import FastAPI, HTTPException, BackgroundTasks
+from fastapi import FastAPI, HTTPException
 from fastapi.middleware.cors import CORSMiddleware
 from pydantic import BaseModel
-from typing import Optional, List, Dict, Any
+# from typing import Optional, List, Dict, Any
+from typing import Optional, List
 import uvicorn
 import nest_asyncio
 from pyngrok import ngrok
@@ -143,7 +145,7 @@ async def startup_event():
 @app.get("/")
 async def root():
     """基本的なAPIチェック用のルートエンドポイント"""
-    return {"status": "ok", "message": "Local LLM API is runnning"}
+    return {"status": "ok", "message": "Local LLM API is running"}
 
 @app.get("/health")
 async def health_check():
