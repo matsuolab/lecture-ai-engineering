@@ -1,0 +1,712 @@
+<!doctype html>
+<html lang="en-US" class="no-js aws-lng-en_US" xmlns="http://www.w3.org/1999/xhtml" data-aws-assets="https://a0.awsstatic.com" data-js-version="1.0.681" data-css-version="1.0.538" data-static-assets="https://a0.awsstatic.com" prefix="og: https://ogp.me/ns#">
+ <head> 
+  <meta charset="UTF-8"> 
+  <meta name="viewport" content="width=device-width, initial-scale=1"> 
+  <title>Choose the best data source for your Amazon SageMaker training job | AWS Machine Learning Blog</title> 
+  <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1"> 
+  <meta http-equiv="Content-Security-Policy" content="default-src 'self' data: https://a0.awsstatic.com https://prod.us-east-1.ui.gcr-chat.marketing.aws.dev; base-uri 'none'; connect-src 'self' *.akamaized.net *.googlevideo.com/videoplayback https://*.analytics.console.aws.a2z.com https://*.harmony.a2z.com https://*.panorama.console.api.aws https://*.prod.chc-features.uxplatform.aws.dev https://112-tzm-766.mktoresp.com https://112-tzm-766.mktoutil.com https://a0.awsstatic.com https://a0.p.awsstatic.com https://a1.awsstatic.com https://amazonwebservices.d2.sc.omtrdc.net https://amazonwebservicesinc.tt.omtrdc.net https://api-v2.builderprofile.aws.dev https://api.regional-table.region-services.aws.a2z.com https://api.us-west-2.prod.pricing.aws.a2z.com https://auth.aws.amazon.com/ https://aws.amazon.com/p/sf/ https://aws.demdex.net https://b0.p.awsstatic.com https://c0.b0.p.awsstatic.com https://calculator.aws https://chat.us-east-1.prod.mrc-sunrise.marketing.aws.dev https://chatbot-api.us-east-1.prod.mrc-sunrise.marketing.aws.dev https://chatbot-stream-api.us-east-1.prod.mrc-sunrise.marketing.aws.dev https://cm.everesttech.net https://d-90676d7478.awsapps.com https://d0.awsstatic.com https://d1.awsstatic.com https://d1fgizr415o1r6.cloudfront.net https://d2c.aws.amazon.com https://d3borx6sfvnesb.cloudfront.net https://dftu77xade0tc.cloudfront.net https://dpm.demdex.net https://edge.adobedc.net https://fls-na.amazon.com https://i18n-string.us-west-2.prod.pricing.aws.a2z.com https://iad.staging.prod.tv.awsstatic.com https://infra-api.us-east-1.prod.mrc-sunrise.marketing.aws.dev https://ingestion.aperture-public-api.feedback.console.aws.dev https://livechat-api.us-east-1.prod.mrc-sunrise.marketing.aws.dev https://oidc.us-east-1.amazonaws.com https://pricing-table.us-west-2.prod.site.p.awsstatic.com https://prod-api.cosmic.aws.dev https://prod-us-west-2.csp-report.marketing.aws.dev https://prod-us-west-2.csp-report.marketing.aws.dev/submit https://prod.log.shortbread.aws.dev https://prod.tools.shortbread.aws.dev https://prod.us-east-1.api.gcr-chat.marketing.aws.dev https://prod.us-east-1.rest-bot.gcr-chat.marketing.aws.dev https://prod.us-east-1.ui.gcr-chat.marketing.aws.dev https://prod2.clientlogger.cn-northwest-1.marketplace.aws.a2z.org.cn https://public.lotus.awt.aws.a2z.com https://s0.awsstatic.com https://s3.amazonaws.com/aws-messaging-pricing-information/ https://s3.amazonaws.com/public-pricing-agc/ https://spot-bid-advisor.s3.amazonaws.com https://t0.m.awsstatic.com https://token.us-west-2.prod.site.p.awsstatic.com https://tv.awsstatic.com https://view-stage.us-west-2.prod.pricing.aws.a2z.com https://view-staging.us-east-1.prod.plc1-prod.pricing.aws.a2z.com https://vs.aws.amazon.com https://webchat-aws.clink.cn https://www.youtube-nocookie.com https://www.youtube.com https://xcxrmtkxx5.execute-api.us-east-1.amazonaws.com/prod/ wss://*.transport.connect.us-east-1.amazonaws.com wss://prod.us-east-1.wss-bot.gcr-chat.marketing.aws.dev wss://webchat-aws.clink.cn; font-src 'self' data: https://a0.awsstatic.com https://f0.awsstatic.com https://fonts.gstatic.com https://prod.us-east-1.ui.gcr-chat.marketing.aws.dev; frame-src 'self' https://*.widget.console.aws.amazon.com https://aws.demdex.net https://c0.b0.p.awsstatic.com https://calculator.aws https://commenting.awsblogs.com https://conversational-experience-worker.widget.console.aws.amazon.com/lotus/isolatedIFrame https://dpm.demdex.net https://player.vimeo.com https://pricing-table.us-west-2.prod.site.p.awsstatic.com https://token.us-west-2.prod.site.p.awsstatic.com https://www.youtube-nocookie.com https://www.youtube.com; img-src 'self' blob: data: https://*.vidyard.com https://*.ytimg.com https://a0.awsstatic.com https://amazonwebservices.d2.sc.omtrdc.net https://avatars.builderprofile.aws.dev https://aws-clink2-resource.s3.cn-northwest-1.amazonaws.com.cn https://aws-quickstart.s3.amazonaws.com https://aws.amazon.com https://aws.demdex.net https://awsmedia.s3.amazonaws.com https://chat.us-east-1.prod.mrc-sunrise.marketing.aws.dev https://cm.everesttech.net https://d1.awsstatic.com https://d1d1et6laiqoh9.cloudfront.net https://d2908q01vomqb2.cloudfront.net https://d2c.aws.amazon.com https://d2cpw7vd6a2efr.cloudfront.net https://d36cz9buwru1tt.cloudfront.net https://d7umqicpi7263.cloudfront.net https://docs.aws.amazon.com https://dpm.demdex.net https://fls-na.amazon.com https://google.ca https://google.co.in https://google.co.jp https://google.co.th https://google.co.uk https://google.com https://google.com.ar https://google.com.au https://google.com.br https://google.com.hk https://google.com.mx https://google.com.tr https://google.com.tw https://google.de https://google.es https://google.fr https://google.it https://google.nl https://google.pl https://google.ru https://iad.staging.prod.tv.awsstatic.com https://img.youtube.com https://marketingplatform.google.com https://media.amazonwebservices.com https://p.adsymptotic.com https://pages.awscloud.com https://prod.cosmic.aws.dev https://prod.us-east-1.ui.gcr-chat.marketing.aws.dev https://s3.amazonaws.com/aws-quickstart/ https://s3.cn-north-1.amazonaws.com.cn/awschinablog/ https://s3.cn-north-1.amazonaws.com.cn/images-bjs/ https://ssl-static.libsyn.com https://static-cdn.jtvnw.net https://tv.awsstatic.com https://webchat-aws.clink.cn https://www.google.com https://www.linkedin.com https://yt3.ggpht.com; media-src 'self' https://*.libsyn.com https://a0.awsstatic.com https://anchor.fm https://awsmedia.s3.amazonaws.com https://awspodcastsiberiaent.s3.eu-west-3.amazonaws.com https://chat.us-east-1.prod.mrc-sunrise.marketing.aws.dev https://chtbl.com https://content.production.cdn.art19.com https://d1.awsstatic.com https://d1hemuljm71t2j.cloudfront.net https://d1le29qyzha1u4.cloudfront.net https://d1oqpvwii7b6rh.cloudfront.net https://d1vo51ubqkiilx.cloudfront.net https://d1yyh5dhdgifnx.cloudfront.net https://d2908q01vomqb2.cloudfront.net https://d2a6igt6jhaluh.cloudfront.net https://d3ctxlq1ktw2nl.cloudfront.net https://d3h2ozso0dirfl.cloudfront.net https://dgen8gghn3u86.cloudfront.net https://dk261l6wntthl.cloudfront.net https://download.stormacq.com/aws/podcast/ https://dts.podtrac.com https://iad.staging.prod.tv.awsstatic.com https://media.amazonwebservices.com https://mktg-apac.s3-ap-southeast-1.amazonaws.com https://rss.art19.com https://s3-ap-northeast-1.amazonaws.com/aws-china-media/ https://tv.awsstatic.com https://www.buzzsprout.com; object-src 'none'; script-src 'nonce-TCYPE22wSIuK+oN/LKbIFZTZM+O3/+Nvcd2AvInT+PU=' 'self' blob: https://*.cdn.console.awsstatic.com/ https://*.cdn.uis.awsstatic.com/ https://a.b.cdn.console.awsstatic.com https://a0.awsstatic.com https://amazonwebservicesinc.tt.omtrdc.net https://cdn.builderprofile.aws.dev https://chat.us-east-1.prod.mrc-sunrise.marketing.aws.dev https://d2c.aws.amazon.com https://googleads.g.doubleclick.net https://loader.us-east-1.prod.mrc-sunrise.marketing.aws.dev https://prod.cosmic.aws.dev https://prod.us-east-1.ui.gcr-chat.marketing.aws.dev https://spot-price.s3.amazonaws.com https://static.doubleclick.net https://t0.m.awsstatic.com https://token.us-west-2.prod.site.p.awsstatic.com https://website.spot.ec2.aws.a2z.com https://www.google.com https://www.gstatic.com https://www.youtube.com/iframe_api https://www.youtube.com/s/player/; style-src 'self' 'unsafe-inline' https://a0.awsstatic.com https://prod.us-east-1.ui.gcr-chat.marketing.aws.dev https://token.us-west-2.prod.site.p.awsstatic.com; report-uri https://prod-us-west-2.csp-report.marketing.aws.dev/submit" data-report-uri="https://prod-us-west-2.csp-report.marketing.aws.dev/submit"> 
+  <script src="https://a0.awsstatic.com/libra/1.0.590/csp/csp-report.js"></script> 
+  <meta name="robots" content="max-image-preview:large"> 
+  <link rel="dns-prefetch" href="//a0.awsstatic.com"> 
+  <style id="global-styles-inline-css" type="text/css">
+body{--wp--preset--color--black: #000000;--wp--preset--color--cyan-bluish-gray: #abb8c3;--wp--preset--color--white: #ffffff;--wp--preset--color--pale-pink: #f78da7;--wp--preset--color--vivid-red: #cf2e2e;--wp--preset--color--luminous-vivid-orange: #ff6900;--wp--preset--color--luminous-vivid-amber: #fcb900;--wp--preset--color--light-green-cyan: #7bdcb5;--wp--preset--color--vivid-green-cyan: #00d084;--wp--preset--color--pale-cyan-blue: #8ed1fc;--wp--preset--color--vivid-cyan-blue: #0693e3;--wp--preset--color--vivid-purple: #9b51e0;--wp--preset--gradient--vivid-cyan-blue-to-vivid-purple: linear-gradient(135deg,rgba(6,147,227,1) 0%,rgb(155,81,224) 100%);--wp--preset--gradient--light-green-cyan-to-vivid-green-cyan: linear-gradient(135deg,rgb(122,220,180) 0%,rgb(0,208,130) 100%);--wp--preset--gradient--luminous-vivid-amber-to-luminous-vivid-orange: linear-gradient(135deg,rgba(252,185,0,1) 0%,rgba(255,105,0,1) 100%);--wp--preset--gradient--luminous-vivid-orange-to-vivid-red: linear-gradient(135deg,rgba(255,105,0,1) 0%,rgb(207,46,46) 100%);--wp--preset--gradient--very-light-gray-to-cyan-bluish-gray: linear-gradient(135deg,rgb(238,238,238) 0%,rgb(169,184,195) 100%);--wp--preset--gradient--cool-to-warm-spectrum: linear-gradient(135deg,rgb(74,234,220) 0%,rgb(151,120,209) 20%,rgb(207,42,186) 40%,rgb(238,44,130) 60%,rgb(251,105,98) 80%,rgb(254,248,76) 100%);--wp--preset--gradient--blush-light-purple: linear-gradient(135deg,rgb(255,206,236) 0%,rgb(152,150,240) 100%);--wp--preset--gradient--blush-bordeaux: linear-gradient(135deg,rgb(254,205,165) 0%,rgb(254,45,45) 50%,rgb(107,0,62) 100%);--wp--preset--gradient--luminous-dusk: linear-gradient(135deg,rgb(255,203,112) 0%,rgb(199,81,192) 50%,rgb(65,88,208) 100%);--wp--preset--gradient--pale-ocean: linear-gradient(135deg,rgb(255,245,203) 0%,rgb(182,227,212) 50%,rgb(51,167,181) 100%);--wp--preset--gradient--electric-grass: linear-gradient(135deg,rgb(202,248,128) 0%,rgb(113,206,126) 100%);--wp--preset--gradient--midnight: linear-gradient(135deg,rgb(2,3,129) 0%,rgb(40,116,252) 100%);--wp--preset--duotone--dark-grayscale: url('#wp-duotone-dark-grayscale');--wp--preset--duotone--grayscale: url('#wp-duotone-grayscale');--wp--preset--duotone--purple-yellow: url('#wp-duotone-purple-yellow');--wp--preset--duotone--blue-red: url('#wp-duotone-blue-red');--wp--preset--duotone--midnight: url('#wp-duotone-midnight');--wp--preset--duotone--magenta-yellow: url('#wp-duotone-magenta-yellow');--wp--preset--duotone--purple-green: url('#wp-duotone-purple-green');--wp--preset--duotone--blue-orange: url('#wp-duotone-blue-orange');--wp--preset--font-size--small: 13px;--wp--preset--font-size--medium: 20px;--wp--preset--font-size--large: 36px;--wp--preset--font-size--x-large: 42px;}.has-black-color{color: var(--wp--preset--color--black) !important;}.has-cyan-bluish-gray-color{color: var(--wp--preset--color--cyan-bluish-gray) !important;}.has-white-color{color: var(--wp--preset--color--white) !important;}.has-pale-pink-color{color: var(--wp--preset--color--pale-pink) !important;}.has-vivid-red-color{color: var(--wp--preset--color--vivid-red) !important;}.has-luminous-vivid-orange-color{color: var(--wp--preset--color--luminous-vivid-orange) !important;}.has-luminous-vivid-amber-color{color: var(--wp--preset--color--luminous-vivid-amber) !important;}.has-light-green-cyan-color{color: var(--wp--preset--color--light-green-cyan) !important;}.has-vivid-green-cyan-color{color: var(--wp--preset--color--vivid-green-cyan) !important;}.has-pale-cyan-blue-color{color: var(--wp--preset--color--pale-cyan-blue) !important;}.has-vivid-cyan-blue-color{color: var(--wp--preset--color--vivid-cyan-blue) !important;}.has-vivid-purple-color{color: var(--wp--preset--color--vivid-purple) !important;}.has-black-background-color{background-color: var(--wp--preset--color--black) !important;}.has-cyan-bluish-gray-background-color{background-color: var(--wp--preset--color--cyan-bluish-gray) !important;}.has-white-background-color{background-color: var(--wp--preset--color--white) !important;}.has-pale-pink-background-color{background-color: var(--wp--preset--color--pale-pink) !important;}.has-vivid-red-background-color{background-color: var(--wp--preset--color--vivid-red) !important;}.has-luminous-vivid-orange-background-color{background-color: var(--wp--preset--color--luminous-vivid-orange) !important;}.has-luminous-vivid-amber-background-color{background-color: var(--wp--preset--color--luminous-vivid-amber) !important;}.has-light-green-cyan-background-color{background-color: var(--wp--preset--color--light-green-cyan) !important;}.has-vivid-green-cyan-background-color{background-color: var(--wp--preset--color--vivid-green-cyan) !important;}.has-pale-cyan-blue-background-color{background-color: var(--wp--preset--color--pale-cyan-blue) !important;}.has-vivid-cyan-blue-background-color{background-color: var(--wp--preset--color--vivid-cyan-blue) !important;}.has-vivid-purple-background-color{background-color: var(--wp--preset--color--vivid-purple) !important;}.has-black-border-color{border-color: var(--wp--preset--color--black) !important;}.has-cyan-bluish-gray-border-color{border-color: var(--wp--preset--color--cyan-bluish-gray) !important;}.has-white-border-color{border-color: var(--wp--preset--color--white) !important;}.has-pale-pink-border-color{border-color: var(--wp--preset--color--pale-pink) !important;}.has-vivid-red-border-color{border-color: var(--wp--preset--color--vivid-red) !important;}.has-luminous-vivid-orange-border-color{border-color: var(--wp--preset--color--luminous-vivid-orange) !important;}.has-luminous-vivid-amber-border-color{border-color: var(--wp--preset--color--luminous-vivid-amber) !important;}.has-light-green-cyan-border-color{border-color: var(--wp--preset--color--light-green-cyan) !important;}.has-vivid-green-cyan-border-color{border-color: var(--wp--preset--color--vivid-green-cyan) !important;}.has-pale-cyan-blue-border-color{border-color: var(--wp--preset--color--pale-cyan-blue) !important;}.has-vivid-cyan-blue-border-color{border-color: var(--wp--preset--color--vivid-cyan-blue) !important;}.has-vivid-purple-border-color{border-color: var(--wp--preset--color--vivid-purple) !important;}.has-vivid-cyan-blue-to-vivid-purple-gradient-background{background: var(--wp--preset--gradient--vivid-cyan-blue-to-vivid-purple) !important;}.has-light-green-cyan-to-vivid-green-cyan-gradient-background{background: var(--wp--preset--gradient--light-green-cyan-to-vivid-green-cyan) !important;}.has-luminous-vivid-amber-to-luminous-vivid-orange-gradient-background{background: var(--wp--preset--gradient--luminous-vivid-amber-to-luminous-vivid-orange) !important;}.has-luminous-vivid-orange-to-vivid-red-gradient-background{background: var(--wp--preset--gradient--luminous-vivid-orange-to-vivid-red) !important;}.has-very-light-gray-to-cyan-bluish-gray-gradient-background{background: var(--wp--preset--gradient--very-light-gray-to-cyan-bluish-gray) !important;}.has-cool-to-warm-spectrum-gradient-background{background: var(--wp--preset--gradient--cool-to-warm-spectrum) !important;}.has-blush-light-purple-gradient-background{background: var(--wp--preset--gradient--blush-light-purple) !important;}.has-blush-bordeaux-gradient-background{background: var(--wp--preset--gradient--blush-bordeaux) !important;}.has-luminous-dusk-gradient-background{background: var(--wp--preset--gradient--luminous-dusk) !important;}.has-pale-ocean-gradient-background{background: var(--wp--preset--gradient--pale-ocean) !important;}.has-electric-grass-gradient-background{background: var(--wp--preset--gradient--electric-grass) !important;}.has-midnight-gradient-background{background: var(--wp--preset--gradient--midnight) !important;}.has-small-font-size{font-size: var(--wp--preset--font-size--small) !important;}.has-medium-font-size{font-size: var(--wp--preset--font-size--medium) !important;}.has-large-font-size{font-size: var(--wp--preset--font-size--large) !important;}.has-x-large-font-size{font-size: var(--wp--preset--font-size--x-large) !important;}
+</style> 
+  <link rel="canonical" href="https://aws.amazon.com/blogs/machine-learning/choose-the-best-data-source-for-your-amazon-sagemaker-training-job/"> 
+  <meta property="og:locale" content="en_US"> 
+  <meta property="og:site_name" content="Amazon Web Services"> 
+  <meta property="og:title" content="Choose the best data source for your Amazon SageMaker training job | Amazon Web Services"> 
+  <meta property="og:type" content="article"> 
+  <meta property="og:url" content="https://aws.amazon.com/blogs/machine-learning/choose-the-best-data-source-for-your-amazon-sagemaker-training-job/"> 
+  <meta property="og:description" content="Amazon SageMaker is a managed service that makes it easy to build, train, and deploy machine learning (ML) models. Data scientists use SageMaker training jobs to easily train ML models; you don’t have to worry about managing compute resources, and you pay only for the actual training time. Data ingestion is an integral part of […]"> 
+  <meta property="og:image" content="https://d2908q01vomqb2.cloudfront.net/f1f836cb4ea6efb2a0b1b99f41ad8b103eff4b59/2022/02/15/ML-2979-image005.jpg"> 
+  <meta property="og:image:width" content="767"> 
+  <meta property="og:image:height" content="630"> 
+  <meta property="og:updated_time" content="2022-08-30T08:17:00-08:00"> 
+  <meta property="article:publisher" content="https://www.facebook.com/amazonwebservices"> 
+  <meta property="article:section" content="Amazon SageMaker"> 
+  <meta property="article:tag" content="Amazon SageMaker"> 
+  <meta property="article:tag" content="Artificial Intelligence"> 
+  <meta property="article:published_time" content="2022-02-23T13:12:40-08:00"> 
+  <meta property="article:modified_time" content="2022-08-30T08:17:00-08:00"> 
+  <meta name="twitter:card" content="summary_large_image"> 
+  <meta name="twitter:site" content="@awscloud"> 
+  <meta name="twitter:domain" content="https://aws.amazon.com/blogs/"> 
+  <meta name="twitter:title" content="Choose the best data source for your Amazon SageMaker training job | Amazon Web Services"> 
+  <meta name="twitter:description" content="Amazon SageMaker is a managed service that makes it easy to build, train, and deploy machine learning (ML) models. Data scientists use SageMaker training jobs to easily train ML models; you don’t have to worry about managing compute resources, and you pay only for the actual training time. Data ingestion is an integral part of […]"> 
+  <meta name="twitter:image" content="https://d2908q01vomqb2.cloudfront.net/f1f836cb4ea6efb2a0b1b99f41ad8b103eff4b59/2022/02/15/ML-2979-image005.jpg"> 
+  <link rel="icon" type="image/ico" href="https://a0.awsstatic.com/main/images/site/fav/favicon.ico"> 
+  <link rel="shortcut icon" type="image/ico" href="https://a0.awsstatic.com/main/images/site/fav/favicon.ico"> 
+  <link rel="apple-touch-icon" sizes="57x57" href="https://a0.awsstatic.com/main/images/site/touch-icon-iphone-114-smile.png"> 
+  <link rel="apple-touch-icon" sizes="72x72" href="https://a0.awsstatic.com/main/images/site/touch-icon-ipad-144-smile.png"> 
+  <link rel="apple-touch-icon" sizes="114x114" href="https://a0.awsstatic.com/main/images/site/touch-icon-iphone-114-smile.png"> 
+  <link rel="apple-touch-icon" sizes="144x144" href="https://a0.awsstatic.com/main/images/site/touch-icon-ipad-144-smile.png"> 
+  <link rel="home" type="application/rss+xml" title="RSS 2.0 Feed" href="https://aws.amazon.com/blogs/machine-learning/feed/"> 
+  <meta name="robots" content="index, follow"> 
+  <link rel="stylesheet" href="https://a0.awsstatic.com/libra-css/css/1.0.506/style-awsm.css"> 
+  <link rel="stylesheet" href="https://a0.awsstatic.com/aws-blog/1.0.83/css/blog.css"> 
+  <script type="application/json" id="aws-page-settings">
+    {"blogPageTitle":"Choose the best data source for your Amazon SageMaker training job","currentLanguage":"en-US","libraCSSPath":"https:\/\/a0.awsstatic.com\/libra-css\/css\/1.0.506","requireBaseUrl":"https:\/\/a0.awsstatic.com","requirePackages":[{"name":"libra","location":"libra\/1.0.590"}],"requirePaths":{"aws-blog":"https:\/\/a0.awsstatic.com\/aws-blog\/1.0.83\/js","directories":"https:\/\/a0.awsstatic.com\/libra\/1.0.590\/directories","librastandardlib":"https:\/\/a0.awsstatic.com\/libra\/1.0.590\/librastandardlib","scripts":"https:\/\/a0.awsstatic.com\/libra\/1.0.590\/v1-polyfills\/scripts"},"supportedLanguages":["ar","de","en","es","fr","id","it","jp","ko","pt","ru","th","tr","vi","cn","tw"],"currentStage":"Prod"}  </script> 
+  <script src="https://a0.awsstatic.com/aws-blog/1.0.83/js/blog-head.js"></script> 
+  <script src="https://a0.awsstatic.com/s_code/js/3.0/awshome_s_code.js"></script> 
+  <script type="application/json" id="target-mediator">
+    {"supportedLanguages":["ar","de","en","es","fr","id","it","jp","ko","pt","ru","th","tr","vi","cn","tw"],"pageLanguage":"en","customParams":{"category0":"Amazon SageMaker","category1":"Artificial Intelligence"}}  </script> 
+  <script src="https://a0.awsstatic.com/target/1.0.122/aws-target-mediator.js"></script> 
+  <noscript> 
+   <style>.js-mbox { visibility: visible; }</style> 
+  </noscript> 
+ </head> 
+ <body class="awsm aws-blogs-page aws-blogs-page-type-single"> 
+  <script id="awsc-panorama-bundle" src="https://prod.pa.cdn.uis.awsstatic.com/panorama-nav-init.js" data-config="{&quot;appEntity&quot;:&quot;aws-marketing&quot;,&quot;region&quot;:&quot;us-west-1&quot;,&quot;service&quot;:&quot;blogs-site&quot;}" async="true"></script> 
+  <a id="aws-page-skip-to-main" class="lb-sr-only lb-sr-only-focusable lb-bold lb-skip-el" href="#aws-page-content-main"> Skip to Main Content</a> 
+  <header id="aws-page-header" class="awsm m-page-header lb-with-mobile-subrow" role="banner"> 
+   <div id="m-nav" class="m-nav" role="navigation" aria-label="Global Navigation"> 
+    <div class="m-nav-header lb-clearfix" data-menu-url="https://s0.awsstatic.com/en_US/nav/v3/panel-content/desktop/index.html"> 
+     <div class="m-nav-logo"> 
+      <div class="lb-bg-logo aws-amazon_web_services_smile-header-desktop-en"> 
+       <a href="https://aws.amazon.com/?nc2=h_lg"><span>Click here to return to Amazon Web Services homepage</span></a> 
+      </div> 
+     </div> 
+     <nav class="m-nav-secondary-links" style="min-width: 620px" aria-label="Secondary Global Navigation"> 
+      <a href="https://aws.amazon.com/about-aws/?nc2=h_header">About AWS</a> 
+      <a href="https://aws.amazon.com/contact-us/?nc2=h_header">Contact Us</a> 
+      <a class="lb-txt-none lb-tiny-iblock lb-txt-13 lb-txt lb-has-trigger-indicator" href="#" data-mbox-ignore="true" data-lb-popover-trigger="popover-support-selector" role="button" aria-expanded="false" aria-label="Explore support options" id="popover-popover-support-selector-trigger" aria-controls="popover-support-selector" aria-haspopup="true"> Support &nbsp; 
+       <svg viewbox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg" class="icon-chevron-down lb-trigger-mount"> 
+        <path d="M1 4.5L8 11.5L15 4.5" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" /> 
+       </svg> </a> 
+      <a id="m-nav-language-selector" class="lb-tiny-iblock lb-txt lb-has-trigger-indicator" href="#" data-lb-popover-trigger="popover-language-selector" data-language="en" aria-label="Set site language" role="button" aria-controls="popover-language-selector" aria-expanded="false" aria-haspopup="true"> English &nbsp; 
+       <svg viewbox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg" class="icon-chevron-down lb-trigger-mount"> 
+        <path d="M1 4.5L8 11.5L15 4.5" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" /> 
+       </svg> </a> 
+      <a class="lb-tiny-iblock lb-txt lb-has-trigger-indicator" href="#" data-lb-popover-trigger="popover-my-account" aria-label="Access account options" role="button" aria-controls="popover-my-account" aria-expanded="false" aria-haspopup="true"> My Account &nbsp; 
+       <svg viewbox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg" class="icon-chevron-down lb-trigger-mount"> 
+        <path d="M1 4.5L8 11.5L15 4.5" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" /> 
+       </svg> </a> 
+      <div class="m-nav-cta-btn"> 
+       <div class="lb-mbox js-mbox" data-lb-comp="mbox" data-lb-comp-ignore="true" data-mbox="en_header_nav_cta"> 
+        <div class="lb-data-attr-wrapper data-attr-wrapper" data-da-type="so" data-da-so-type="viewport" data-da-so-language="en" data-da-so-category="monitoring" data-da-so-name="nav-buttons" data-da-so-version="sign-up-sign-in-all" data-da-so-url="nav"> 
+         <div class="data-attr-wrapper lb-tiny-iblock lb-none-pad lb-box" data-da-type="so" data-da-so-type="viewport" data-da-so-language="en" data-da-so-category="monitoring" data-da-so-name="nav-buttons" data-da-so-version="prospect-sign-in" data-da-so-url="all"> 
+          <a class="lb-txt-none lb-tiny-iblock lb-txt-13 lb-txt" style="padding-top:8px; padding-right:13px;" href="https://console.aws.amazon.com/console/home?nc2=h_ct&amp;src=header-signin"> Sign In</a> 
+         </div> 
+         <div class="data-attr-wrapper lb-tiny-iblock lb-none-v-margin lb-btn" data-da-type="so" data-da-so-type="viewport" data-da-so-language="en" data-da-so-category="monitoring" data-da-so-name="nav-buttons" data-da-so-version="prospect-signup" data-da-so-url="all"> 
+          <a class="lb-btn-p-primary" href="https://portal.aws.amazon.com/gp/aws/developer/registration/index.html?nc2=h_ct&amp;src=header_signup" data-trk-params="{&quot;trkOverrideWithQs&quot;:true}" role="button"> <span> Create an AWS Account</span> </a> 
+         </div> 
+        </div> 
+       </div> 
+       <div class="lb-mbox js-mbox" data-lb-comp="mbox" data-lb-comp-ignore="true" data-mbox="en_header_desktop_nav_cta_test"> 
+       </div> 
+      </div> 
+     </nav> 
+     <div class="m-nav-primary-group"> 
+      <nav class="m-nav-primary-links" aria-label="Primary Global Navigation"> 
+       <i class="m-nav-angle-left-icon" aria-hidden="true"></i> 
+       <ul> 
+        <li aria-expanded="false"><span><a href="https://aws.amazon.com/q/?nc2=h_ql_prod_l1_q" class="m-nav-featured">Amazon Q</a></span></li> 
+        <li aria-expanded="false"><span><a href="https://aws.amazon.com/products/?nc2=h_ql_prod" data-panel="m-nav-panel-products">Products</a></span></li> 
+        <li aria-expanded="false"><span><a href="https://aws.amazon.com/solutions/?nc2=h_ql_sol" data-panel="m-nav-panel-solutions">Solutions</a></span></li> 
+        <li aria-expanded="false"><span><a href="https://aws.amazon.com/pricing/?nc2=h_ql_pr" data-panel="m-nav-panel-pricing">Pricing</a></span></li> 
+        <li aria-expanded="false"><span><a href="https://aws.amazon.com/documentation-overview/?nc2=h_ql_doc_do" data-panel="m-nav-panel-documentation">Documentation</a></span></li> 
+        <li aria-expanded="false"><span><a href="https://aws.amazon.com/getting-started/?nc2=h_ql_le" data-panel="m-nav-panel-learn">Learn</a></span></li> 
+        <li aria-expanded="false"><span><a href="https://aws.amazon.com/partners/?nc2=h_ql_pn" data-panel="m-nav-panel-partner">Partner Network</a></span></li> 
+        <li aria-expanded="false"><span><a href="https://aws.amazon.com/marketplace/?nc2=h_ql_mp" data-panel="m-nav-panel-marketplace">AWS Marketplace</a></span></li> 
+        <li aria-expanded="false"><span><a href="https://aws.amazon.com/customer-enablement/?nc2=h_ql_ce" data-panel="m-nav-panel-customer">Customer Enablement</a></span></li> 
+        <li aria-expanded="false"><span><a href="https://aws.amazon.com/events/?nc2=h_ql_ev" data-panel="m-nav-panel-events">Events</a></span></li> 
+        <li aria-expanded="false"><span><a href="https://aws.amazon.com/contact-us/?nc2=h_ql_exm" data-panel="m-nav-panel-more">Explore More </a></span></li> 
+       </ul> 
+       <div class="m-nav-icon-group"> 
+        <i class="m-nav-angle-right-icon" aria-hidden="true"></i> 
+        <button class="m-nav-search-icon" tabindex="0" aria-expanded="false" aria-label="Search"> 
+         <svg viewbox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg" class="icon-magnify"> 
+          <path d="M10.5 10.5L14.5 14.5" stroke-width="2" stroke-linejoin="round" /> 
+          <path d="M7 12.5C10.0376 12.5 12.5 10.0376 12.5 7C12.5 3.96243 10.0376 1.5 7 1.5C3.96243 1.5 1.5 3.96243 1.5 7C1.5 10.0376 3.96243 12.5 7 12.5Z" stroke-width="2" stroke-linejoin="round" /> 
+         </svg> </button> 
+       </div> 
+      </nav> 
+      <div id="m-nav-desktop-search" class="m-nav-search"> 
+       <form action="https://aws.amazon.com/search/" role="search"> 
+        <div class="m-typeahead" data-directory-id="typeahead-suggestions" data-lb-comp="typeahead"> 
+         <input class="m-nav-search-field" placeholder="Search" autocomplete="off" spellcheck="false" dir="auto" type="text" name="searchQuery"> 
+        </div> 
+       </form> 
+       <i class="m-nav-close-icon" role="button" aria-label="Close"></i> 
+      </div> 
+     </div> 
+    </div> 
+    <div class="lb-popover lb-popover-aui lb-popover-tiny" data-lb-comp="popover" data-id="popover-language-selector" id="popover-language-selector" aria-modal="false" aria-labelledby="popover-popover-language-selector-trigger" data-action="hover" data-position="top"> 
+     <a class="lb-popover-close" role="button" tabindex="0" aria-label="Close" title="Close"> <span class="lb-sr-only">Close</span> </a> 
+     <div class="lb-grid lb-row lb-row-max-large lb-snap"> 
+      <div class="lb-col lb-tiny-24 lb-mid-12"> 
+       <ul class="lb-txt-none lb-ul lb-list-style-none lb-tiny-ul-block"> 
+        <li lang="ar-SA" translate="no" data-language="ar"><a href="https://aws.amazon.com/ar/?nc1=h_ls">عربي</a></li> 
+        <li lang="id-ID" translate="no" data-language="id"><a href="https://aws.amazon.com/id/?nc1=h_ls">Bahasa Indonesia</a></li> 
+        <li lang="de-DE" translate="no" data-language="de"><a href="https://aws.amazon.com/de/?nc1=h_ls">Deutsch</a></li> 
+        <li lang="en-US" translate="no" data-language="en"><a href="https://aws.amazon.com/?nc1=h_ls">English</a></li> 
+        <li lang="es-ES" translate="no" data-language="es"><a href="https://aws.amazon.com/es/?nc1=h_ls">Español</a></li> 
+        <li lang="fr-FR" translate="no" data-language="fr"><a href="https://aws.amazon.com/fr/?nc1=h_ls">Français</a></li> 
+        <li lang="it-IT" translate="no" data-language="it"><a href="https://aws.amazon.com/it/?nc1=h_ls">Italiano</a></li> 
+        <li lang="pt-BR" translate="no" data-language="pt"><a href="https://aws.amazon.com/pt/?nc1=h_ls">Português</a></li> 
+       </ul> 
+      </div> 
+      <div class="lb-col lb-tiny-24 lb-mid-12"> 
+       <ul class="lb-txt-none lb-ul lb-list-style-none lb-tiny-ul-block"> 
+        <li lang="vi-VN" translate="no" data-language="vi"><a href="https://aws.amazon.com/vi/?nc1=f_ls">Tiếng Việt</a></li> 
+        <li lang="tr-TR" translate="no" data-language="tr"><a href="https://aws.amazon.com/tr/?nc1=h_ls">Türkçe</a></li> 
+        <li lang="ru-RU" translate="no" data-language="ru"><a href="https://aws.amazon.com/ru/?nc1=h_ls">Ρусский</a></li> 
+        <li lang="th-TH" translate="no" data-language="th"><a href="https://aws.amazon.com/th/?nc1=f_ls">ไทย</a></li> 
+        <li lang="ja-JP" translate="no" data-language="jp"><a href="https://aws.amazon.com/jp/?nc1=h_ls">日本語</a></li> 
+        <li lang="ko-KR" translate="no" data-language="ko"><a href="https://aws.amazon.com/ko/?nc1=h_ls">한국어</a></li> 
+        <li lang="zh-CN" translate="no" data-language="cn"><a href="https://aws.amazon.com/cn/?nc1=h_ls">中文 (简体)</a></li> 
+        <li lang="zh-TW" translate="no" data-language="tw"><a href="https://aws.amazon.com/tw/?nc1=h_ls">中文 (繁體)</a></li> 
+       </ul> 
+      </div> 
+     </div> 
+    </div> 
+    <div class="lb-popover lb-popover-aui lb-popover-tiny" data-lb-comp="popover" data-id="popover-my-account" id="popover-my-account" aria-modal="false" aria-labelledby="popover-popover-my-account-trigger" data-action="hover" data-position="top"> 
+     <a class="lb-popover-close" role="button" tabindex="0" aria-label="Close" title="Close"> <span class="lb-sr-only">Close</span> </a> 
+     <ul class="lb-txt-none lb-ul lb-list-style-none lb-tiny-ul-block"> 
+      <li class="m-no-auth" data-myaws-auth-only="true"><a href="https://aws.amazon.com/profile/?nc2=h_m_mc">My Profile</a></li> 
+      <li class="m-no-auth" data-myaws-auth-only="true"><a href="https://auth.aws.amazon.com/sign-out/?nc2=h_m_mc">Sign out of AWS Builder ID</a></li> 
+      <li><a href="https://console.aws.amazon.com/?nc2=h_m_mc">AWS Management Console</a></li> 
+      <li><a href="https://console.aws.amazon.com/billing/home#/account?nc2=h_m_ma">Account Settings</a></li> 
+      <li><a href="https://console.aws.amazon.com/billing/home?nc2=h_m_bc">Billing &amp; Cost Management</a></li> 
+      <li><a href="https://console.aws.amazon.com/iam/home?nc2=h_m_sc#security_credential">Security Credentials</a></li> 
+      <li><a href="https://phd.aws.amazon.com/?nc2=h_m_sc">AWS Personal Health Dashboard</a></li> 
+     </ul> 
+    </div> 
+    <div class="lb-popover lb-popover-aui lb-popover-tiny" data-lb-comp="popover" data-id="popover-support-selector" id="popover-support-selector" aria-modal="false" aria-labelledby="popover-popover-support-selector-trigger" data-action="hover" data-position="top"> 
+     <a class="lb-popover-close" role="button" tabindex="0" aria-label="Close" title="Close"> <span class="lb-sr-only">Close</span> </a> 
+     <ul class="lb-txt-none lb-ul lb-list-style-none lb-tiny-ul-block"> 
+      <li><a href="https://console.aws.amazon.com/support/home/?nc2=h_ql_cu">Support Center</a></li> 
+      <li><a href="https://iq.aws.amazon.com/?utm=mkt.nav">Expert Help</a></li> 
+      <li><a href="https://repost.aws/knowledge-center/?nc2=h_m_ma">Knowledge Center</a></li> 
+      <li><a href="https://aws.amazon.com/premiumsupport/?nc2=h_m_bc">AWS Support Overview</a></li> 
+      <li><a href="https://repost.aws/">AWS re:Post</a></li> 
+     </ul> 
+    </div> 
+    <script type="text/x-handlebars-template" data-hbs-template-path="nav-desktop/suggestions" data-hbs-context="{&quot;pricingText&quot;:&quot;Pricing&quot;,&quot;documentationText&quot;:&quot;Documentation&quot;,&quot;calculatorText&quot;:&quot;Calculator&quot;}"></script> 
+    <script type="text/x-handlebars-template" data-hbs-template-path="nav-desktop/products-head" data-hbs-context="{&quot;productsText&quot;:&quot;Products&quot;}"></script> 
+    <script type="text/x-handlebars-template" data-hbs-template-path="nav-desktop/keypages-head" data-hbs-context="{&quot;relatedPagesText&quot;:&quot;Related Pages&quot;}"></script> 
+    <script type="text/x-handlebars-template" data-hbs-template-path="nav-desktop/tutorials-head" data-hbs-context="{&quot;tutorialsText&quot;:&quot;Tutorials&quot;}"></script> 
+    <script type="text/x-handlebars-template" data-hbs-template-path="nav-desktop/blogs-head" data-hbs-context="{&quot;blogsText&quot;:&quot;Blogs&quot;}"></script> 
+    <script type="text/x-handlebars-template" data-hbs-template-path="nav-desktop/see-all" data-hbs-context="{&quot;resultsText&quot;:&quot;See more results for&quot;}"></script> 
+   </div> 
+   <div id="m-nav-mobile" class="m-nav-mobile" role="navigation" aria-label="Global Navigation for Mobile"> 
+    <div id="m-nav-mobile-header" class="m-nav-mobile-header m-nav-mobile-with-sub-row" data-menu-url="https://s0.awsstatic.com/en_US/nav/v3/panel-content/mobile/index.html"> 
+     <div class="lb-bg-logo aws-amazon_web_services_smile-header-mobile-en"> 
+      <a href="https://aws.amazon.com/?nc2=h_lg"><span>Click here to return to Amazon Web Services homepage</span></a> 
+     </div> 
+     <div class="m-nav-mobile-button-group"> 
+      <button class="m-nav-mobile-button icon-search" tabindex="0" aria-expanded="false" aria-label="Search"> 
+       <svg viewbox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg"> 
+        <path d="M10.5 10.5L14.5 14.5" stroke-width="2" stroke-linejoin="round" /> 
+        <path d="M7 12.5C10.0376 12.5 12.5 10.0376 12.5 7C12.5 3.96243 10.0376 1.5 7 1.5C3.96243 1.5 1.5 3.96243 1.5 7C1.5 10.0376 3.96243 12.5 7 12.5Z" stroke-width="2" stroke-linejoin="round" /> 
+       </svg> </button> 
+      <button class="m-nav-mobile-button icon-reorder" tabindex="0" aria-expanded="false" aria-label="Menu"> 
+       <svg viewbox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg"> 
+        <path d="M15 3H1" stroke-width="2" stroke-linejoin="round" /> 
+        <path d="M15 8H1" stroke-width="2" stroke-linejoin="round" /> 
+        <path d="M15 13H1" stroke-width="2" stroke-linejoin="round" /> 
+       </svg> </button> 
+      <div class="lb-mbox js-mbox" data-lb-comp="mbox" data-lb-comp-ignore="true" data-mbox="en_header_mobile_nav_cta_test"> 
+      </div> 
+     </div> 
+     <div id="m-nav-mobile-sub-row" class="m-nav-mobile-sub-row"> 
+      <div class="data-attr-wrapper lb-btn" data-da-type="so" data-da-so-category="monitoring" data-da-so-language="en" data-da-so-name="global-mobile-sticky-cta-buttons" data-da-so-type="viewport" data-da-so-version="get-started-for-free-cta" data-da-so-url="all"> 
+       <a class="lb-btn-p-primary" href="https://portal.aws.amazon.com/gp/aws/developer/registration/index.html?nc2=h_mobile" role="button"> <span> Get Started for Free</span> </a> 
+      </div> 
+      <div class="data-attr-wrapper lb-btn" data-da-type="so" data-da-so-category="monitoring" data-da-so-language="en" data-da-so-name="global-mobile-sticky-cta-buttons" data-da-so-type="viewport" data-da-so-version="contact-us"> 
+       <a class="lb-btn-p" href="https://aws.amazon.com/contact-us/?nc2=h_mobile" role="button"> <span> Contact Us</span> </a> 
+      </div> 
+     </div> 
+    </div> 
+    <div id="m-nav-mobile-search" class="m-nav-mobile-search"> 
+     <form action="https://aws.amazon.com/search" role="search"> 
+      <div class="m-typeahead"> 
+       <input class="m-nav-search-field" placeholder="Search" autocomplete="off" spellcheck="false" dir="auto" type="text" name="searchQuery"> 
+      </div> 
+     </form> 
+    </div> 
+    <nav id="m-nav-trimdown" aria-label="Condensed Global Navigation for Mobile"> 
+     <ul class="m-nav-mobile-menu-group"> 
+      <li> <a href="https://aws.amazon.com/products/?nc2=h_mo">Products</a> </li> 
+      <li> <a href="https://aws.amazon.com/solutions/?nc2=h_mo">Solutions</a> </li> 
+      <li> <a href="https://aws.amazon.com/pricing/?nc2=h_mo">Pricing</a> </li> 
+      <li> <a href="https://aws.amazon.com/what-is-aws/?nc2=h_mo">Introduction to AWS</a> </li> 
+      <li> <a href="https://aws.amazon.com/getting-started/?nc2=h_mo">Getting Started</a> </li> 
+      <li> <a href="https://aws.amazon.com/documentation-overview/?nc2=h_mo">Documentation</a> </li> 
+      <li> <a href="https://aws.amazon.com/training/?nc2=h_mo">Training and Certification</a> </li> 
+      <li> <a href="https://aws.amazon.com/developer/?nc2=h_mo">Developer Center</a> </li> 
+      <li> <a href="https://aws.amazon.com/solutions/case-studies/?nc2=h_mo">Customer Success</a> </li> 
+      <li> <a href="https://aws.amazon.com/partners/?nc2=h_mo">Partner Network</a> </li> 
+      <li> <a href="https://aws.amazon.com/marketplace/?nc2=h_mo">AWS Marketplace</a> </li> 
+      <li> <a href="https://console.aws.amazon.com/support/home?nc2=h_ql_cu">Support</a> </li> 
+      <li> <a href="https://repost.aws/">AWS re:Post</a> </li> 
+      <li> <a href="https://console.aws.amazon.com/console/home">Log into Console</a> </li> 
+      <li> <a href="https://aws.amazon.com/console/mobile/">Download the Mobile App</a> </li> 
+     </ul> 
+    </nav> 
+   </div> 
+  </header> 
+  <div class="awsm"> 
+   <div class="lb-blog-nav" data-lb-comp="aws-blog:blog-nav" data-lb-sticky-header="true"> 
+    <div class="lb-row lb-row-max-xlarge lb-snap"> 
+     <div class="lb-blog-nav-content"> 
+      <div class="lb-blog-nav-links"> 
+       <a class="lb-txt-none lb-txt" href="/blogs" data-trk-params="{&quot;trkOverrideWithQs&quot;:true}"> AWS Blog Home</a> 
+       <a class="lb-txt-none lb-txt lb-has-trigger-indicator" href="#" data-mbox-ignore="true" data-lb-popover-trigger="blog-category" role="button" aria-expanded="false" aria-label="Select blog category" id="popover-blog-category-trigger" aria-controls="blog-category" aria-haspopup="true" data-trk-params="{&quot;trkOverrideWithQs&quot;:true}"> Blogs&nbsp; <i class="icon-caret-down lb-trigger-mount"></i></a> 
+       <a class="lb-txt-none lb-txt lb-has-trigger-indicator" href="#" data-mbox-ignore="true" data-lb-popover-trigger="blog-editions" role="button" aria-expanded="false" aria-label="Select blog language" id="popover-blog-editions-trigger" aria-controls="blog-editions" aria-haspopup="true" data-trk-params="{&quot;trkOverrideWithQs&quot;:true}"> Editions&nbsp; <i class="icon-caret-down lb-trigger-mount"></i></a> 
+      </div> 
+     </div> 
+    </div> 
+   </div> 
+   <div class="lb-popover lb-popover-aui lb-popover-xlarge" data-lb-comp="popover" data-id="blog-category" id="blog-category" aria-modal="false" aria-labelledby="popover-blog-category-trigger" data-action="hover" data-position="top"> 
+    <a class="lb-popover-close" role="button" tabindex="0" aria-label="Close" title="Close"> <span class="lb-sr-only">Close</span> </a> 
+    <div class="lb-none-pad lb-none-v-margin lb-grid lb-row lb-row-max-large lb-snap"> 
+     <div class="lb-col lb-tiny-24 lb-mid-12"> 
+      <div class="lb-none-pad lb-none-v-margin lb-box"> 
+       <a class="lb-txt-none lb-txt" href="https://aws.amazon.com/blogs/architecture/"> Architecture</a> 
+       <a class="lb-txt-none lb-txt" href="https://aws.amazon.com/blogs/mt/" data-trk-params="{&quot;trkOverrideWithQs&quot;:true}"> AWS Cloud Operations</a> 
+       <a class="lb-txt-none lb-txt" href="https://aws.amazon.com/blogs/gametech/" data-trk-params="{&quot;trkOverrideWithQs&quot;:true}"> AWS for Games</a> 
+       <a class="lb-txt-none lb-txt" href="https://aws.amazon.com/blogs/aws-insights/"> AWS Insights</a> 
+       <a class="lb-txt-none lb-txt" href="https://aws.amazon.com/blogs/awsmarketplace/"> AWS Marketplace</a> 
+       <a class="lb-txt-none lb-txt" href="https://aws.amazon.com/blogs/aws/"> AWS News</a> 
+       <a class="lb-txt-none lb-txt" href="https://aws.amazon.com/blogs/apn/"> AWS Partner Network</a> 
+       <a class="lb-txt-none lb-txt" href="https://aws.amazon.com/blogs/smb/"> AWS Smart Business</a> 
+       <a class="lb-txt-none lb-txt" href="https://aws.amazon.com/blogs/big-data/"> Big Data</a> 
+       <a class="lb-txt-none lb-txt" href="https://aws.amazon.com/blogs/business-intelligence/"> Business Intelligence</a> 
+       <a class="lb-txt-none lb-txt" href="https://aws.amazon.com/blogs/business-productivity/"> Business Productivity</a> 
+       <a class="lb-txt-none lb-txt" href="https://aws.amazon.com/blogs/enterprise-strategy/" data-trk-params="{&quot;trkOverrideWithQs&quot;:true}"> Cloud Enterprise Strategy</a> 
+       <a class="lb-txt-none lb-txt" href="https://aws.amazon.com/blogs/aws-cloud-financial-management/"> Cloud Financial Management</a> 
+       <a class="lb-txt-none lb-txt" href="https://aws.amazon.com/blogs/compute/"> Compute</a> 
+       <a class="lb-txt-none lb-txt" href="https://aws.amazon.com/blogs/contact-center/"> Contact Center</a> 
+       <a class="lb-txt-none lb-txt" href="https://aws.amazon.com/blogs/containers/"> Containers</a> 
+       <a class="lb-txt-none lb-txt" href="https://aws.amazon.com/blogs/database/"> Database</a> 
+       <a class="lb-txt-none lb-txt" href="https://aws.amazon.com/blogs/desktop-and-application-streaming/"> Desktop &amp; Application Streaming</a> 
+       <a class="lb-txt-none lb-txt" href="https://aws.amazon.com/blogs/developer/" data-trk-params="{&quot;trkOverrideWithQs&quot;:true}"> Developer Tools</a> 
+       <a class="lb-txt-none lb-txt" href="https://aws.amazon.com/blogs/devops/" data-trk-params="{&quot;trkOverrideWithQs&quot;:true}"> DevOps &amp; Developer Productivity</a> 
+       <a class="lb-txt-none lb-txt" href="https://aws.amazon.com/blogs/mobile/"> Front-End Web &amp; Mobile</a> 
+      </div> 
+     </div> 
+     <div class="lb-col lb-tiny-24 lb-mid-12"> 
+      <div class="lb-none-pad lb-none-v-margin lb-box"> 
+       <a class="lb-txt-none lb-txt" href="https://aws.amazon.com/blogs/hpc/"> HPC</a> 
+       <a class="lb-txt-none lb-txt" href="https://aws.amazon.com/blogs/ibm-redhat/"> IBM and Red Hat</a> 
+       <a class="lb-txt-none lb-txt" href="https://aws.amazon.com/blogs/industries/"> Industries</a> 
+       <a class="lb-txt-none lb-txt" href="https://aws.amazon.com/blogs/infrastructure-and-automation/"> Integration &amp; Automation</a> 
+       <a class="lb-txt-none lb-txt" href="https://aws.amazon.com/blogs/iot/"> Internet of Things</a> 
+       <a class="lb-txt-none lb-txt" href="https://aws.amazon.com/blogs/machine-learning/"> Machine Learning</a> 
+       <a class="lb-txt-none lb-txt" href="https://aws.amazon.com/blogs/media/"> Media</a> 
+       <a class="lb-txt-none lb-txt" href="https://aws.amazon.com/blogs/messaging-and-targeting/"> Messaging &amp; Targeting</a> 
+       <a class="lb-txt-none lb-txt" href="https://aws.amazon.com/blogs/modernizing-with-aws/"> Microsoft Workloads on AWS</a> 
+       <a class="lb-txt-none lb-txt" href="https://aws.amazon.com/blogs/migration-and-modernization/"> Migration and Modernization</a> 
+       <a class="lb-txt-none lb-txt" href="https://aws.amazon.com/blogs/dotnet/"> .NET on AWS</a> 
+       <a class="lb-txt-none lb-txt" href="https://aws.amazon.com/blogs/networking-and-content-delivery/"> Networking &amp; Content Delivery</a> 
+       <a class="lb-txt-none lb-txt" href="https://aws.amazon.com/blogs/opensource/"> Open Source</a> 
+       <a class="lb-txt-none lb-txt" href="https://aws.amazon.com/blogs/publicsector/"> Public Sector</a> 
+       <a class="lb-txt-none lb-txt" href="https://aws.amazon.com/blogs/quantum-computing/" data-trk-params="{&quot;trkOverrideWithQs&quot;:true}"> Quantum Computing</a> 
+       <a class="lb-txt-none lb-txt" href="https://aws.amazon.com/blogs/robotics/"> Robotics</a> 
+       <a class="lb-txt-none lb-txt" href="https://aws.amazon.com/blogs/awsforsap/"> SAP</a> 
+       <a class="lb-txt-none lb-txt" href="https://aws.amazon.com/security/blogs/" data-trk-params="{&quot;trkOverrideWithQs&quot;:true}"> Security</a> 
+       <a class="lb-txt-none lb-txt" href="https://aws.amazon.com/blogs/spatial/"> Spatial Computing</a> 
+       <a class="lb-txt-none lb-txt" href="https://aws.amazon.com/blogs/startups/"> Startups</a> 
+       <a class="lb-txt-none lb-txt" href="https://aws.amazon.com/blogs/storage/"> Storage</a> 
+       <a class="lb-txt-none lb-txt" href="https://aws.amazon.com/blogs/supply-chain/"> Supply Chain &amp; Logistics</a> 
+       <a class="lb-txt-none lb-txt" href="https://aws.amazon.com/blogs/training-and-certification/"> Training &amp; Certification</a> 
+      </div> 
+     </div> 
+    </div> 
+   </div> 
+   <div class="lb-popover lb-popover-aui lb-popover-tiny" data-lb-comp="popover" data-id="blog-editions" id="blog-editions" aria-modal="false" aria-labelledby="popover-blog-editions-trigger" data-action="hover" data-position="top"> 
+    <a class="lb-popover-close" role="button" tabindex="0" aria-label="Close" title="Close"> <span class="lb-sr-only">Close</span> </a> 
+    <ul class="lb-txt-none lb-none-v-margin lb-ul lb-list-style-none lb-li-micro-v-margin lb-tiny-ul-block"> 
+     <li translate="no" lang="zh-CN"><a href="https://aws.amazon.com/cn/blogs/china/">中国版</a></li> 
+     <li translate="no" lang="ja-JP"><a href="https://aws.amazon.com/jp/blogs/news/">日本版</a></li> 
+     <li translate="no" lang="ko-KR"><a href="https://aws.amazon.com/ko/blogs/korea/">한국 에디션</a></li> 
+     <li translate="no" lang="ko-KR"><a href="https://aws.amazon.com/ko/blogs/tech/">기술 블로그</a></li> 
+     <li translate="no" lang="id-ID"><a href="https://aws.amazon.com/id/blogs/indonesia/">Edisi Bahasa Indonesia</a></li> 
+     <li translate="no" lang="tr-TR"><a href="https://aws.amazon.com/th/blogs/thailand/">AWS Thai Blog</a></li> 
+     <li translate="no" lang="fr-FR"><a href="https://aws.amazon.com/fr/blogs/france/">Édition Française</a></li> 
+     <li translate="no" lang="de-DE"><a href="https://aws.amazon.com/de/blogs/germany/">Deutsche Edition</a></li> 
+     <li translate="no" lang="pt-BR"><a href="https://aws.amazon.com/pt/blogs/aws-brasil/">Edição em Português</a></li> 
+     <li translate="no" lang="es-ES"><a href="https://aws.amazon.com/es/blogs/aws-spanish/">Edición en Español</a></li> 
+     <li translate="no" lang="ru-RU"><a href="https://aws.amazon.com/ru/blogs/rus/">Версия на русском</a></li> 
+     <li translate="no" lang="tr-TR"><a href="https://aws.amazon.com/tr/blogs/turkey/">Türkçe Sürüm</a></li> 
+    </ul> 
+   </div> 
+  </div> 
+  <div id="aws-page-content" class="aws-blog-has-related-posts lb-page-content lb-page-with-sticky-subnav blog-page" data-page-alert-target="true"> 
+   <div class="aws-blog-content lb-row lb-row-max-large lb-snap lb-gutter-mid"> 
+    <main class="lb-col lb-tiny-24 lb-mid-16" role="main" id="aws-page-content-main" tabindex="-1"> 
+     <h2 class="lb-h5 blog-title"><a href="https://aws.amazon.com/blogs/machine-learning/">AWS Machine Learning Blog</a></h2> 
+     <article class="blog-post" vocab="https://schema.org/" typeof="TechArticle"> 
+      <meta property="inLanguage" content="en-US"> 
+      <meta property="image" content="https://d2908q01vomqb2.cloudfront.net/f1f836cb4ea6efb2a0b1b99f41ad8b103eff4b59/2022/02/15/ML-2979-image005.jpg"> 
+      <h1 class="lb-h2 blog-post-title" property="name headline">Choose the best data source for your Amazon SageMaker training job</h1> 
+      <footer class="blog-post-meta" data-lb-comp="aws-blog:share-dialog"> 
+       <span>by <span property="author" typeof="Person"><span property="name">Gili Nachum</span></span> and <span property="author" typeof="Person"><span property="name">Alexander Arzhanov</span></span></span> 
+       <span>on <time property="datePublished" datetime="2022-02-23T13:12:40-08:00">23 FEB 2022</time></span> 
+       <span>in <span class="blog-post-categories"><a href="https://aws.amazon.com/blogs/machine-learning/category/artificial-intelligence/sagemaker/" title="View all posts in Amazon SageMaker"><span property="articleSection">Amazon SageMaker</span></a>, <a href="https://aws.amazon.com/blogs/machine-learning/category/artificial-intelligence/" title="View all posts in Artificial Intelligence"><span property="articleSection">Artificial Intelligence</span></a></span></span> 
+       <span><a href="https://aws.amazon.com/blogs/machine-learning/choose-the-best-data-source-for-your-amazon-sagemaker-training-job/" property="url">Permalink</a></span> 
+       <span><a href="https://aws.amazon.com/blogs/machine-learning/choose-the-best-data-source-for-your-amazon-sagemaker-training-job/#Comments"><i class="icon-comment"></i> Comments</a> </span> 
+       <span><a href="#" role="button" data-share-dialog-toggle><span class="span icon-share"></span> Share</a></span> 
+       <div class="blog-share-dialog" data-share-dialog style="display: none;"> 
+        <ul> 
+         <li> <a class="lb-txt" href="https://www.facebook.com/sharer/sharer.php?u=https://aws.amazon.com/blogs/machine-learning/choose-the-best-data-source-for-your-amazon-sagemaker-training-job/" target="_blank" rel="noopener noreferrer" aria-label="Share on Facebook"><span class="icon-facebook-square"></span></a> </li> 
+         <li> <a class="lb-txt" href="https://twitter.com/intent/tweet/?text=Choose%20the%20best%20data%20source%20for%20your%20Amazon%20SageMaker%20training%20job&amp;via=awscloud&amp;url=https://aws.amazon.com/blogs/machine-learning/choose-the-best-data-source-for-your-amazon-sagemaker-training-job/" target="_blank" rel="noopener noreferrer" aria-label="Share on Twitter"><span class="icon-twitter-square"></span></a> </li> 
+         <li> <a class="lb-txt" href="https://www.linkedin.com/shareArticle?mini=true&amp;title=Choose%20the%20best%20data%20source%20for%20your%20Amazon%20SageMaker%20training%20job&amp;source=Amazon%20Web%20Services&amp;url=https://aws.amazon.com/blogs/machine-learning/choose-the-best-data-source-for-your-amazon-sagemaker-training-job/" target="_blank" rel="noopener noreferrer" aria-label="Share on LinkedIn"><span class="icon-linkedin-square"></span></a> </li> 
+         <li> <a class="lb-txt" href="mailto:?subject=Choose%20the%20best%20data%20source%20for%20your%20Amazon%20SageMaker%20training%20job&amp;body=Choose%20the%20best%20data%20source%20for%20your%20Amazon%20SageMaker%20training%20job%0A%0Ahttps://aws.amazon.com/blogs/machine-learning/choose-the-best-data-source-for-your-amazon-sagemaker-training-job/" target="_blank" rel="noopener noreferrer" aria-label="Share on Email"><span class="icon-envelope-square"></span></a> </li> 
+         <li class="blog-share-dialog-url"><input type="text" value="https://aws.amazon.com/blogs/machine-learning/choose-the-best-data-source-for-your-amazon-sagemaker-training-job/" title="Link to Choose the best data source for your Amazon SageMaker training job" readonly data-share-dialog-url></li> 
+        </ul> 
+       </div> 
+      </footer> 
+      <section class="blog-post-content lb-rtxt" property="articleBody"> 
+       <p><a href="https://aws.amazon.com/sagemaker/" target="_blank" rel="noopener noreferrer">Amazon SageMaker</a> is a managed service that makes it easy to build, train, and deploy machine learning (ML) models. Data scientists use SageMaker training jobs to easily train ML models; you don’t have to worry about managing compute resources, and you pay only for the actual training time. Data ingestion is an integral part of any training pipeline, and SageMaker training jobs support a variety of data storage and input modes to suit a wide range of training workloads.</p> 
+       <p>This post helps you choose the best data source for your SageMaker ML training use case. We introduce the data sources options that SageMaker training jobs support natively. For each data source and input mode, we outline its ease of use, performance characteristics, cost, and limitations. To help you get started quickly, we provide the diagram with a sample decision flow that you can follow based on your key workload characteristics. We also perform several benchmarks for realistic training scenarios to demonstrate the practical implications on the overall training cost and performance. Lastly, we provide instructions to replicate our benchmarks or perform your own I/O experiments with <a href="https://github.com/aws-samples/sagemaker-bencher">SageMaker Bencher</a> utility.</p> 
+       <h2>Native SageMaker data sources and input modes</h2> 
+       <p>Reading training data easily and flexibly in a performant way is a common recurring concern for ML training. SageMaker simplifies data ingestion with a selection of efficient, high-throughput data ingestion mechanisms called data sources and their respective input modes. This allows you to decouple training code from the actual data source, automatically mount file systems, read with high performance, easily turn on data sharding between GPUs and instances to enable data parallelism, and auto shuffle data at the start of each epoch.</p> 
+       <p>The SageMaker training ingestion mechanism natively integrates with three AWS managed storage services:</p> 
+       <ul> 
+        <li><a href="https://aws.amazon.com/s3/" target="_blank" rel="noopener noreferrer">Amazon Simple Storage Service</a> (Amazon S3) is an object storage service that offers industry-leading scalability, data availability, security, and performance.</li> 
+        <li><a href="https://aws.amazon.com/fsx/lustre/" target="_blank" rel="noopener noreferrer">Amazon FSx for Lustre</a> is a fully managed shared storage with the scalability and performance of the popular Lustre file system. It’s usually linked to an existing S3 bucket.</li> 
+        <li><a href="https://aws.amazon.com/efs/" target="_blank" rel="noopener noreferrer">Amazon Elastic File System</a> (Amazon EFS) is a general purpose, scalable, and highly available shared file system with multiple price tiers. Amazon EFS is serverless and automatically grows and shrinks as you add and remove files.</li> 
+       </ul> 
+       <p>SageMaker training allows your training script to access datasets stored on Amazon S3, FSx for Lustre, or Amazon EFS, as if it were available on a local file system (via a POSIX-compliant file system interface).</p> 
+       <p>With Amazon S3 as a data source, you can choose between File mode, FastFile mode, and Pipe mode:</p> 
+       <ul> 
+        <li><strong>File mode</strong> – SageMaker copies a dataset from Amazon S3 to the ML instance storage, which is an attached <a href="http://aws.amazon.com/ebs" target="_blank" rel="noopener noreferrer">Amazon Elastic Block Store</a> (Amazon EBS) volume or NVMe SSD volume, before your training script starts.</li> 
+        <li><strong>FastFile mode</strong> – SageMaker exposes a dataset residing in Amazon S3 as a POSIX file system on the training instance. Dataset files are streamed from Amazon S3 on demand as your training script reads them.</li> 
+        <li><strong>Pipe mode</strong> – SageMaker streams a dataset residing in Amazon S3 to the ML training instance as a Unix pipe, which streams from Amazon S3 on demand as your training script reads the data from the pipe.</li> 
+       </ul> 
+       <p>With FSx for Lustre or Amazon EFS as a data source, SageMaker mounts the file system before your training script starts.</p> 
+       <h2>Training input channels</h2> 
+       <p>When launching an SageMaker training job, you can specify up to 20 managed <a href="https://sagemaker.readthedocs.io/en/stable/api/utility/inputs.html" target="_blank" rel="noopener noreferrer">training input channels</a>. You can think of channels as an abstraction unit to tell the training job how and where to get the data that is made available to the algorithm code to read from a file system path (for example, <code>/opt/ml/input/data/input-channel-name</code>) on the ML instance. The selected training channels are captured as part of the training job metadata in order to enable a full model lineage tracking for use cases such as reproducibility of training jobs or model governance purposes.</p> 
+       <p>To use Amazon S3 as your data source, you define a <a href="https://sagemaker.readthedocs.io/en/stable/api/utility/inputs.html#sagemaker.inputs.TrainingInput" target="_blank" rel="noopener noreferrer">TrainingInput</a> to specify the following:</p> 
+       <ul> 
+        <li>Your input mode (File, FastFile, or Pipe mode)</li> 
+        <li><a href="https://docs.aws.amazon.com/sagemaker/latest/APIReference/API_S3DataSource.html" target="_blank" rel="noopener noreferrer">Distribution</a> and <a href="https://docs.aws.amazon.com/sagemaker/latest/APIReference/API_ShuffleConfig.html" target="_blank" rel="noopener noreferrer">shuffling</a> configuration</li> 
+        <li>An <code>S3DataType</code> as one of three methods for specifying objects in Amazon S3 that make up your dataset: 
+         <ul> 
+          <li><code>S3Prefix</code> (all objects under the S3 prefix)</li> 
+          <li><a href="https://docs.aws.amazon.com/sagemaker/latest/dg/sms-input-data-input-manifest.html" target="_blank" rel="noopener noreferrer">Manifest file</a> (a list of S3 objects)</li> 
+          <li><a href="https://docs.aws.amazon.com/sagemaker/latest/dg/augmented-manifest.html" target="_blank" rel="noopener noreferrer">Augmented manifest file</a> (a list of S3 objects and their respective labels)</li> 
+         </ul> </li> 
+       </ul> 
+       <p>Alternatively, for FSx for Lustre or Amazon EFS, you define a <a href="https://sagemaker.readthedocs.io/en/stable/api/utility/inputs.html#sagemaker.inputs.FileSystemInput" target="_blank" rel="noopener noreferrer">FileSystemInput</a>.</p> 
+       <p>The following diagram shows five training jobs, each configured with a different data source and input mode combination:</p> 
+       <p><a href="https://d2908q01vomqb2.cloudfront.net/f1f836cb4ea6efb2a0b1b99f41ad8b103eff4b59/2022/03/03/ML-2979-image001-new.png"><img class="alignnone wp-image-33742 size-full" src="https://d2908q01vomqb2.cloudfront.net/f1f836cb4ea6efb2a0b1b99f41ad8b103eff4b59/2022/03/03/ML-2979-image001-new.png" alt="" width="1022" height="652"></a></p> 
+       <h2>Data sources and input modes</h2> 
+       <p>The follow sections provide a deep dive into the differences between Amazon S3 (File mode, FastFile mode, and Pipe mode), FSx for Lustre, and Amazon EFS as SageMaker ingestion mechanisms.</p> 
+       <h3>Amazon S3 File mode</h3> 
+       <p>File mode is the default input mode (if you didn’t explicitly specify one), and it’s the more straightforward to use. When you use this input option, SageMaker downloads the dataset from Amazon S3 into the ML training instance storage (Amazon EBS or local NVMe depending on the instance type) on your behalf before launching model training, so that the training script can read the dataset from the local file system. In this case, the instance must have enough storage space to fit the entire dataset.</p> 
+       <p>You configure the dataset for File mode by providing either an S3 prefix, manifest file, or augmented manifest file.</p> 
+       <p>You should use an S3 prefix when all your dataset files are located within a common S3 prefix (subfolders are okay).</p> 
+       <p>The manifest file lists the files comprising your dataset. You typically use a manifest when a data preprocessing job emits a manifest file, or when your dataset files are spread across multiple S3 prefixes. An augmented manifest is a JSON line file, where each line contains a list of attributes, such as a reference to a file in Amazon S3, alongside additional attributes, mostly labels. Its use cases are similar to that of a manifest.</p> 
+       <p>File mode is compatible with <a href="https://sagemaker.readthedocs.io/en/stable/overview.html#local-mode" target="_blank" rel="noopener noreferrer">SageMaker local mode</a> (starting a SageMaker training container interactively in seconds). For distributed training, you can shard the dataset across multiple instances with the <code>ShardedByS3Key</code> option.</p> 
+       <p>File mode download speed depends on dataset size, average file size, and number of files. For example, the larger the dataset is (or the more files it has), the longer the downloading stage is, during which the compute resource of the instance remains effectively idle. When training with Spot Instances, the dataset is downloaded each time the job resumes after a Spot interruption. Typically, data downloading takes place at approximately 200 MB/s for large files (for example, 5 minutes/50 GB). Whether this startup overhead is acceptable primarily depends on the overall duration of your training job, because a longer training phase means a proportionally smaller download phase.</p> 
+       <h3>Amazon S3 FastFile mode</h3> 
+       <p>FastFile mode exposes S3 objects via a POSIX-compliant file system interface, as if the files were available on the local disk of your training instance, and streams their content on demand when data is consumed by the training script. This means your dataset no longer needs to fit into the training instance storage space, and you don’t need to wait for the dataset to be downloaded to the training instance before training can start.</p> 
+       <p>To facilitate this, SageMaker lists all the object metadata stored under the specified S3 prefix before your training script runs. This metadata is used to create a read-only <a href="https://en.wikipedia.org/wiki/Filesystem_in_Userspace" target="_blank" rel="noopener noreferrer">FUSE (file system in userspace)</a> that is available to your training script via <code>/opt/ml/data/training-channel-name</code>. Listing S3 objects runs as fast as 5,500 objects per seconds regardless of their size. This is much quicker than downloading files upfront, as is the case with File mode. While your training script is running, it can list or read files as if they were available locally. Each read operation is delegated to the FUSE service, which proxies GET requests to Amazon S3 in order to deliver the actual file content to the caller. Like a local file system, FastFile treats files as bytes, so it’s agnostic to file formats. FastFile mode can reach a throughput of more than one GB/s when reading large files sequentially using multiple workers. You can use FastFile to read small files or retrieve random byte ranges, but you should expect a lower throughput for such access patterns. You can optimize your read access pattern by serializing many small files into larger file containers, and read them sequentially.</p> 
+       <p>FastFile currently supports S3 prefixes only (no support for manifest and augmented manifest), and FastFile mode is compatible with SageMaker local mode.</p> 
+       <h3>Amazon S3 Pipe mode</h3> 
+       <p>Pipe mode is another streaming mode that is largely replaced by the newer and simpler-to-use FastFile mode.</p> 
+       <p>With Pipe mode, data is pre-fetched from Amazon S3 at high concurrency and throughput, and streamed into Unix named FIFO pipes. Each pipe may only be read by a single process. A SageMaker-specific extension to TensorFlow conveniently <a href="https://sagemaker.readthedocs.io/en/stable/frameworks/tensorflow/using_tf.html#training-with-pipe-mode-using-pipemodedataset" target="_blank" rel="noopener noreferrer">integrates Pipe mode into the native TensorFlow data loader</a> for streaming text, TFRecords, or RecordIO file formats. Pipe mode also supports managed sharding and shuffling of data.</p> 
+       <h3>FSx for Lustre</h3> 
+       <p>FSx for Lustre can scale to hundreds of GB/s of throughput and millions of IOPS with low-latency file retrieval.</p> 
+       <p>When starting a training job, SageMaker mounts the FSx for Lustre file system to the training instance file system, then starts your training script. Mounting itself is a relatively fast operation that doesn’t depend on the size of the dataset stored in FSx for Lustre.</p> 
+       <p>In many cases, you create an FSx for Lustre file system and <a href="https://docs.aws.amazon.com/fsx/latest/LustreGuide/create-dra-linked-data-repo.html" target="_blank" rel="noopener noreferrer">link it to an S3 bucket and prefix</a>. When linked to a S3 bucket as source, files are lazy-loaded into the file system as your training script reads them. This means that right after the first epoch of your first training run, the entire dataset is copied from Amazon S3 to the FSx for Lustre storage (assuming an epoch is defined as a single full sweep thought the training examples, and that the allocated FSx for Lustre storage is large enough). This enables low-latency file access for any subsequent epochs and training jobs with the same dataset.</p> 
+       <p>You can also <a href="https://docs.aws.amazon.com/fsx/latest/LustreGuide/preload-file-contents-hsm-dra.html" target="_blank" rel="noopener noreferrer">preload files into the file system</a> before starting the training job, which alleviates the cold start due to lazy loading. It’s also possible to run multiple training jobs in parallel that are serviced by the same FSx for Lustre file system. To access FSx for Lustre, your training job must connect to a VPC (see <a href="https://docs.aws.amazon.com/sagemaker/latest/APIReference/API_CreateTrainingJob.html#sagemaker-CreateTrainingJob-request-VpcConfig" target="_blank" rel="noopener noreferrer">VPCConfig settings</a>), which requires DevOps setup and involvement. To avoid data transfer costs, the file system uses a single Availability Zone, and you need to specify a VPC Subnet which maps to this Availability Zone ID when running the training job. Because you’re using Amazon S3 as your long-term data storage, we recommend deploying your FSx for Lustre with Scratch 2 storage, as a cost-effective, short-term storage choice for high throughput, providing a baseline of 200 MB/s and a burst of up to 1300 MB/s per TB of provisioned storage.</p> 
+       <p>With your FSx for Lustre file system constantly running, you can start new training jobs without waiting for a file system to be created, and don’t have to worry about the cold start during the very first epoch (because files could still be cached in the FSx for Lustre file system). The downside in this scenario is the extra cost associated with keeping the file system running. Alternatively, you could create and delete the file system before and after each training job (probably with scripted automation to help), but it takes time to initialize an FSx for Lustre file system, which is proportional to the number of files it holds (for example, it takes about an hour to index approximately 2 million objects from Amazon S3).</p> 
+       <h3>Amazon EFS</h3> 
+       <p>We recommend using Amazon EFS if your training data already resides in Amazon EFS due to use cases besides ML training. To use Amazon EFS as a data source, the data must already reside in Amazon EFS prior to training. SageMaker mounts the specified Amazon EFS file system to the training instance, then starts your training script. When configuring the Amazon EFS file system, you need to choose between the default General Purpose performance mode, which is optimized for latency (good for small files), and Max I/O performance mode, which can scale to higher levels of aggregate throughput and operations per second (better for training jobs with many I/O workers). To learn more, refer to <a href="https://docs.aws.amazon.com/efs/latest/ug/performance.html#using-perfmode" target="_blank" rel="noopener noreferrer">Using the right performance mode</a>.</p> 
+       <p>Additionally, you can choose between two metered throughput options: bursting throughput, and provisioned throughput. Bursting throughput for a 1 TB file system provides a baseline of 150 MB/s, while being able to burst to 300 MB/s for a time period of 12 hours a day. If you need higher baseline throughput, or find yourself running out of burst credits too many times, you could either increase the size of the file system or switch to provisioned throughput. In provisioned throughput, you pay for the desired baseline throughput up to a maximum of 3072 MB/s read.</p> 
+       <p>Your training job must connect to a VPC (see <a href="https://docs.aws.amazon.com/sagemaker/latest/APIReference/API_CreateTrainingJob.html#sagemaker-CreateTrainingJob-request-VpcConfig" target="_blank" rel="noopener noreferrer">VPCConfig settings</a>) to access Amazon EFS.</p> 
+       <h2>Choosing the best data source</h2> 
+       <p>The best data source for your training job depends on workload characteristics like dataset size, file format, average file size, training duration, sequential or random data loader read pattern, and how fast your model can consume the training data.</p> 
+       <p>The following flowchart provides some guidelines to help you get started:<br> <a href="https://d2908q01vomqb2.cloudfront.net/f1f836cb4ea6efb2a0b1b99f41ad8b103eff4b59/2022/02/15/ML-2979-image003.png"><img loading="lazy" class="size-full wp-image-33112 aligncenter" src="https://d2908q01vomqb2.cloudfront.net/f1f836cb4ea6efb2a0b1b99f41ad8b103eff4b59/2022/02/15/ML-2979-image003.png" alt="" width="506" height="656"></a></p> 
+       <h3>When to use Amazon EFS</h3> 
+       <p>If your dataset is primarily stored on Amazon EFS, you may have a preprocessing or annotations application that uses Amazon EFS for storage. You could easily run a training job configured with a data channel that points to the Amazon EFS file system (for more information, refer to <a href="https://aws.amazon.com/blogs/machine-learning/speed-up-training-on-amazon-sagemaker-using-amazon-efs-or-amazon-fsx-for-lustre-file-systems/" target="_blank" rel="noopener noreferrer">Speed up training on Amazon SageMaker using Amazon FSx for Lustre and Amazon EFS file systems</a>). If performance is not quite as good as you expected, check your optimization options with the <a href="https://docs.aws.amazon.com/efs/latest/ug/performance.html#performance-overview" target="_blank" rel="noopener noreferrer">Amazon EFS performance guide</a>, or consider other input modes.</p> 
+       <h3>Use File mode for small datasets</h3> 
+       <p>If the dataset is stored on Amazon S3 and its overall volume is relatively small (for example, less than 50–100 GB), try using File mode<em>. </em>The overhead of downloading a dataset of 50 GB can vary based on the total number of files (for example, about 5 minutes if chunked into 100 MB shards). Whether this startup overhead is acceptable primarily depends on the overall duration of your training job, because a longer training phase means a proportionally smaller download phase.</p> 
+       <h3>Serializing many small files together</h3> 
+       <p>If your dataset size is small (less than 50–100 GB), but is made up of many small files (less than 50 MB), the File mode download overhead grows, because each file needs to be downloaded individually from Amazon S3 to the training instance volume. To reduce this overhead, and to speed up data traversal in general, consider serializing groups of smaller files into fewer larger file containers (such as 150 MB per file) by using file formats such as <a href="https://www.tensorflow.org/tutorials/load_data/tfrecord" target="_blank" rel="noopener noreferrer">TFRecord</a> for TensorFlow,<a href="https://webdataset.github.io/webdataset/" target="_blank" rel="noopener noreferrer"> WebDataset</a> for PyTorch, or <a href="https://mxnet.apache.org/versions/1.8.0/api/faq/recordio" target="_blank" rel="noopener noreferrer">RecordIO</a> for MXNet. These formats require your data loader to iterate through examples sequentially. You could still shuffle your data by randomly reordering the list of TFRecord files after each epoch, and by randomly sampling data from a local shuffle buffer (see the following <a href="https://www.tensorflow.org/api_docs/python/tf/data/Dataset#shuffle" target="_blank" rel="noopener noreferrer">TensorFlow example</a>).</p> 
+       <h3>When to use FastFile mode</h3> 
+       <p>For larger datasets with larger files (more than 50 MB), the first option is to try FastFile mode, which is more straightforward to use than FSx for Lustre because it doesn’t require creating a file system, or connecting to a VPC. FastFile mode is ideal for large file containers (more than 150 MB), and might also do well with files more than 50 MB. Because FastFile mode provides a POSIX interface, it supports random reads (reading non-sequential byte-ranges). However, this isn’t the ideal use case, and your throughput would probably be lower than with the sequential reads. However, if you have a relatively large and computationally intensive ML model, FastFile mode may still be able to saturate the effective bandwidth of the training pipeline and not result in an I/O bottleneck. You’ll need to experiment and see. Luckily, switching from File mode to FastFile (and back) is as easy as adding (or removing) the <code>input_mode='FastFile'</code> parameter while defining your input channel using the SageMaker Python SDK:</p> 
+       <div class="hide-language"> 
+        <pre><code class="lang-bash">sagemaker.inputs.TrainingInput(S3_INPUT_FOLDER, input_mode='FastFile') </code></pre> 
+       </div> 
+       <p>No other code or configuration needs to change.</p> 
+       <h3>When to use FSx for Lustre</h3> 
+       <p>If your dataset is too large for File mode, or has many small files (which you can’t serialize easily), or you have a random read access pattern, FSx for Lustre is a good option to consider. Its file system scales to hundreds of GB/s of throughput and millions of IOPS, which is ideal when you have many small files. However, as already discussed earlier, be mindful of the cold start issues due to lazy loading, and the overhead of setting up and initializing the FSx for Lustre file system.</p> 
+       <h2>Cost considerations</h2> 
+       <p>For the majority of ML training jobs, especially jobs utilizing GPUs or purpose-built ML chips, most of the cost to train is the ML training instance’s billable seconds. Storage GB per month, API requests, and provisioned throughput are additional costs that are directly associated with the data sources you use.</p> 
+       <h3>Storage GB per month</h3> 
+       <p>Storage GB per month can be significant for larger datasets, such as videos, LiDAR sensor data, and AdTech real-time bidding logs. For example, storing 1 TB in the <a href="https://aws.amazon.com/s3/pricing/" target="_blank" rel="noopener noreferrer">Amazon S3 Intelligent-Tiering Frequent Access Tier</a> costs $23 per month. Adding the FSx for Lustre file system on top of Amazon S3 results in additional costs. For example, creating a 1.2 TB file system of SSD-backed Scratch 2 type with data compression disabled costs an additional $168 per month ($140/TB/month).</p> 
+       <p>With Amazon S3 and Amazon EFS, you pay only for what you use, meaning that you’re charged according to the actual dataset size. With FSx for Lustre, you’re charged by the provisioned file system size (1.2 TB at minimum). When running ML instances with EBS volumes, Amazon EBS is charged independently of the ML instance. This is usually a much lower cost compared to the cost of running the instance. For example, running an ml.p3.2xlarge instance with a 100 GB EBS volume for 1 hour costs $3.825 for the instance and $0.02 for the EBS volume.</p> 
+       <h3>API requests and provisioned throughput cost</h3> 
+       <p>While your training job is crunching through the dataset, it lists and fetches files by dispatching Amazon S3 API requests. For example, each million GET requests is priced at $0.4 (with the Intelligent-Tiering class). You should expect no data transfer cost for bandwidth in and out of Amazon S3, because training takes place in a single Availability Zone.</p> 
+       <p>When using an FSx for Lustre that is linked to an S3 bucket, you incur Amazon S3 API request costs for reading data that isn’t yet cached in the file system, because FSx For Lustre proxies the request to Amazon S3 (and caches the result). There are no direct request costs for FSx for Lustre itself. When you use an FSx for Lustre file system, avoid costs for cross-Availability Zone data transfer by running your training job connected to the same Availability Zone that you provisioned the file system in. Amazon EFS with provisioned throughput adds an extra cost to consdier beyond GB per month.</p> 
+       <h2>Performance case study</h2> 
+       <p>To demonstrate the training performance considerations mentioned earlier, we performed a series of benchmarks for a realistic use case in the computer vision domain. The benchmark (and takeaways) from this section might not be applicable to all scenarios, and are affected by various predetermined factors we used, such as DNN. We ran tests for 12 combinations of the following:</p> 
+       <ul> 
+        <li><strong>Input modes</strong> – FSx for Lustre, File mode, FastFile mode</li> 
+        <li><strong>Dataset size</strong> – Smaller dataset (1 GB), larger dataset (54 GB)</li> 
+        <li><strong>File size</strong> – Smaller files (JPGs, approximately 39 KB), Larger files (TFRecord, approximately 110 MB)</li> 
+       </ul> 
+       <p>For this case study, we chose the most widely used input modes, and therefore omitted Amazon EFS and Pipe mode.</p> 
+       <p>The case study benchmarks were designed as end-to-end SageMaker TensorFlow training jobs on an ml.p3.2xlarge single-GPU instance. We chose the renowned ResNet-50 as our backbone model for the classification task and Caltech-256 as the smaller training dataset (which we replicated 50 times to create its larger dataset version). We performed the training for one epoch, defined as a single full sweep through the training examples. The SageMaker Bencher config file to replicate this benchmark is <a href="https://github.com/aws-samples/sagemaker-bencher/blob/main/experiments/blog-benchmarks-all.yml" target="_blank" rel="noopener noreferrer">available on GitHub</a>.</p> 
+       <p>The following graphs show the total billable time of the SageMaker training jobs for each benchmark scenario. The total job time itself is comprised of downloading, training, and other stages (such as container startup and uploading trained model artifacts to Amazon S3). Shorter billable times translate into faster and cheaper training jobs.</p> 
+       <p><a href="https://d2908q01vomqb2.cloudfront.net/f1f836cb4ea6efb2a0b1b99f41ad8b103eff4b59/2022/02/15/ML-2979-image005.jpg"><img loading="lazy" class="alignnone size-full wp-image-33113" src="https://d2908q01vomqb2.cloudfront.net/f1f836cb4ea6efb2a0b1b99f41ad8b103eff4b59/2022/02/15/ML-2979-image005.jpg" alt="" width="1310" height="1076"></a></p> 
+       <p>Let’s first discuss <strong>Scenario A and Scenario C</strong>, which conveniently demonstrate the performance difference between input modes when the dataset is comprised of many small files.</p> 
+       <p><strong>Scenario A</strong> (smaller files, smaller dataset) reveals that the training job with the FSx for Lustre file system has the smallest billable time. It has the shortest downloading phase, and its training stage is as fast as File mode, but faster than FastFile. FSx for Lustre is the winner in this single epoch test. Having said that, consider a similar workload but with multiple epochs—the relative overhead of File mode due to the downloading stage decreases as more epochs are added. In this case, we prefer File mode for its ease of use. Additionally, you might find that using File mode and paying for 100 extra billable seconds is a better choice than paying for and provisioning an FSx for Lustre file system.</p> 
+       <p><strong>Scenario C</strong> (smaller files, larger dataset) shows FSx for Lustre as the fastest mode, with only 5,000 seconds of total billable time. It also has the shortest downloading stage, because mounting the FSx for Lustre file system doesn’t depend on the number of files in the file system (1.5 million files in this case). The downloading overhead of FastFile is also small; it only fetches metadata of the files residing under the specified S3 bucket prefix, while the content of the files is read during the training stage. File mode is the slowest mode, spending 10,000 seconds to download the entire dataset upfront before starting training. When we look at the training stage, FSx for Lustre and File mode demonstrate similar excellent performance. As for FastFile mode, when streaming smaller files directly from Amazon S3, the overhead for dispatching a new GET request for each file becomes significant relative to the total duration of the file transfer (despite using a highly parallel data loader with prefetch buffer). This results in an overall lower throughput for FastFile mode, which creates an I/O bottleneck for the training job. FSx for Lustre is the clear winner in this scenario.</p> 
+       <p><strong>Scenarios B and D</strong> show the performance difference across input modes when the dataset is comprised of fewer larger files. Reading sequentially using larger files typically results in better I/O performance because it allows effective buffering and reduces the number of I/O operations.</p> 
+       <p><strong>Scenario B</strong> (larger files, smaller dataset) shows similar training stage time for all modes (testifying that the training isn’t I/O-bound). In this scenario, we prefer FastFile mode over File mode due to shorter downloading stage, and prefer FastFile mode over FSx for Lustre due to the ease of use of the former.</p> 
+       <p><strong>Scenario D</strong> (larger files, larger dataset) shows relatively similar total billable times for all three modes. The downloading phase of File mode is longer than that of FSx for Lustre and FastFile. File mode downloads the entire dataset (54 GB) from Amazon S3 to the training instance before starting the training stage. All three modes spend similar time in the training phase, because all modes can fetch data fast enough and are GPU-bound. If we use ML instances with additional CPU or GPU resources, such as ml.p4d.24xlarge, the required data I/O throughput to saturate the compute resources grows. In these cases, we can expect FastFile and FSx for Lustre to successfully scale their throughput (however, FSx for Lustre throughput depends on provisioned file system size). The ability of File mode to scale its throughput depends on the throughput of the disk volume attached to the instance. For example, Amazon EBS-backed instances (like ml.p3.2xlarge, ml.p3.8xlarge, and ml.p3.16xlarge) are limited to a maximum throughput of 250MB/s, whereas local NVMe-backed instances (like ml.g5.* or ml.p4d.24xlarge) can accommodate a much larger throughput.</p> 
+       <p>To summarize, we believe FastFile is the winner for this scenario because it’s faster than File mode, and just as fast as FSx for Lustre, yet more straightforward to use, costs less, and can easily scale up its throughput as needed.</p> 
+       <p>Additionally, if we had a much larger dataset (several TBs in size), File mode would spend many hours downloading the dataset before training could start, whereas FastFile could start training significantly more quickly.</p> 
+       <h2>Bring your own data ingestion</h2> 
+       <p>The native data source of SageMaker fits most but not all possible ML training scenarios. The situations when you might need to look for other data ingestion options could include reading data directly from a third-party storage product (assuming an easy and timely export to Amazon S3 isn’t possible), or having a strong requirement for the same training script to run unchanged on both SageMaker and <a href="http://aws.amazon.com/ec2" target="_blank" rel="noopener noreferrer">Amazon Elastic Compute Cloud</a> (Amazon EC2) or <a href="https://aws.amazon.com/eks/" target="_blank" rel="noopener noreferrer">Amazon Elastic Kubernetes Service</a> (Amazon EKS). You can address these cases by implementing your data ingestion mechanism into the training script. This mechanism is responsible for reading datasets from external data sources into the training instance. For example, the <code><a href="https://www.tensorflow.org/api_docs/python/tf/data/TFRecordDataset" target="_blank" rel="noopener noreferrer">TFRecordDataset</a></code> of the TensorFlow’s <code>tf.data</code> library can read directly from Amazon S3 storage.</p> 
+       <p>If your data ingestion mechanism needs to call any AWS services, such as <a href="http://aws.amazon.com/rds" target="_blank" rel="noopener noreferrer">Amazon Relational Database Service</a> (Amazon RDS), make sure that the <a href="http://aws.amazon.com/iam" target="_blank" rel="noopener noreferrer">AWS Identity and Access Management</a> (IAM) role of your training job includes the relevant IAM policies. If the data source resides in <a href="http://aws.amazon.com/vpc" target="_blank" rel="noopener noreferrer">Amazon Virtual Private Cloud</a> (Amazon VPC), you need to run your training job connected to the same VPC.</p> 
+       <p>When you’re managing dataset ingestion yourself, SageMaker lineage tracking can’t automatically log the datasets used during training. Therefore, consider alternative mechanisms, like training job tags or hyperparameters, to capture your relevant metadata.</p> 
+       <h2>Conclusion</h2> 
+       <p>Choosing the right SageMaker training data source could have a profound effect on the speed, ease of use, and cost of training ML models. Use the provided flowchart to get started quickly, observe the results, and experiment with additional configuration as needed. Keep in mind the pros, cons, and limitations of each data source, and how well they suit your training job’s individual requirements. Reach out to an AWS contact for further information and assistance.</p> 
+       <h2>References</h2> 
+       <p><a href="https://github.com/aws-samples/sagemaker-bencher" target="_blank" rel="noopener noreferrer">SageMaker Bencher</a> offers a collection of scripts to automatically prepare datasets and design, orchestrate, track, as well as analyze complex benchmarking experiments based on SageMaker Training Jobs. With SageMaker Bencher one can specify both rules for dataset preparation and benchmark execution procedure in form of a single YAML-file, which can be shared with anyone who wants to replicate or customize benchmarks by themselves.</p> 
+       <hr> 
+       <h3>About the Authors</h3> 
+       <p style="clear: both"><strong> <a href="https://d2908q01vomqb2.cloudfront.net/f1f836cb4ea6efb2a0b1b99f41ad8b103eff4b59/2022/02/15/Gili-Nachum.png"><img loading="lazy" class="size-full wp-image-33120 alignleft" src="https://d2908q01vomqb2.cloudfront.net/f1f836cb4ea6efb2a0b1b99f41ad8b103eff4b59/2022/02/15/Gili-Nachum.png" alt="" width="100" height="133"></a>Gili Nachum</strong> is a senior AI/ML Specialist Solutions Architect who works as part of the EMEA Amazon Machine Learning team. Gili is passionate about the challenges of training deep learning models, and how machine learning is changing the world as we know it. In his spare time, Gili enjoy playing table tennis.</p> 
+       <p style="clear: both"><strong><a href="https://d2908q01vomqb2.cloudfront.net/f1f836cb4ea6efb2a0b1b99f41ad8b103eff4b59/2022/02/15/Alexander-Arzhanov.jpg"><img loading="lazy" class="size-full wp-image-33119 alignleft" src="https://d2908q01vomqb2.cloudfront.net/f1f836cb4ea6efb2a0b1b99f41ad8b103eff4b59/2022/02/15/Alexander-Arzhanov.jpg" alt="" width="100" height="133"></a>Dr. Alexander Arzhanov</strong> is an AI/ML Specialist Solutions Architect based in Frankfurt, Germany. He helps AWS customers to design and deploy their ML solutions across EMEA region. Prior to joining AWS, Alexander was researching origins of heavy elements in our universe and grew passionate about ML after using it in his large-scale scientific calculations.</p> 
+       <!-- '"` --> 
+      </section> 
+      <footer> 
+      </footer> 
+      <aside id="Comments" class="blog-comments"> 
+       <div data-lb-comp="aws-blog:cosmic-comments" data-env="prod" data-content-id="d08ccd41-6e8d-4db8-8c87-5241360da9c6" data-title="Choose the best data source for your Amazon SageMaker training job" data-url="https://aws.amazon.com/blogs/machine-learning/choose-the-best-data-source-for-your-amazon-sagemaker-training-job/"> 
+        <p data-failed-message="Comments cannot be loaded… Please refresh and try again.">Loading comments…</p> 
+       </div> 
+      </aside> 
+      <div class="js-mbox" data-mbox="en_blog_post_comments"></div> 
+     </article> 
+    </main> 
+    <div class="blog-sidebar lb-col lb-tiny-24 lb-mid-8"> 
+     <div class="awsm"> 
+      <div class="lb-box" style="padding-left:30px;"> 
+       <h3 id="Resources" class="lb-txt-none lb-h3 lb-title" style="margin-top:30px;"> Resources</h3> 
+       <div class="data-attr-wrapper lb-none-pad lb-none-v-margin lb-box" data-da-type="ha" data-da-channel="ha" data-da-language="en" data-da-placement="blog-sb-resources" data-da-campaign="acq_awsblogsb" data-da-content="machine-learning-resources" data-da-trk="blog_initial"> 
+        <ul class="lb-txt-none lb-ul lb-list-style-none lb-li-none-v-margin lb-tiny-ul-block"> 
+         <li><a href="https://aws.amazon.com/getting-started?sc_ichannel=ha&amp;sc_icampaign=acq_awsblogsb&amp;sc_icontent=machine-learning-resources">Getting Started</a></li> 
+         <li><a href="https://aws.amazon.com/new?sc_ichannel=ha&amp;sc_icampaign=acq_awsblogsb&amp;sc_icontent=machine-learning-resources">What's New</a></li> 
+        </ul> 
+        <div class="lb-grid lb-row lb-row-max-large lb-snap"> 
+         <div class="lb-col lb-tiny-24 lb-mid-8"> 
+          <hr class="lb-divider"> 
+         </div> 
+         <div class="lb-col lb-tiny-24 lb-mid-8"> 
+         </div> 
+         <div class="lb-col lb-tiny-24 lb-mid-8"> 
+         </div> 
+        </div> 
+        <h3 id="Blog_Topics" class="lb-txt-none lb-h3 lb-title" style="margin-top:30px;"> Blog Topics</h3> 
+       </div> 
+       <div class="data-attr-wrapper lb-none-pad lb-none-v-margin lb-box" data-da-type="ha" data-da-channel="ha" data-da-language="en" data-da-placement="blog-sb-resources" data-da-campaign="acq_awsblogsb" data-da-content="machine-learning-resources" data-da-trk="blog_initial"> 
+        <ul class="lb-txt-none lb-ul lb-list-style-none lb-li-none-v-margin lb-tiny-ul-block"> 
+         <li><a href="https://aws.amazon.com/blogs/machine-learning/category/artificial-intelligence/amazon-machine-learning/amazon-bedrock/">Amazon Bedrock</a></li> 
+         <li><a href="https://aws.amazon.com/blogs/machine-learning/category/artificial-intelligence/amazon-comprehend/">Amazon Comprehend</a></li> 
+         <li><a href="https://aws.amazon.com/blogs/machine-learning/category/artificial-intelligence/amazon-kendra/">Amazon Kendra</a></li> 
+         <li><a href="https://aws.amazon.com/blogs/machine-learning/category/artificial-intelligence/amazon-lex/">Amazon Lex</a></li> 
+         <li><a href="https://aws.amazon.com/blogs/machine-learning/category/artificial-intelligence/amazon-polly/">Amazon Polly</a></li> 
+         <li><a href="https://aws.amazon.com/blogs/machine-learning/category/amazon-q/">Amazon Q</a></li> 
+         <li><a href="https://aws.amazon.com/blogs/machine-learning/category/artificial-intelligence/amazon-rekognition/">Amazon Rekognition</a></li> 
+         <li><a href="https://aws.amazon.com/blogs/machine-learning/category/artificial-intelligence/sagemaker/">Amazon SageMaker</a></li> 
+         <li><a href="https://aws.amazon.com/blogs/machine-learning/category/artificial-intelligence/amazon-textract/">Amazon Textract</a></li> 
+        </ul> 
+        <div class="lb-grid lb-row lb-row-max-large lb-snap"> 
+         <div class="lb-col lb-tiny-24 lb-mid-8"> 
+          <hr class="lb-divider"> 
+         </div> 
+         <div class="lb-col lb-tiny-24 lb-mid-8"> 
+         </div> 
+         <div class="lb-col lb-tiny-24 lb-mid-8"> 
+         </div> 
+        </div> 
+       </div> 
+       <h3 id="Follow" class="lb-txt-none lb-h3 lb-title"> Follow</h3> 
+       <div class="data-attr-wrapper lb-none-pad lb-none-v-margin lb-box" data-da-type="ha" data-da-channel="ha" data-da-language="en" data-da-placement="blog-sb-social" data-da-campaign="acq_awsblogsb" data-da-content="machine-learning-social" data-da-trk="blog_initial"> 
+        <ul class="lb-txt-none lb-ul lb-list-style-none lb-li-none-v-margin lb-tiny-ul-block"> 
+         <li><a href="https://twitter.com/awscloud"><i class="icon-twitter-square"></i> &nbsp;Twitter</a></li> 
+         <li><a href="https://www.facebook.com/amazonwebservices"><i class="icon-facebook-square"></i> &nbsp;Facebook</a></li> 
+         <li><a href="https://www.linkedin.com/company/amazon-web-services/"><i class="icon-linkedin-square"></i> &nbsp;LinkedIn</a></li> 
+         <li><a href="https://www.twitch.tv/aws"><i class="icon-twitch"></i> &nbsp;Twitch</a></li> 
+         <li><a href="https://pages.awscloud.com/communication-preferences?sc_ichannel=ha&amp;sc_icampaign=acq_awsblogsb&amp;sc_icontent=maching-learning-social"><i class="icon-envelope-square"></i> &nbsp;Email Updates</a></li> 
+        </ul> 
+       </div> 
+      </div> 
+     </div> 
+     <div class="js-mbox" data-mbox="en_blog_post_sidebar"></div> 
+    </div> 
+   </div> 
+  </div> 
+  <div class="awsm"> 
+   <footer id="aws-page-footer" class="m-page-footer" role="contentinfo"> 
+    <div class="data-attr-wrapper lb-none-v-margin lb-xb-grid-wrap" style="background-color:#141f2e;" data-da-type="so" data-da-so-type="viewport" data-da-so-language="en" data-da-so-category="monitoring" data-da-so-name="footer" data-da-so-version="a"> 
+     <div class="lb-xb-grid lb-row-max-large lb-snap lb-tiny-xb-1 lb-small-xb-3 lb-large-xb-5"> 
+      <div class="lb-xbcol"> 
+       <div class="data-attr-wrapper lb-small-hide lb-btn" data-da-type="so" data-da-so-type="viewport" data-da-so-language="en" data-da-so-category="monitoring" data-da-so-name="footer_buttons" data-da-so-url="all" data-da-so-version="footer_signin-mobile-default"> 
+        <a class="lb-btn-p-primary" href="https://console.aws.amazon.com/console/home?nc1=f_ct&amp;src=footer-signin-mobile" role="button"> <span> Sign In to the Console</span> </a> 
+       </div> 
+       <h3 class="lb-txt-none lb-txt-white lb-tiny-v-margin lb-h3 lb-title"> Learn About AWS</h3> 
+       <ul class="lb-txt-white lb-ul lb-list-style-none lb-li-micro-v-margin lb-tiny-ul-block" style="margin-bottom:0px;"> 
+        <li><a href="https://aws.amazon.com/what-is-aws/?nc1=f_cc" target="_blank" rel="noopener noreferrer">What Is AWS?</a></li> 
+        <li><a href="https://aws.amazon.com/what-is-cloud-computing/?nc1=f_cc" target="_blank" rel="noopener noreferrer">What Is Cloud Computing?</a></li> 
+        <li><a href="https://aws.amazon.com/accessibility/?nc1=f_cc" target="_blank" rel="noopener noreferrer">AWS Accessibility</a></li> 
+        <li><a href="https://aws.amazon.com/diversity-inclusion/?nc1=f_cc" target="_blank" rel="noopener noreferrer">AWS Inclusion, Diversity &amp; Equity</a></li> 
+        <li><a href="https://aws.amazon.com/devops/what-is-devops/?nc1=f_cc" target="_blank" rel="noopener noreferrer">What Is DevOps?</a></li> 
+        <li><a href="https://aws.amazon.com/containers/?nc1=f_cc" target="_blank" rel="noopener noreferrer">What Is a Container?</a></li> 
+        <li><a href="https://aws.amazon.com/what-is/data-lake/?nc1=f_cc" target="_blank" rel="noopener noreferrer">What Is a Data Lake?</a></li> 
+        <li><a href="https://aws.amazon.com/what-is/artificial-intelligence/?nc1=f_cc" target="_blank" rel="noopener noreferrer">What is Artificial Intelligence (AI)?</a></li> 
+        <li><a href="https://aws.amazon.com/what-is/generative-ai/?nc1=f_cc" target="_blank" rel="noopener noreferrer">What is Generative AI?</a></li> 
+        <li><a href="https://aws.amazon.com/what-is/machine-learning/?nc1=f_cc" target="_blank" rel="noopener noreferrer">What is Machine Learning (ML)?</a></li> 
+        <li><a href="https://aws.amazon.com/security/?nc1=f_cc" target="_blank" rel="noopener noreferrer">AWS Cloud Security</a></li> 
+        <li><a href="https://aws.amazon.com/new/?nc1=f_cc" target="_blank" rel="noopener noreferrer">What's New</a></li> 
+        <li><a href="https://aws.amazon.com/blogs/?nc1=f_cc" target="_blank" rel="noopener noreferrer">Blogs</a></li> 
+        <li><a href="https://press.aboutamazon.com/press-releases/aws" target="_blank" rel="noopener noreferrer" title="Press Releases" alt="Press Releases">Press Releases</a></li> 
+       </ul> 
+      </div> 
+      <div class="lb-xbcol"> 
+       <h3 class="lb-txt-none lb-txt-white lb-tiny-v-margin lb-h3 lb-title"> Resources for AWS</h3> 
+       <ul class="lb-txt-white lb-ul lb-list-style-none lb-li-micro-v-margin lb-tiny-ul-block" style="margin-bottom:0px;"> 
+        <li><a href="https://aws.amazon.com/getting-started/?nc1=f_cc" target="_blank" rel="noopener noreferrer">Getting Started</a></li> 
+        <li><a href="https://aws.amazon.com/training/?nc1=f_cc" target="_blank" rel="noopener noreferrer">Training and Certification</a></li> 
+        <li><a href="https://aws.amazon.com/solutions/?nc1=f_cc" target="_blank" rel="noopener noreferrer">AWS Solutions Library</a></li> 
+        <li><a href="https://aws.amazon.com/architecture/?nc1=f_cc" target="_blank" rel="noopener noreferrer">Architecture Center</a></li> 
+        <li><a href="https://aws.amazon.com/faqs/?nc1=f_dr" target="_blank" rel="noopener noreferrer">Product and Technical FAQs</a></li> 
+        <li><a href="https://aws.amazon.com/resources/analyst-reports/?nc1=f_cc" target="_blank" rel="noopener noreferrer">Analyst Reports</a></li> 
+        <li><a href="https://aws.amazon.com/partners/work-with-partners/?nc1=f_dr" target="_blank" rel="noopener noreferrer">AWS Partners</a></li> 
+       </ul> 
+      </div> 
+      <div class="lb-xbcol"> 
+       <h3 class="lb-txt-none lb-txt-white lb-tiny-v-margin lb-h3 lb-title"> Developers on AWS</h3> 
+       <ul class="lb-txt-white lb-ul lb-list-style-none lb-li-micro-v-margin lb-tiny-ul-block" style="margin-bottom:0px;"> 
+        <li><a href="https://aws.amazon.com/developer/?nc1=f_dr" target="_blank" rel="noopener noreferrer">Developer Center</a></li> 
+        <li><a href="https://aws.amazon.com/developer/tools/?nc1=f_dr" target="_blank" rel="noopener noreferrer">SDKs &amp; Tools</a></li> 
+        <li><a href="https://aws.amazon.com/developer/language/net/?nc1=f_dr" target="_blank" rel="noopener noreferrer">.NET on AWS</a></li> 
+        <li><a href="https://aws.amazon.com/developer/language/python/?nc1=f_dr" target="_blank" rel="noopener noreferrer">Python on AWS</a></li> 
+        <li><a href="https://aws.amazon.com/developer/language/java/?nc1=f_dr" target="_blank" rel="noopener noreferrer">Java on AWS</a></li> 
+        <li><a href="https://aws.amazon.com/developer/language/php/?nc1=f_cc" target="_blank" rel="noopener noreferrer">PHP on AWS</a></li> 
+        <li><a href="https://aws.amazon.com/developer/language/javascript/?nc1=f_dr" target="_blank" rel="noopener noreferrer">JavaScript on AWS</a></li> 
+       </ul> 
+      </div> 
+      <div class="lb-xbcol"> 
+       <h3 class="lb-txt-none lb-txt-white lb-tiny-v-margin lb-h3 lb-title"> Help</h3> 
+       <ul class="lb-txt-white lb-ul lb-list-style-none lb-li-micro-v-margin lb-tiny-ul-block" style="margin-bottom:0px;"> 
+        <li><a href="https://aws.amazon.com/contact-us/?nc1=f_m" target="_blank" rel="noopener noreferrer">Contact Us</a></li> 
+        <li><a href="https://iq.aws.amazon.com/?utm=mkt.foot/?nc1=f_m" target="_blank" rel="noopener noreferrer">Get Expert Help</a></li> 
+        <li><a href="https://console.aws.amazon.com/support/home/?nc1=f_dr" target="_blank" rel="noopener noreferrer">File a Support Ticket</a></li> 
+        <li><a href="https://repost.aws/?nc1=f_dr" target="_blank" rel="noopener noreferrer">AWS re:Post</a></li> 
+        <li><a href="https://repost.aws/knowledge-center/?nc1=f_dr" target="_blank" rel="noopener noreferrer">Knowledge Center</a></li> 
+        <li><a href="https://aws.amazon.com/premiumsupport/?nc1=f_dr" target="_blank" rel="noopener noreferrer">AWS Support Overview</a></li> 
+        <li><a href="https://aws.amazon.com/legal/?nc1=f_cc" target="_blank" rel="noopener noreferrer">Legal</a></li> 
+        <li><a href="https://aws.amazon.com/careers/">AWS Careers</a></li> 
+       </ul> 
+       <div class="lb-mbox js-mbox" data-lb-comp="mbox" data-lb-comp-ignore="true" data-mbox="en_footer-v3_addl-help"> 
+       </div> 
+      </div> 
+      <div class="lb-xbcol"> 
+       <div class="lb-mbox js-mbox" data-lb-comp="mbox" data-lb-comp-ignore="true" data-mbox="en_footer-v3_cta"> 
+        <div class="data-attr-wrapper lb-tiny-hide lb-small-show lb-btn" data-da-type="so" data-da-so-type="viewport" data-da-so-language="en" data-da-so-category="monitoring" data-da-so-name="footer_buttons" data-da-so-url="all" data-da-so-version="footer_signup-default"> 
+         <a class="lb-btn-p-primary" href="https://portal.aws.amazon.com/gp/aws/developer/registration/index.html?nc1=f_ct&amp;src=default" role="button"> <span> Create an AWS Account</span> </a> 
+        </div> 
+       </div> 
+       <div class="lb-xb-grid-wrap" style="padding-left:0px; margin-top:20px; margin-bottom:0px;"> 
+        <div class="lb-xb-grid lb-row-max-large lb-xb-equal-height lb-snap lb-gutter-collapse lb-vgutter-collapse lb-tiny-xb-4"> 
+         <div class="lb-xbcol"> 
+          <a class="lb-txt-none lb-txt-white lb-none-pad lb-txt" style="padding-left:0px; padding-right:5px;" href="https://twitter.com/awscloud" target="_blank" rel="noopener noreferrer" title="Twitter" alt="Twitter"> <i class="icon-twitter lb-before"></i></a> 
+         </div> 
+         <div class="lb-xbcol"> 
+          <a class="lb-txt-none lb-txt-white lb-none-pad lb-none-v-margin lb-txt" style="padding-right:5px;" href="https://www.facebook.com/amazonwebservices" target="_blank" rel="noopener noreferrer" title="Facebook" alt="Facebook"> <i class="icon-facebook lb-before"></i></a> 
+         </div> 
+         <div class="lb-xbcol"> 
+          <a class="lb-txt-none lb-txt-white lb-none-pad lb-txt" style="padding-right:5px;" href="https://www.linkedin.com/company/amazon-web-services/" target="_blank" rel="noopener noreferrer" title="Linkedin" alt="Linkedin"> <i class="icon-linkedin lb-before"></i></a> 
+         </div> 
+         <div class="lb-xbcol"> 
+          <a class="lb-txt-none lb-txt-white lb-none-pad lb-txt" style="padding-right:5px;" href="https://www.instagram.com/amazonwebservices/" target="_blank" rel="noopener noreferrer" title="Instagram" alt="Instagram"> <i class="icon-instagram lb-before"></i></a> 
+         </div> 
+        </div> 
+       </div> 
+       <div class="lb-xb-grid-wrap" style="padding-left:0px; margin-top:10px;"> 
+        <div class="lb-xb-grid lb-row-max-large lb-xb-equal-height lb-snap lb-gutter-collapse lb-vgutter-collapse lb-tiny-xb-4"> 
+         <div class="lb-xbcol"> 
+          <a class="lb-txt-none lb-txt-white lb-none-pad lb-txt" style="padding-right:5px;" href="https://www.twitch.tv/aws" target="_blank" rel="noopener noreferrer" title="Twitch" alt="Twitch"> <i class="icon-twitch lb-before"></i></a> 
+         </div> 
+         <div class="lb-xbcol"> 
+          <a class="lb-txt-none lb-txt-white lb-none-pad lb-txt" style="padding-right:5px;" href="https://www.youtube.com/user/AmazonWebServices/Cloud/" target="_blank" rel="noopener noreferrer" title="YouTube" alt="YouTube"> <i class="icon-youtube lb-before"></i></a> 
+         </div> 
+         <div class="lb-xbcol"> 
+          <a class="lb-txt-none lb-txt-white lb-none-pad lb-txt" style="padding-right:5px;" href="https://aws.amazon.com/podcasts/" target="_blank" rel="noopener noreferrer" title="Podcast" alt="Podcast"> <i class="icon-podcast lb-before"></i></a> 
+         </div> 
+         <div class="lb-xbcol"> 
+          <a class="lb-txt-none lb-txt-white lb-none-pad lb-txt" style="padding-right:5px;" href="https://pages.awscloud.com/communication-preferences?trk=homepage" target="_blank" rel="noopener noreferrer" title="Email" alt="Email"> <i class="icon-envelope-o lb-before"></i></a> 
+         </div> 
+        </div> 
+       </div> 
+       <div class="lb-txt-normal lb-txt-white lb-txt-14 lb-rtxt" style="color:#eaeded; margin-top:0px;"> 
+        <div>
+          Amazon is an Equal Opportunity Employer: 
+         <i> Minority / Women / Disability / Veteran / Gender Identity / Sexual Orientation / Age.</i> 
+        </div> 
+       </div> 
+      </div> 
+     </div> 
+    </div> 
+    <div class="lb-none-pad lb-none-v-margin lb-xb-grid-wrap" style="background-color:#141f2e;"> 
+     <div class="lb-xb-grid lb-row-max-large lb-snap lb-tiny-xb-1"> 
+      <div class="lb-xbcol"> 
+       <ul class="lb-txt-white lb-tiny-iblock lb-none-v-margin lb-ul lb-list-style-none lb-li-micro-v-margin lb-tiny-ul-iblock"> 
+        <li class="lb-txt-bold">Language</li> 
+        <li data-language="ar" lang="ar-SA" translate="no"><a href="https://aws.amazon.com/ar/?nc1=h_ls">عربي</a></li> 
+        <li data-language="id" lang="id-ID" translate="no"><a href="https://aws.amazon.com/id/?nc1=h_ls">Bahasa Indonesia</a></li> 
+        <li data-language="de" lang="de-DE" translate="no"><a href="https://aws.amazon.com/de/?nc1=h_ls">Deutsch</a></li> 
+        <li data-language="en" lang="en-US" translate="no"><a href="https://aws.amazon.com/?nc1=h_ls">English</a></li> 
+        <li data-language="es" lang="es-ES" translate="no"><a href="https://aws.amazon.com/es/?nc1=h_ls">Español</a></li> 
+        <li data-language="fr" lang="fr-FR" translate="no"><a href="https://aws.amazon.com/fr/?nc1=h_ls">Français</a></li> 
+        <li data-language="it" lang="it-IT" translate="no"><a href="https://aws.amazon.com/it/?nc1=h_ls">Italiano</a></li> 
+        <li data-language="pt" lang="pt-BR" translate="no"><a href="https://aws.amazon.com/pt/?nc1=h_ls">Português</a></li> 
+        <li data-language="vi" lang="vi-VN" translate="no"><a href="https://aws.amazon.com/vi/?nc1=f_ls">Tiếng Việt</a></li> 
+        <li data-language="tr" lang="tr-TR" translate="no"><a href="https://aws.amazon.com/tr/?nc1=h_ls">Türkçe</a></li> 
+        <li data-language="ru" lang="ru-RU" translate="no"><a href="https://aws.amazon.com/ru/?nc1=h_ls">Ρусский</a></li> 
+        <li data-language="th" lang="th-TH" translate="no"><a href="https://aws.amazon.com/th/?nc1=f_ls">ไทย</a></li> 
+        <li data-language="jp" lang="ja-JP" translate="no"><a href="https://aws.amazon.com/jp/?nc1=h_ls">日本語</a></li> 
+        <li data-language="ko" lang="ko-KR" translate="no"><a href="https://aws.amazon.com/ko/?nc1=h_ls">한국어</a></li> 
+        <li data-language="cn" lang="zh-CN" translate="no"><a href="https://aws.amazon.com/cn/?nc1=h_ls">中文 (简体)</a></li> 
+        <li data-language="tw" lang="zh-TW" translate="no"><a href="https://aws.amazon.com/tw/?nc1=h_ls">中文 (繁體)</a></li> 
+       </ul> 
+      </div> 
+     </div> 
+    </div> 
+    <div class="lb-none-pad lb-none-v-margin lb-xb-grid-wrap" style="background-color:#EAEDED; padding-top:5px;"> 
+     <div class="lb-xb-grid lb-row-max-large lb-snap lb-tiny-xb-1"> 
+      <div class="lb-xbcol"> 
+       <div class="lb-mbox js-mbox" data-lb-comp="mbox" data-lb-comp-ignore="true" data-mbox="en_footer-legal-links"> 
+        <ul class="lb-txt-squid lb-none-v-margin lb-ul lb-list-style-none lb-li-none-v-margin lb-tiny-ul-iblock"> 
+         <li><a href="https://aws.amazon.com/privacy/?nc1=f_pr">Privacy</a></li> 
+         <li>|</li> 
+         <li><a href="https://aws.amazon.com/accessibility/?nc1=f_acc">Accessibility</a></li> 
+         <li>|</li> 
+         <li><a href="https://aws.amazon.com/terms/?nc1=f_pr">Site Terms</a></li> 
+         <li>|</li> 
+         <li data-cookie-consent-modal="1"><a href="#"> Cookie Preferences </a></li> 
+         <li>|</li> 
+         <li>© 2024, Amazon Web Services, Inc. or its affiliates. All rights reserved.</li> 
+        </ul> 
+       </div> 
+      </div> 
+     </div> 
+    </div> 
+   </footer> 
+  </div> 
+  <div id="aws-page-end"></div> 
+  <div id="lb-page-end"></div> 
+  <script src="https://a0.awsstatic.com/da/js/1.0.50/aws-da.js" async></script> 
+  <script src="https://a0.awsstatic.com/aws-blog/1.0.83/js/vendor/prism.js" data-default-language="markup"></script>  
+ </body>
+</html>

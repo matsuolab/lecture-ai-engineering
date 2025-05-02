@@ -1,0 +1,213 @@
+<!DOCTYPE html>
+    <html xmlns="http://www.w3.org/1999/xhtml" lang="ja-JP"><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8" /><title>IaC ジェネレーターを使用して既存のリソースからテンプレートを生成する - AWS CloudFormation</title><meta name="viewport" content="width=device-width,initial-scale=1" /><meta name="assets_root" content="/assets" /><meta name="target_state" content="generate-IaC" /><meta name="default_state" content="generate-IaC" /><link rel="icon" type="image/ico" href="/assets/images/favicon.ico" /><link rel="shortcut icon" type="image/ico" href="/assets/images/favicon.ico" /><link rel="canonical" href="https://docs.aws.amazon.com/ja_jp/AWSCloudFormation/latest/UserGuide/generate-IaC.html" /><meta name="description" content="Infrastructure as Code (IaC) テンプレートを、CloudFormation で管理されていないアカウントにデプロイされた AWS リソースタイプから生成します。" /><meta name="deployment_region" content="IAD" /><meta name="product" content="AWS CloudFormation" /><meta name="guide" content="ユーザーガイド" /><meta name="abstract" content="このユーザーガイドでは、AWS CloudFormation を使用して、予測かつ再現可能な方法で、AWS インフラストラクチャのデプロイを作成して管理します。" /><meta name="guide-locale" content="ja_jp" /><meta name="tocs" content="toc-contents.json" /><link rel="canonical" href="https://docs.aws.amazon.com/ja_jp/AWSCloudFormation/latest/UserGuide/generate-IaC.html" /><link rel="alternative" href="https://docs.aws.amazon.com/id_id/AWSCloudFormation/latest/UserGuide/generate-IaC.html" hreflang="id-id" /><link rel="alternative" href="https://docs.aws.amazon.com/id_id/AWSCloudFormation/latest/UserGuide/generate-IaC.html" hreflang="id" /><link rel="alternative" href="https://docs.aws.amazon.com/de_de/AWSCloudFormation/latest/UserGuide/generate-IaC.html" hreflang="de-de" /><link rel="alternative" href="https://docs.aws.amazon.com/de_de/AWSCloudFormation/latest/UserGuide/generate-IaC.html" hreflang="de" /><link rel="alternative" href="https://docs.aws.amazon.com/AWSCloudFormation/latest/UserGuide/generate-IaC.html" hreflang="en-us" /><link rel="alternative" href="https://docs.aws.amazon.com/AWSCloudFormation/latest/UserGuide/generate-IaC.html" hreflang="en" /><link rel="alternative" href="https://docs.aws.amazon.com/es_es/AWSCloudFormation/latest/UserGuide/generate-IaC.html" hreflang="es-es" /><link rel="alternative" href="https://docs.aws.amazon.com/es_es/AWSCloudFormation/latest/UserGuide/generate-IaC.html" hreflang="es" /><link rel="alternative" href="https://docs.aws.amazon.com/fr_fr/AWSCloudFormation/latest/UserGuide/generate-IaC.html" hreflang="fr-fr" /><link rel="alternative" href="https://docs.aws.amazon.com/fr_fr/AWSCloudFormation/latest/UserGuide/generate-IaC.html" hreflang="fr" /><link rel="alternative" href="https://docs.aws.amazon.com/it_it/AWSCloudFormation/latest/UserGuide/generate-IaC.html" hreflang="it-it" /><link rel="alternative" href="https://docs.aws.amazon.com/it_it/AWSCloudFormation/latest/UserGuide/generate-IaC.html" hreflang="it" /><link rel="alternative" href="https://docs.aws.amazon.com/ja_jp/AWSCloudFormation/latest/UserGuide/generate-IaC.html" hreflang="ja-jp" /><link rel="alternative" href="https://docs.aws.amazon.com/ja_jp/AWSCloudFormation/latest/UserGuide/generate-IaC.html" hreflang="ja" /><link rel="alternative" href="https://docs.aws.amazon.com/ko_kr/AWSCloudFormation/latest/UserGuide/generate-IaC.html" hreflang="ko-kr" /><link rel="alternative" href="https://docs.aws.amazon.com/ko_kr/AWSCloudFormation/latest/UserGuide/generate-IaC.html" hreflang="ko" /><link rel="alternative" href="https://docs.aws.amazon.com/pt_br/AWSCloudFormation/latest/UserGuide/generate-IaC.html" hreflang="pt-br" /><link rel="alternative" href="https://docs.aws.amazon.com/pt_br/AWSCloudFormation/latest/UserGuide/generate-IaC.html" hreflang="pt" /><link rel="alternative" href="https://docs.aws.amazon.com/zh_cn/AWSCloudFormation/latest/UserGuide/generate-IaC.html" hreflang="zh-cn" /><link rel="alternative" href="https://docs.aws.amazon.com/zh_tw/AWSCloudFormation/latest/UserGuide/generate-IaC.html" hreflang="zh-tw" /><link rel="alternative" href="https://docs.aws.amazon.com/AWSCloudFormation/latest/UserGuide/generate-IaC.html" hreflang="x-default" /><meta name="feedback-item" content="CloudFormation" /><meta name="this_doc_product" content="AWS CloudFormation" /><meta name="this_doc_guide" content="ユーザーガイド" /><script defer="" src="/assets/r/vendor4.js?version=2021.12.02"></script><script defer="" src="/assets/r/vendor3.js?version=2021.12.02"></script><script defer="" src="/assets/r/vendor1.js?version=2021.12.02"></script><script defer="" src="/assets/r/awsdocs-common.js?version=2021.12.02"></script><script defer="" src="/assets/r/awsdocs-doc-page.js?version=2021.12.02"></script><link href="/assets/r/vendor4.css?version=2021.12.02" rel="stylesheet" /><link href="/assets/r/awsdocs-common.css?version=2021.12.02" rel="stylesheet" /><link href="/assets/r/awsdocs-doc-page.css?version=2021.12.02" rel="stylesheet" /><script async="" id="awsc-panorama-bundle" type="text/javascript" src="https://prod.pa.cdn.uis.awsstatic.com/panorama-nav-init.js" data-config="{'appEntity':'aws-documentation','region':'us-east-1','service':'cloudformation'}"></script><meta id="panorama-serviceSubSection" value="ユーザーガイド" /><meta id="panorama-serviceConsolePage" value="IaC ジェネレーターを使用して既存のリソースからテンプレートを生成する" /></head><body class="awsdocs awsui"><div class="awsdocs-container"><awsdocs-header></awsdocs-header><awsui-app-layout id="app-layout" class="awsui-util-no-gutters" ng-controller="ContentController as $ctrl" header-selector="awsdocs-header" navigation-hide="false" navigation-width="$ctrl.navWidth" navigation-open="$ctrl.navOpen" navigation-change="$ctrl.onNavChange($event)" tools-hide="$ctrl.hideTools" tools-width="$ctrl.toolsWidth" tools-open="$ctrl.toolsOpen" tools-change="$ctrl.onToolsChange($event)"><div id="guide-toc" dom-region="navigation"><awsdocs-toc></awsdocs-toc></div><div id="main-column" dom-region="content" tabindex="-1"><awsdocs-view class="awsdocs-view"><div id="awsdocs-content"><head><title>IaC ジェネレーターを使用して既存のリソースからテンプレートを生成する - AWS CloudFormation</title><meta name="rss" content="aws-cloudformation-release-notes.rss" /><meta name="forums" content="https://repost.aws/ja/tags/TAm3R3LNU3RfSX9L23YIpo3w" /><meta name="feedback" content="https://docs.aws.amazon.com/forms/aws-doc-feedback?hidden_service_name=CloudFormation&amp;topic_url=https://docs.aws.amazon.com/ja_jp/AWSCloudFormation/latest/UserGuide/generate-IaC.html" /><meta name="feedback-yes" content="feedbackyes.html?topic_url=https://docs.aws.amazon.com/ja_jp/AWSCloudFormation/latest/UserGuide/generate-IaC.html" /><meta name="feedback-no" content="feedbackno.html?topic_url=https://docs.aws.amazon.com/ja_jp/AWSCloudFormation/latest/UserGuide/generate-IaC.html" /><meta name="keywords" content="CloudFormation,AWSCloudFormation,リソースのプロビジョニング,リソース構成,インフラストラクチャ管理,CloudFormer,CloudFormation スタック,CloudFormation StackSet,CloudFormation テンプレート,変更セット,インフラストラクチャの定義,IaC ジェネレーター,AWS CloudFormation IaC ジェネレーター" /><script type="application/ld+json">
+{
+    "@context" : "https://schema.org",
+    "@type" : "BreadcrumbList",
+    "itemListElement" : [
+      {
+        "@type" : "ListItem",
+        "position" : 1,
+        "name" : "AWS",
+        "item" : "https://aws.amazon.com"
+      },
+      {
+        "@type" : "ListItem",
+        "position" : 2,
+        "name" : "AWS CloudFormation",
+        "item" : "https://docs.aws.amazon.com/cloudformation/index.html"
+      },
+      {
+        "@type" : "ListItem",
+        "position" : 3,
+        "name" : "ユーザーガイド",
+        "item" : "https://docs.aws.amazon.com/ja_jp/AWSCloudFormation/latest/UserGuide"
+      },
+      {
+        "@type" : "ListItem",
+        "position" : 4,
+        "name" : "CloudFormation テンプレートの使用",
+        "item" : "https://docs.aws.amazon.com/ja_jp/AWSCloudFormation/latest/UserGuide/template-guide.html"
+      },
+      {
+        "@type" : "ListItem",
+        "position" : 5,
+        "name" : "IaC ジェネレーターを使用して既存のリソースからテンプレートを生成する",
+        "item" : "https://docs.aws.amazon.com/ja_jp/AWSCloudFormation/latest/UserGuide/template-guide.html"
+      }
+    ]
+}
+</script></head><body><div id="main"><div style="display: none"></div><div id="breadcrumbs" class="breadcrumb"><a href="/index.html">ドキュメント</a><a href="/cloudformation/index.html">AWS CloudFormation</a><a href="Welcome.html">ユーザーガイド</a></div><div id="page-toc-src"><a href="#iac-generator-considerations">考慮事項</a><a href="#iac-generator-permissions">アクセス許可</a><a href="#iac-generator-commonly-used-commands">よく使われるコマンド</a><a href="#iac-generator-cdk-migrate">テンプレートを AWS CDK に移行する</a></div><div id="main-content" class="awsui-util-container"><div id="main-col-body"><awsdocs-language-banner data-service="$ctrl.pageService"></awsdocs-language-banner><h1 class="topictitle" id="generate-IaC">IaC ジェネレーターを使用して既存のリソースからテンプレートを生成する</h1><div class="awsdocs-page-header-container"><awsdocs-page-header></awsdocs-page-header><awsdocs-filter-selector id="awsdocs-filter-selector"></awsdocs-filter-selector></div><p>IaC ジェネレーター (Infrastructure as Code ジェネレーター) では、まだ CloudFormation の管理対象になっていないアカウントにプロビジョニングされた AWS リソースを使用してテンプレートを生成することができます。</p><p>IaC ジェネレーターの利点は次のとおりです。</p><div class="itemizedlist">
+         
+         
+         
+    <ul class="itemizedlist"><li class="listitem">
+            <p>CloudFormation 管理でアプリケーション全体を使用するか、AWS CDK アプリに移行します。</p>
+        </li><li class="listitem">
+            <p>プロパティでリソースプロパティを記述することなくテンプレートを生成し、それを JSON または YAML 構文に変換します。</p>
+        </li><li class="listitem">
+            <p>新しいアカウントかリージョンにリソースをレプリケートするときは、こちらのテンプレートを使用します。</p>
+        </li></ul></div><p>IaC 生成プロセスは、以下のステップで構成されています。</p><div class="orderedlist">
+         
+         
+         
+    <ol><li>
+            <p><span class="topcom">リソースのスキャン</span> – 最初のステップは、リソースのスキャンを開始することです。このスキャンはリージョン全体で実行され、30 日後に失効します。この間、同じスキャンから複数のテンプレートを作成できます。</p>
+        </li><li>
+            <p><span class="topcom">テンプレートの作成</span> – テンプレートを作成するには、次の 2 つのオプションがあります。</p>
+            <div class="itemizedlist">
+                 
+                 
+            <ul class="itemizedlist"><li class="listitem">
+                    <p>新しいテンプレートを最初から作成し、スキャンしたリソースと関連リソースをそこに追加します。</p>
+                </li><li class="listitem">
+                    <p>既存の CloudFormation スタックを開始点として使用して、スキャンされたリソースと関連リソースをそのテンプレートに追加します。</p>
+                </li></ul></div>
+        </li><li>
+            <p><span class="topcom">リソースのインポート</span> – テンプレートを使用して、リソースを CloudFormation スタックとしてインポートするか、AWS CDK アプリに移行します。</p>
+        </li></ol></div><p>IaC ジェネレーターの機能は、すべての商用リージョンで利用可能で、多くの一般的な AWS リソースタイプをサポートしています。サポートされているリソースの一覧については、「<a href="./resource-import-supported-resources.html">リソースタイプのサポート</a>」を参照してください。</p><div class="highlights"><h6>トピック</h6><ul><li><p><a href="#iac-generator-considerations">考慮事項</a></p></li><li><p><a href="#iac-generator-permissions">リソースのスキャンに必要な IAM アクセス許可</a></p></li><li><p><a href="#iac-generator-commonly-used-commands">テンプレートの生成、管理、削除によく使用されるコマンド</a></p></li><li><p><a href="#iac-generator-cdk-migrate">テンプレートを AWS CDK に移行する</a></p></li><li><p><a href="./iac-generator-start-resource-scan.html">CloudFormation IaC ジェネレーターを使用してリソーススキャンを開始する</a></p></li><li><p><a href="./generate-IaC-view-scan-summary.html">CloudFormation コンソールでスキャンの概要を表示する</a></p></li><li><p><a href="./iac-generator-create-template-from-scanned-resources.html">IaC ジェネレーターを使用してスキャンされたリソースから CloudFormation テンプレートを作成する</a></p></li><li><p><a href="./iac-generator-create-stack-from-scanned-resources.html">スキャンしたリソースから CloudFormation スタックを作成する</a></p></li><li><p><a href="./generate-IaC-write-only-properties.html">書き込み専用プロパティを解決する</a></p></li></ul></div>
+        <h2 id="iac-generator-considerations">考慮事項</h2>
+        <p>読み取り権限のある AWS リソースであれば、JSON テンプレートまたは YAML テンプレートを生成できます。IaC ジェネレーターの機能のテンプレートは、リソースプロパティをプロパティごとに記述することなく、クラウドリソースを確実かつ迅速にモデル化します。</p>
+        <p>次の表は、IaC の生成機能に使用できるクォータの一覧です。</p>
+        <div class="table-container"><div class="table-contents"><table id="w1549aac11c29c19b7"><thead>
+                    <tr>
+                        <th>名前</th>
+                        <th>フルスキャン</th>
+                        <th>部分スキャン</th>
+                    </tr>
+                </thead>
+                    <tr>
+                        <td tabindex="-1">
+                            <p>1 回のスキャンで処理できるリソースの最大数</p>
+                        </td>
+                        <td tabindex="-1">
+                            <p>100,000</p>
+                        </td>
+                        <td tabindex="-1">
+                            <p>100,000</p>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td tabindex="-1">
+                            <p>1 日あたりのスキャン数 (スキャンするリソースの数が 10,000 未満の場合)</p>
+                        </td>
+                        <td tabindex="-1">
+                            <p>10</p>
+                        </td>
+                        <td tabindex="-1">
+                            <p>10</p>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td tabindex="-1">
+                            <p>1 日あたりのスキャン数 (スキャンするリソースの数が 10,000 以上の場合)</p>
+                        </td>
+                        <td tabindex="-1">
+                            <p>1</p>
+                        </td>
+                        <td tabindex="-1">
+                            <p>1</p>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td tabindex="-1">
+                            <p>アカウントあたりの同時に生成されるテンプレートの数</p>
+                        </td>
+                        <td tabindex="-1">
+                            <p>5</p>
+                        </td>
+                        <td tabindex="-1">
+                            <p>5</p>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td tabindex="-1">
+                            <p>1 回のテンプレート生成で同時にモデル化されるリソースの数</p>
+                        </td>
+                        <td tabindex="-1">
+                            <p>5</p>
+                        </td>
+                        <td tabindex="-1">
+                            <p>5</p>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td tabindex="-1">
+                            <p>1 つのテンプレートでモデル化できるリソースの合計数</p>
+                        </td>
+                        <td tabindex="-1">
+                            <p>500</p>
+                        </td>
+                        <td tabindex="-1">
+                            <p>500</p>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td tabindex="-1">
+                            <p>生成されたテンプレートのアカウントあたりの最大数</p>
+                        </td>
+                        <td tabindex="-1">
+                            <p>1,000</p>
+                        </td>
+                        <td tabindex="-1">
+                            <p>1,000</p>
+                        </td>
+                    </tr>
+                </table></div></div>
+        <div class="awsdocs-note awsdocs-important"><div class="awsdocs-note-title"><awsui-icon name="status-warning" variant="error"></awsui-icon><h6>重要</h6></div><div class="awsdocs-note-text"><p>IaC ジェネレーターは、お使いのリージョンの Cloud Control API でサポートされている AWS リソースのみをサポートします。詳細については、「<a href="./resource-import-supported-resources.html">リソースタイプのサポート</a>」を参照してください。</p></div></div>
+     
+        <h2 id="iac-generator-permissions">リソースのスキャンに必要な IAM アクセス許可</h2>
+
+        <p>IaC ジェネレーターでリソースをスキャンするときは、お使いの IAM プリンシパル (ユーザー、ロール、またはグループ) に次のものが必要です。</p>
+        <div class="itemizedlist">
+             
+             
+        <ul class="itemizedlist"><li class="listitem">
+                <p>CloudFormation のスキャンのアクセス許可</p>
+            </li><li class="listitem">
+                <p>ターゲットの AWS サービスの読み取りアクセス許可</p>
+            </li></ul></div>
+        <p>スキャンの範囲は、ユーザーが読み取りアクセス許可を持っているリソースに限られます。アクセス許可がないためにスキャンに失敗することはありませんが、そのようなリソースは除外されます。</p>
+        <p>スキャンとテンプレート管理のアクセス許可を付与する IAM ポリシーの例については、「<a href="./security_iam_id-based-policy-examples.html#iam-policy-example-for-iac-generator">すべての IaC ジェネレーターオペレーションを許可する</a>」を参照してください。</p>
+     
+        <h2 id="iac-generator-commonly-used-commands">テンプレートの生成、管理、削除によく使用されるコマンド</h2>
+        <p>IaC ジェネレーターの操作用によく使用されるコマンドには以下が含まれます。</p>
+        <div class="itemizedlist">
+             
+             
+             
+             
+             
+             
+             
+             
+             
+            
+             
+        <ul class="itemizedlist"><li class="listitem">
+                <p><a href="https://docs.aws.amazon.com/cli/latest/reference/cloudformation/start-resource-scan.html">start-resource-scan</a> - AWS リージョンでアカウント内のリソースのスキャンを開始します。</p>
+            </li><li class="listitem">
+                <p><a href="https://docs.aws.amazon.com/cli/latest/reference/cloudformation/describe-resource-scan.html">describe-resource-scan</a> - リソーススキャンの進行状況をモニタリングします。</p>
+            </li><li class="listitem">
+                <p><a href="https://docs.aws.amazon.com/cli/latest/reference/cloudformation/list-resource-scans.html">list-resource-scans</a> - AWS リージョン内のリソーススキャンを一覧表示します。</p>
+            </li><li class="listitem">
+                <p><a href="https://docs.aws.amazon.com/cli/latest/reference/cloudformation/list-resource-scan-resources.html">list-resource-scan-resources</a> - リソーススキャン中に見つかったリソースを一覧表示します。</p>
+            </li><li class="listitem">
+                <p> <a href="https://docs.aws.amazon.com/cli/latest/reference/cloudformation/list-resource-scan-related-resources.html">list-resource-scan-related-resources</a> - スキャンしたリソースに関連するリソースを一覧表示します。</p>
+            </li><li class="listitem">
+                <p><a href="https://docs.aws.amazon.com/cli/latest/reference/cloudformation/create-generated-template.html">create-generated-template</a> - スキャンされたリソースのセットから CloudFormation テンプレートを生成します。</p>
+            </li><li class="listitem">
+                <p><a href="https://docs.aws.amazon.com/cli/latest/reference/cloudformation/update-generated-template.html">update-generated-template</a> - 生成されたテンプレートを更新します。</p>
+            </li><li class="listitem">
+                <p><a href="https://docs.aws.amazon.com/cli/latest/reference/cloudformation/describe-generated-template.html">describe-generated-template</a> - 生成されたテンプレートに関する情報を返します。</p>
+            </li><li class="listitem">
+                <p><a href="https://docs.aws.amazon.com/cli/latest/reference/cloudformation/list-generated-templates.html">list-generated-templates</a> - アカウントと現在のリージョンで生成されたすべてのテンプレートを一覧表示します。</p>
+            </li><li class="listitem">
+                <p><a href="https://docs.aws.amazon.com/cli/latest/reference/cloudformation/delete-generated-template.html">delete-generated-template</a> - 生成されたテンプレートを削除します。</p>
+            </li></ul></div>
+     
+        <h2 id="iac-generator-cdk-migrate">テンプレートを AWS CDK に移行する</h2>
+        <p>AWS Cloud Development Kit (AWS CDK) は、一般的なプログラミング言語を使って CloudFormation リソースを開発、管理、デプロイするときに使用できるオープンソースのソフトウェア開発フレームワークです。</p>
+        <p>AWS CDK CLI は、IaC ジェネレーターとの統合を提供します。CloudFormation テンプレートを変換し、ユーザーのリソースを含む新しい CDK アプリを作成するには、AWS CDK CLI <code class="code">cdk
+                migrate</code> コマンドを使用します。その後、AWS CDK を使用してリソースを管理し、CloudFormation にデプロイできます。</p>
+        <p>詳細については、「AWS Cloud Development Kit (AWS CDK) デベロッパーガイド」の「<a href="https://docs.aws.amazon.com/cdk/v2/guide/migrate.html">Migrate to AWS CDK</a>」を参照してください。</p>
+    <awsdocs-copyright class="copyright-print"></awsdocs-copyright><awsdocs-thumb-feedback right-edge="{{$ctrl.thumbFeedbackRightEdge}}"></awsdocs-thumb-feedback></div><noscript><div><div><div><div id="js_error_message"><p><img src="https://d1ge0kk1l5kms0.cloudfront.net/images/G/01/webservices/console/warning.png" alt="警告" /> <strong>ブラウザで JavaScript が無効になっているか、使用できません。</strong></p><p>AWS ドキュメントを使用するには、JavaScript を有効にする必要があります。手順については、使用するブラウザのヘルプページを参照してください。</p></div></div></div></div></noscript><div id="main-col-footer" class="awsui-util-font-size-0"><div id="doc-conventions"><a target="_top" href="/general/latest/gr/docconventions.html">ドキュメントの表記規則</a></div><div class="prev-next"><div id="previous" class="prev-link" accesskey="p" href="./infrastructure-composer-for-cloudformation.html">Infrastructure Composer</div><div id="next" class="next-link" accesskey="n" href="./iac-generator-start-resource-scan.html">リソーススキャンを開始する</div></div></div><awsdocs-page-utilities></awsdocs-page-utilities></div><div id="quick-feedback-yes" style="display: none;"><div class="title">このページは役に立ちましたか? - はい</div><div class="content"><p>ページが役に立ったことをお知らせいただき、ありがとうございます。</p><p>お時間がある場合は、何が良かったかお知らせください。今後の参考にさせていただきます。</p><p><awsui-button id="fblink" rel="noopener noreferrer" target="_blank" text="フィードバック" click="linkClick($event)" href="https://docs.aws.amazon.com/forms/aws-doc-feedback?hidden_service_name=CloudFormation&amp;topic_url=https://docs.aws.amazon.com/ja_jp/AWSCloudFormation/latest/UserGuide/generate-IaC.html"></awsui-button></p></div></div><div id="quick-feedback-no" style="display: none;"><div class="title">このページは役に立ちましたか? - いいえ</div><div class="content"><p>このページは修正が必要なことをお知らせいただき、ありがとうございます。ご期待に沿うことができず申し訳ありません。</p><p>お時間がある場合は、ドキュメントを改善する方法についてお知らせください。</p><p><awsui-button id="fblink" rel="noopener noreferrer" target="_blank" text="フィードバック" click="linkClick($event)" href="https://docs.aws.amazon.com/forms/aws-doc-feedback?hidden_service_name=CloudFormation&amp;topic_url=https://docs.aws.amazon.com/ja_jp/AWSCloudFormation/latest/UserGuide/generate-IaC.html"></awsui-button></p></div></div></div></body></div></awsdocs-view><div class="page-loading-indicator" id="page-loading-indicator"><awsui-spinner size="large"></awsui-spinner></div></div><div id="tools-panel" dom-region="tools"><awsdocs-tools-panel id="awsdocs-tools-panel"></awsdocs-tools-panel></div></awsui-app-layout><awsdocs-cookie-banner class="doc-cookie-banner"></awsdocs-cookie-banner></div></body></html>
