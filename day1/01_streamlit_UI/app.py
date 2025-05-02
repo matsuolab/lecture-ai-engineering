@@ -15,47 +15,52 @@ import time
 # ============================================
 # タイトルと説明
 # ============================================
-st.title("Streamlit 初心者向けデモ")
-st.markdown("### コメントを解除しながらStreamlitの機能を学びましょう")
-st.markdown("このデモコードでは、コメントアウトされた部分を順番に解除しながらUIの変化を確認できます。")
+st.title("自己紹介")
+st.markdown("### 空欄の項目に入力しながら自己紹介を完成させましょう")
 
 # ============================================
 # サイドバー 
 # ============================================
-st.sidebar.header("デモのガイド")
-st.sidebar.info("コードのコメントを解除して、Streamlitのさまざまな機能を確認しましょう。")
+# st.sidebar.header("デモのガイド")
+# st.sidebar.info("コードのコメントを解除して、Streamlitのさまざまな機能を確認しましょう。")
 
 # ============================================
 # 基本的なUI要素
 # ============================================
-st.header("基本的なUI要素")
+# st.header("基本情報")
 
 # テキスト入力
-st.subheader("テキスト入力")
-name = st.text_input("あなたの名前", "ゲスト")
-st.write(f"こんにちは、{name}さん！")
-
-# ボタン
-# st.subheader("ボタン")
-# if st.button("クリックしてください"):
-#     st.success("ボタンがクリックされました！")
-
-# チェックボックス
-# st.subheader("チェックボックス")
-# if st.checkbox("チェックを入れると追加コンテンツが表示されます"):
-#     st.info("これは隠れたコンテンツです！")
-
+st.subheader("基本情報")
+# name = 
+st.text_input("名前", "(例) 東大花子")
+st.text_input("所属", "(例) 東京大学理科1類2年")
+st.text_input("入会しているサークル", "(例) テニパ")
+st.text_input("好きなこと", "(例) お散歩")
 # スライダー
 # st.subheader("スライダー")
-# age = st.slider("年齢", 0, 100, 25)
-# st.write(f"あなたの年齢: {age}")
+age = st.slider("年齢", 0, 100, 25)
+st.write(f"あなたの年齢: {age}")
+# st.write(f"こんにちは、{name}さん！")
+
+# ボタン
+st.subheader("該当する方にクリックしてください。")
+if st.button("プログラミングは得意です！"):
+    st.success("プログラミングは得意です！")
+if st.button("プログラミングは苦手です！"):
+    st.success("プログラミングは苦手です！")
 
 # セレクトボックス
-# st.subheader("セレクトボックス")
-# option = st.selectbox(
-#     "好きなプログラミング言語は?",
-#     ["Python", "JavaScript", "Java", "C++", "Go", "Rust"]
-# )
+st.subheader("上記でプログラミングが得意と答えられた方で")
+option = st.selectbox(
+    "好きなプログラミング言語",
+    ["特になし" , "Python", "JavaScript", "Java", "C++", "Go", "Rust"]
+)
+st.text_input("その理由")
+
+# チェックボックス
+st.subheader("チェックボックス")
+if st.checkbox("チェックを入れると最近の重大ニュースを1つ紹介します"):
+    st.info("NTTデータがOpenAIと販売代理店契約を結ぶ")
 # st.write(f"あなたは{option}を選びました")
 
 # ============================================
@@ -64,28 +69,28 @@ st.write(f"こんにちは、{name}さん！")
 # st.header("レイアウト")
 
 # カラム
-# st.subheader("カラムレイアウト")
-# col1, col2 = st.columns(2)
-# with col1:
-#     st.write("これは左カラムです")
-#     st.number_input("数値を入力", value=10)
-# with col2:
-#     st.write("これは右カラムです")
-#     st.metric("メトリクス", "42", "2%")
+#st.subheader("カラムレイアウト")
+#col1, col2 = st.columns(2)
+#with col1:
+#    st.write("これは左カラムです")
+#    st.number_input("数値を入力", value=10)
+#with col2:
+#    st.write("これは右カラムです")
+#    st.metric("メトリクス", "42", "2%")
 
 # タブ
-# st.subheader("タブ")
-# tab1, tab2 = st.tabs(["第1タブ", "第2タブ"])
-# with tab1:
-#     st.write("これは第1タブの内容です")
-# with tab2:
-#     st.write("これは第2タブの内容です")
+#st.subheader("タブ")
+#tab1, tab2 = st.tabs(["第1タブ", "第2タブ"])
+#with tab1:
+#    st.write("これは第1タブの内容です")
+#with tab2:
+#    st.write("これは第2タブの内容です")
 
 # エクスパンダー
-# st.subheader("エクスパンダー")
-# with st.expander("詳細を表示"):
-#     st.write("これはエクスパンダー内の隠れたコンテンツです")
-#     st.code("print('Hello, Streamlit！')")
+#st.subheader("エクスパンダー")
+#with st.expander("詳細を表示"):
+#    st.write("これはエクスパンダー内の隠れたコンテンツです")
+#    st.code("print('Hello, Streamlit！')")
 
 # ============================================
 # データ表示
