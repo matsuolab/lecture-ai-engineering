@@ -1,0 +1,171 @@
+<!DOCTYPE html>
+    <html xmlns="http://www.w3.org/1999/xhtml" lang="ja-JP"><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8" /><title>SageMaker AI で適切なデータ準備ツールを選択するための推奨事項 - Amazon SageMaker AI</title><meta name="viewport" content="width=device-width,initial-scale=1" /><meta name="assets_root" content="/assets" /><meta name="target_state" content="data-prep" /><meta name="default_state" content="data-prep" /><link rel="icon" type="image/ico" href="/assets/images/favicon.ico" /><link rel="shortcut icon" type="image/ico" href="/assets/images/favicon.ico" /><link rel="canonical" href="https://docs.aws.amazon.com/ja_jp/sagemaker/latest/dg/data-prep.html" /><meta name="description" content="機械学習用のデータの準備とラベル付けに適した SageMaker AI ツールの選択について説明します。" /><meta name="deployment_region" content="IAD" /><meta name="product" content="Amazon SageMaker AI" /><meta name="guide" content="デベロッパーガイド" /><meta name="abstract" content="SageMaker AI を使用して、 で機械学習モデルを構築、トレーニング、ホストします AWS。" /><meta name="guide-locale" content="ja_jp" /><meta name="tocs" content="toc-contents.json" /><link rel="canonical" href="https://docs.aws.amazon.com/ja_jp/sagemaker/latest/dg/data-prep.html" /><link rel="alternative" href="https://docs.aws.amazon.com/id_id/sagemaker/latest/dg/data-prep.html" hreflang="id-id" /><link rel="alternative" href="https://docs.aws.amazon.com/id_id/sagemaker/latest/dg/data-prep.html" hreflang="id" /><link rel="alternative" href="https://docs.aws.amazon.com/de_de/sagemaker/latest/dg/data-prep.html" hreflang="de-de" /><link rel="alternative" href="https://docs.aws.amazon.com/de_de/sagemaker/latest/dg/data-prep.html" hreflang="de" /><link rel="alternative" href="https://docs.aws.amazon.com/sagemaker/latest/dg/data-prep.html" hreflang="en-us" /><link rel="alternative" href="https://docs.aws.amazon.com/sagemaker/latest/dg/data-prep.html" hreflang="en" /><link rel="alternative" href="https://docs.aws.amazon.com/es_es/sagemaker/latest/dg/data-prep.html" hreflang="es-es" /><link rel="alternative" href="https://docs.aws.amazon.com/es_es/sagemaker/latest/dg/data-prep.html" hreflang="es" /><link rel="alternative" href="https://docs.aws.amazon.com/fr_fr/sagemaker/latest/dg/data-prep.html" hreflang="fr-fr" /><link rel="alternative" href="https://docs.aws.amazon.com/fr_fr/sagemaker/latest/dg/data-prep.html" hreflang="fr" /><link rel="alternative" href="https://docs.aws.amazon.com/it_it/sagemaker/latest/dg/data-prep.html" hreflang="it-it" /><link rel="alternative" href="https://docs.aws.amazon.com/it_it/sagemaker/latest/dg/data-prep.html" hreflang="it" /><link rel="alternative" href="https://docs.aws.amazon.com/ja_jp/sagemaker/latest/dg/data-prep.html" hreflang="ja-jp" /><link rel="alternative" href="https://docs.aws.amazon.com/ja_jp/sagemaker/latest/dg/data-prep.html" hreflang="ja" /><link rel="alternative" href="https://docs.aws.amazon.com/ko_kr/sagemaker/latest/dg/data-prep.html" hreflang="ko-kr" /><link rel="alternative" href="https://docs.aws.amazon.com/ko_kr/sagemaker/latest/dg/data-prep.html" hreflang="ko" /><link rel="alternative" href="https://docs.aws.amazon.com/pt_br/sagemaker/latest/dg/data-prep.html" hreflang="pt-br" /><link rel="alternative" href="https://docs.aws.amazon.com/pt_br/sagemaker/latest/dg/data-prep.html" hreflang="pt" /><link rel="alternative" href="https://docs.aws.amazon.com/zh_cn/sagemaker/latest/dg/data-prep.html" hreflang="zh-cn" /><link rel="alternative" href="https://docs.aws.amazon.com/zh_tw/sagemaker/latest/dg/data-prep.html" hreflang="zh-tw" /><link rel="alternative" href="https://docs.aws.amazon.com/sagemaker/latest/dg/data-prep.html" hreflang="x-default" /><meta name="feedback-item" content="SageMaker" /><meta name="this_doc_product" content="Amazon SageMaker AI" /><meta name="this_doc_guide" content="デベロッパーガイド" /><script defer="" src="/assets/r/vendor4.js?version=2021.12.02"></script><script defer="" src="/assets/r/vendor3.js?version=2021.12.02"></script><script defer="" src="/assets/r/vendor1.js?version=2021.12.02"></script><script defer="" src="/assets/r/awsdocs-common.js?version=2021.12.02"></script><script defer="" src="/assets/r/awsdocs-doc-page.js?version=2021.12.02"></script><link href="/assets/r/vendor4.css?version=2021.12.02" rel="stylesheet" /><link href="/assets/r/awsdocs-common.css?version=2021.12.02" rel="stylesheet" /><link href="/assets/r/awsdocs-doc-page.css?version=2021.12.02" rel="stylesheet" /><script async="" id="awsc-panorama-bundle" type="text/javascript" src="https://prod.pa.cdn.uis.awsstatic.com/panorama-nav-init.js" data-config="{'appEntity':'aws-documentation','region':'us-east-1','service':'sagemaker'}"></script><meta id="panorama-serviceSubSection" value="デベロッパーガイド" /><meta id="panorama-serviceConsolePage" value="SageMaker AI で適切なデータ準備ツールを選択するための推奨事項" /></head><body class="awsdocs awsui"><div class="awsdocs-container"><awsdocs-header></awsdocs-header><awsui-app-layout id="app-layout" class="awsui-util-no-gutters" ng-controller="ContentController as $ctrl" header-selector="awsdocs-header" navigation-hide="false" navigation-width="$ctrl.navWidth" navigation-open="$ctrl.navOpen" navigation-change="$ctrl.onNavChange($event)" tools-hide="$ctrl.hideTools" tools-width="$ctrl.toolsWidth" tools-open="$ctrl.toolsOpen" tools-change="$ctrl.onToolsChange($event)"><div id="guide-toc" dom-region="navigation"><awsdocs-toc></awsdocs-toc></div><div id="main-column" dom-region="content" tabindex="-1"><awsdocs-view class="awsdocs-view"><div id="awsdocs-content"><head><title>SageMaker AI で適切なデータ準備ツールを選択するための推奨事項 - Amazon SageMaker AI</title><meta name="pdf" content="sagemaker-dg.pdf#data-prep" /><meta name="rss" content="amazon-sagemaker-release-notes.rss" /><meta name="forums" content="https://repost.aws/ja/tags/TAT80swPyVRPKPcA0rsJYPuA" /><meta name="feedback" content="https://docs.aws.amazon.com/forms/aws-doc-feedback?hidden_service_name=SageMaker&amp;topic_url=https://docs.aws.amazon.com/ja_jp/sagemaker/latest/dg/data-prep.html" /><meta name="feedback-yes" content="feedbackyes.html?topic_url=https://docs.aws.amazon.com/ja_jp/sagemaker/latest/dg/data-prep.html" /><meta name="feedback-no" content="feedbackno.html?topic_url=https://docs.aws.amazon.com/ja_jp/sagemaker/latest/dg/data-prep.html" /><meta name="keywords" content="SageMaker,Amazon SageMaker,機械学習,ノートブックインスタンス,データ準備,データラングリング,特徴量エンジニアリング,データ変換,ローコードのデータ準備,スケーラブルなデータ準備,データ準備用 SQL,SQL 拡張機能,Amazon EMR" /><script type="application/ld+json">
+{
+    "@context" : "https://schema.org",
+    "@type" : "BreadcrumbList",
+    "itemListElement" : [
+      {
+        "@type" : "ListItem",
+        "position" : 1,
+        "name" : "AWS",
+        "item" : "https://aws.amazon.com"
+      },
+      {
+        "@type" : "ListItem",
+        "position" : 2,
+        "name" : "Amazon SageMaker",
+        "item" : "https://docs.aws.amazon.com/sagemaker/index.html"
+      },
+      {
+        "@type" : "ListItem",
+        "position" : 3,
+        "name" : "デベロッパーガイド",
+        "item" : "https://docs.aws.amazon.com/ja_jp/sagemaker/latest/dg"
+      },
+      {
+        "@type" : "ListItem",
+        "position" : 4,
+        "name" : "SageMaker AI で適切なデータ準備ツールを選択するための推奨事項",
+        "item" : "https://docs.aws.amazon.com/ja_jp/sagemaker/latest/dg/data-prep.html"
+      }
+    ]
+}
+</script></head><body><div id="main"><div style="display: none"><a href="sagemaker-dg.pdf#data-prep" target="_blank" rel="noopener noreferrer" title="PDF を開く"></a></div><div id="breadcrumbs" class="breadcrumb"><a href="/index.html">ドキュメント</a><a href="/sagemaker/index.html">Amazon SageMaker</a><a href="whatis.html">デベロッパーガイド</a></div><div id="page-toc-src"><a href="#data-prep-choose">機能を選択する</a></div><div id="main-content" class="awsui-util-container"><div id="main-col-body"><awsdocs-language-banner data-service="$ctrl.pageService"></awsdocs-language-banner><awsui-alert class="awsdocs-page-banner awsui-util-mb-l"><p>翻訳は機械翻訳により提供されています。提供された翻訳内容と英語版の間で齟齬、不一致または矛盾がある場合、英語版が優先します。</p></awsui-alert><h1 class="topictitle" id="data-prep">SageMaker AI で適切なデータ準備ツールを選択するための推奨事項</h1><div class="awsdocs-page-header-container"><awsdocs-page-header></awsdocs-page-header><awsdocs-filter-selector id="awsdocs-filter-selector"></awsdocs-filter-selector></div><p>機械学習におけるデータ準備とは、分析とモデリングのために適切となるように raw データを収集、前処理、整理するプロセスを指します。このステップでは、データが機械学習アルゴリズムが効果的に学習できる形式であることを確認します。データ準備タスクには、欠損値の処理、外れ値の削除、特徴量のスケーリング、カテゴリ変数のエンコーディング、潜在的なバイアスの評価と軽減策の実行、データのトレーニングセットとテストセットへの分割、ラベル付け、今後の機械学習タスクに向けたデータの品質とユーザビリティを最適化するために必要な変換などがある可能性があります。</p>
+    <h2 id="data-prep-choose">機能を選択する</h2>
+    <p>Amazon SageMaker AI による<em>データ準備</em>には、主に 3 つのユースケースがあります。 Amazon SageMaker  要件に合った<a href="#data-prep-choose-use-cases">ユースケース</a>を選択して、対応する<a href="#data-prep-choose-recommended">推奨機能</a>を参照してください。</p>
+
+     
+      <h3 id="data-prep-choose-use-cases">ユースケース</h3>
+      <p>機械学習のためのデータ準備を実行する場合の主なユースケースは、以下のとおりです。</p>
+
+      <div class="itemizedlist">
+         
+         
+         
+      <ul class="itemizedlist"><li class="listitem">
+          <p><span class="topcom">ユースケース 1</span>: ビジュアルインターフェイスを好むユーザーにとって、SageMaker AI はpoint-and-click環境を通じてモデルトレーニングの機能を探索、準備、エンジニアリングする方法を提供します。</p>
+        </li><li class="listitem">
+          <p><span class="topcom">ユースケース 2</span>: データ準備をより柔軟に制御したいコーディングに慣れているユーザーにとって、SageMaker AI はツールをコーディング環境に統合して探索、変換、特徴量エンジニアリングを行います。</p>
+        </li><li class="listitem">
+          <p><span class="topcom">ユースケース 3</span>: スケーラブルなデータ準備に重点を置くユーザー向けに、SageMaker AI は Hadoop/Spark エコシステムを活用してビッグデータを分散処理するサーバーレス機能を提供します。</p>
+        </li></ul></div>
+
+     
+     
+      <h3 id="data-prep-choose-recommended">推奨機能</h3>
+      <p>次の表は、機械学習の各データ準備ユースケースに関連する SageMaker AI 機能の主な考慮事項とトレードオフの概要を示しています。開始するには、要件に合ったユースケースを特定し、推奨される SageMaker AI 機能に移動します。</p>
+
+      <div class="table-container"><div class="table-contents disable-scroll"><table id="w611aac15b5b7b5"><thead>
+            <tr>
+              <th>Descriptor</th>
+              <th>ユースケース 1</th>
+              <th>ユースケース 2</th>
+              <th>ユースケース 3</th>
+            </tr>
+          </thead>
+            <tr>
+              <td tabindex="-1">SageMaker AI 機能</td>
+              <td tabindex="-1">Amazon SageMaker Canvas 内の <a href="./canvas-data-prep.html">Data Wrangler</a></td>
+              <td tabindex="-1"><a href="./sagemaker-sql-extension.html">Studio での SQL によるデータ準備</a></td>
+              <td tabindex="-1">Studio での <a href="./studio-notebooks-emr-serverless.html">EMR Serverless を使用してデータを準備する</a> アプリケーション</td>
+            </tr>
+            <tr>
+              <td tabindex="-1">説明</td>
+              <td tabindex="-1">SageMaker Canvas は、SageMaker AI で機械学習モデルを構築、トレーニング、デプロイするための視覚的なローコード環境です。Data Wrangler ツールが統合されているため、ユーザーはポイントアンドクリック操作でデータセットを結合、変換、クリーンアップできます。</td>
+              <td tabindex="-1">Studio の SQL 拡張機能を使用すると、ユーザーは Amazon Redshift、Snowflake、Athena、Amazon S3 に接続してアドホック SQL クエリを作成し、JupyterLab ノートブックで結果をプレビューできます。このようなクエリの出力は、機械学習モデルの開発に使用できる形式への追加の処理、可視化、変換のために、Python や Pandas を使用して操作できます。</td>
+              <td tabindex="-1">EMR Serverless と Amazon SageMaker Studio の統合により、Apache Spark や Apache Hive などのオープンソースフレームワークを使用した機械学習用の大規模なデータ準備のためのスケーラブルなサーバーレス環境が提供されます。ユーザーは、Studio ノートブックから EMR Serverless アプリケーションとデータに直接アクセスして、大規模なデータ準備タスクを実行できます。</td>
+            </tr>
+
+            <tr>
+              <td tabindex="-1">最適化の対象</td>
+              <td tabindex="-1">以下を実行できるビジュアルインターフェイスの使用: <div class="itemizedlist">
+                   
+                   
+                   
+                   
+                <ul class="itemizedlist"><li class="listitem">
+                    <p><a href="./data-wrangler-data-flow.html">データ準備パイプラインを作成する</a></p>
+                  </li><li class="listitem">
+                    <p><a href="./canvas-analyses.html">データ分析の実行</a></p>
+                  </li><li class="listitem">
+                    <p><a href="./canvas-transform.html">組み込み変換を使用したデータの変換</a></p>
+                  </li><li class="listitem">
+                    <p>データ変換に<a href="./canvas-chat-for-data-prep.html">生成 AI を活用した</a>自然言語の手順を使用する</p>
+                  </li></ul></div>
+                <p>欠損値の処理、カテゴリ変数のエンコーディング、データ変換の適用など、表形式データのタスク向けに最適化されています。</p>
+              </td>
+              <td tabindex="-1">Amazon Redshift、Snowflake、Athena、または <a href="./studio-sqlexplorer-athena-s3-quickstart.html">Amazon S3</a> にデータがあり、Spark を学ぶ必要なく、探索的 SQL と Python を組み合わせてデータ分析と準備を行うことを求めるユーザー向けです。</td>
+              <td tabindex="-1">SageMaker AI の機械学習機能を活用しながら、Apache Spark を中心とした短時間実行型または断続的なインタラクティブワークロードをスケーリングするための、自動リソースプロビジョニングと終了によるサーバーレスエクスペリエンスを好むユーザー向け。</td>
+
+            </tr>
+            <tr>
+              <td tabindex="-1">考慮事項</td>
+              <td tabindex="-1">
+                <div class="itemizedlist">
+                   
+                   
+                <ul class="itemizedlist"><li class="listitem">
+                    <p>Python、Spark、またはその他の言語に関する専門知識を既にチームが身に着けている場合、これは最適な選択ではない可能性があります。</p>
+                  </li><li class="listitem">
+                    <p>複雑なビジネスロジックを追加する完全な柔軟性が必要な場合や、データ処理環境のフルコントロールが必要な場合には、最適ではない場合があります。</p>
+                  </li></ul></div>
+              </td>
+              <td tabindex="-1">
+                <div class="itemizedlist">
+                   
+                   
+                <ul class="itemizedlist"><li class="listitem">
+                    <p>この機能は、Amazon Redshift、Snowflake、Athena、または Amazon S3 のみに存在する構造化データ用に設計されています。</p>
+                  </li><li class="listitem">
+                    <p>クエリ結果のサイズが SageMaker AI インスタンスのメモリを超える場合、次の<a href="https://github.com/aws/amazon-sagemaker-examples/tree/main/use-cases/athena_ml_workflow_end_to_end" rel="noopener noreferrer" target="_blank"><span>ノートブック</span><awsui-icon class="awsdocs-link-icon" name="external"></awsui-icon></a>は、SageMaker AI アルゴリズムによる取り込み用にデータを準備するために Athena の使用を開始する方法をガイドします。</p>
+                  </li></ul></div>
+              </td>
+              <td tabindex="-1"><div class="itemizedlist">
+                   
+                   
+                   
+                <ul class="itemizedlist"><li class="listitem">
+                    <p>EMR Serverless アプリケーションや Spark ベースのツールに精通していないユーザーにとっては、学ぶのが困難となる可能性があります。</p>
+                  </li><li class="listitem">
+                    <p>この機能は、インタラクティブなデータ準備タスクに適しています。大量のデータ、他のサービスとの広範な統合、カスタムアプリケーション、Apache Spark 以外の多様な分散データ処理フレームワークを使用した、大規模実行、長時間実行、または複雑なデータ処理要件に対応する Amazon EMR クラスターと比べて効率的ではない場合があります。</p>
+                  </li><li class="listitem">
+                    <p>サーバーレスコンピューティングは、短期間のタスクではコスト効率に優れているとはいえ、特に長時間稼働またはリソース集約型のワークロードでは、コストを慎重にモニタリングして管理することが重要です。</p>
+                  </li></ul></div>
+              </td>
+            </tr>
+            <tr>
+              <td tabindex="-1">推奨環境</td>
+              <td tabindex="-1"><a href="./canvas-getting-started.html">SageMaker Canvas の使用を開始する</a></td>
+              <td tabindex="-1"><a href="./studio-updated-launch.html#studio-updated-launch-prereq">Studio を起動する</a></td>
+              <td tabindex="-1"><a href="./studio-updated-launch.html#studio-updated-launch-prereq">Studio を起動する</a></td>
+            </tr>
+          </table></div></div>
+
+     
+     
+      <h3 id="data-prep-choose-additional">追加のオプション</h3>
+
+      <p> SageMaker AI には、機械学習モデルで使用するデータを準備するための以下の追加オプションが用意されています。</p>
+      <div class="itemizedlist">
+         
+         
+         
+         
+         
+         
+      <ul class="itemizedlist"><li class="listitem">
+          <p><a href="./studio-notebooks-emr-cluster.html">Amazon EMR を使用したデータ準備</a>: 長時間実行され、コンピューティング集約的で大規模なデータ処理タスクの場合は、SageMaker Studio の Amazon EMR クラスターの使用を検討してください。Amazon EMR クラスターは、大規模な並列処理を処理するように設計されており、数百または数千のノードにスケールできるため、Apache Spark、Hadoop、Hive、Presto などのフレームワークを必要とするビッグデータワークロードに適しています。Amazon EMR と SageMaker Studio の統合により、Amazon EMR のスケーラビリティとパフォーマンスを活用しながら、完全な ML 実験、モデルトレーニングとデプロイ、SageMaker Studio 環境内の一元化と管理を維持できます。</p>
+        </li><li class="listitem">
+          <p><a href="./studio-notebooks-glue.html">Glue インタラクティブセッションを使用してデータを準備する</a>: AWS Glue
+インタラクティブセッションから Apache Spark ベースのサーバーレスエンジンを使用して、SageMaker Studio の複数のソースからデータを集約、変換、準備できます。</p>
+        </li><li class="listitem">
+          <p>Amazon SageMaker Clarify 処理ジョブを使用して<a href="" rel="noopener noreferrer" target="_blank">トレーニングデータのバイアスを特定する</a>: SageMaker Clarify を使用すると、データを分析し、複数の側面にわたる潜在的なバイアスを検出できます。例えば、Studio の Clarify API を使用して、トレーニングデータに性別、人種、年齢などのグループ間の偏った表現やラベル付けバイアスがあるかを検出できます。Clarify は、モデルの予測へのバイアスの伝播を回避するために、モデルをトレーニングする前にこのようなバイアスを特定するのに役立ちます。</p>
+        </li><li class="listitem">
+          <p><a href="" rel="noopener noreferrer" target="_blank">特徴量の作成、保存、共有</a>: Amazon SageMaker 特徴量ストアは、機械学習用の厳選された特徴量の検出と再利用を最適化します。モデルトレーニング用に検索および取得できる特徴量データを保存する、一元化されたリポジトリを提供します。特徴量を標準化された形式で保存すると、ML プロジェクト間で再利用できます。特徴量ストアは、スケーラブルで管理された機械学習の特徴量エンジニアリングのためのリネージ追跡、統計、監査証跡など、特徴量ライフサイクル全体を管理します。</p>
+        </li><li class="listitem">
+          <p><a href="./data-label.html">データをヒューマンインザループでラベル付けする</a>: SageMaker Ground Truth を使用すると、トレーニングデータセットのデータラベリングワークフローを管理できます。</p>
+        </li><li class="listitem">
+          <p><a href="./processing-job.html">SageMaker Processing API を使用する</a>: 探索的データ分析を実行してデータ変換ステップを作成したら、<a href="./processing-job.html">SageMaker AI Processing ジョブ</a>を使用して変換コードを本番稼働させ、<a href="./pipelines.html">SageMaker Model Building Pipelines </a>を使用して準備ワークフローを自動化できます。</p>
+        </li></ul></div>
+     
+  <awsdocs-copyright class="copyright-print"></awsdocs-copyright><awsdocs-thumb-feedback right-edge="{{$ctrl.thumbFeedbackRightEdge}}"></awsdocs-thumb-feedback></div><noscript><div><div><div><div id="js_error_message"><p><img src="https://d1ge0kk1l5kms0.cloudfront.net/images/G/01/webservices/console/warning.png" alt="警告" /> <strong>ブラウザで JavaScript が無効になっているか、使用できません。</strong></p><p>AWS ドキュメントを使用するには、JavaScript を有効にする必要があります。手順については、使用するブラウザのヘルプページを参照してください。</p></div></div></div></div></noscript><div id="main-col-footer" class="awsui-util-font-size-0"><div id="doc-conventions"><a target="_top" href="/general/latest/gr/docconventions.html">ドキュメントの表記規則</a></div><div class="prev-next"><div id="previous" class="prev-link" accesskey="p" href="./a2i-api-references.html">API リファレンス</div><div id="next" class="next-link" accesskey="n" href="./sagemaker-sql-extension.html">Studio での SQL によるデータ準備</div></div></div><awsdocs-page-utilities></awsdocs-page-utilities></div><div id="quick-feedback-yes" style="display: none;"><div class="title">このページは役に立ちましたか? - はい</div><div class="content"><p>ページが役に立ったことをお知らせいただき、ありがとうございます。</p><p>お時間がある場合は、何が良かったかお知らせください。今後の参考にさせていただきます。</p><p><awsui-button id="fblink" rel="noopener noreferrer" target="_blank" text="フィードバック" click="linkClick($event)" href="https://docs.aws.amazon.com/forms/aws-doc-feedback?hidden_service_name=SageMaker&amp;topic_url=https://docs.aws.amazon.com/ja_jp/sagemaker/latest/dg/data-prep.html"></awsui-button></p></div></div><div id="quick-feedback-no" style="display: none;"><div class="title">このページは役に立ちましたか? - いいえ</div><div class="content"><p>このページは修正が必要なことをお知らせいただき、ありがとうございます。ご期待に沿うことができず申し訳ありません。</p><p>お時間がある場合は、ドキュメントを改善する方法についてお知らせください。</p><p><awsui-button id="fblink" rel="noopener noreferrer" target="_blank" text="フィードバック" click="linkClick($event)" href="https://docs.aws.amazon.com/forms/aws-doc-feedback?hidden_service_name=SageMaker&amp;topic_url=https://docs.aws.amazon.com/ja_jp/sagemaker/latest/dg/data-prep.html"></awsui-button></p></div></div></div></body></div></awsdocs-view><div class="page-loading-indicator" id="page-loading-indicator"><awsui-spinner size="large"></awsui-spinner></div></div><div id="tools-panel" dom-region="tools"><awsdocs-tools-panel id="awsdocs-tools-panel"></awsdocs-tools-panel></div></awsui-app-layout><awsdocs-cookie-banner class="doc-cookie-banner"></awsdocs-cookie-banner></div></body></html>

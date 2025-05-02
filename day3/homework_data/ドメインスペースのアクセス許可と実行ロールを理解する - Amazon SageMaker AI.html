@@ -1,0 +1,115 @@
+<!DOCTYPE html>
+    <html xmlns="http://www.w3.org/1999/xhtml" lang="ja-JP"><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8" /><title>ドメインスペースのアクセス許可と実行ロールを理解する - Amazon SageMaker AI</title><meta name="viewport" content="width=device-width,initial-scale=1" /><meta name="assets_root" content="/assets" /><meta name="target_state" content="execution-roles-and-spaces" /><meta name="default_state" content="execution-roles-and-spaces" /><link rel="icon" type="image/ico" href="/assets/images/favicon.ico" /><link rel="shortcut icon" type="image/ico" href="/assets/images/favicon.ico" /><link rel="canonical" href="https://docs.aws.amazon.com/ja_jp/sagemaker/latest/dg/execution-roles-and-spaces.html" /><meta name="description" content="どの実行ロールがどのスペースに関連付けられているかに関する情報を提供します。Amazon SageMaker AI 実行ロールを使用して、ドメインに広範囲できめ細かなアクセス許可を付与する方法の例を示します。" /><meta name="deployment_region" content="IAD" /><meta name="product" content="Amazon SageMaker AI" /><meta name="guide" content="デベロッパーガイド" /><meta name="abstract" content="SageMaker AI を使用して、 で機械学習モデルを構築、トレーニング、ホストします AWS。" /><meta name="guide-locale" content="ja_jp" /><meta name="tocs" content="toc-contents.json" /><link rel="canonical" href="https://docs.aws.amazon.com/ja_jp/sagemaker/latest/dg/execution-roles-and-spaces.html" /><link rel="alternative" href="https://docs.aws.amazon.com/id_id/sagemaker/latest/dg/execution-roles-and-spaces.html" hreflang="id-id" /><link rel="alternative" href="https://docs.aws.amazon.com/id_id/sagemaker/latest/dg/execution-roles-and-spaces.html" hreflang="id" /><link rel="alternative" href="https://docs.aws.amazon.com/de_de/sagemaker/latest/dg/execution-roles-and-spaces.html" hreflang="de-de" /><link rel="alternative" href="https://docs.aws.amazon.com/de_de/sagemaker/latest/dg/execution-roles-and-spaces.html" hreflang="de" /><link rel="alternative" href="https://docs.aws.amazon.com/sagemaker/latest/dg/execution-roles-and-spaces.html" hreflang="en-us" /><link rel="alternative" href="https://docs.aws.amazon.com/sagemaker/latest/dg/execution-roles-and-spaces.html" hreflang="en" /><link rel="alternative" href="https://docs.aws.amazon.com/es_es/sagemaker/latest/dg/execution-roles-and-spaces.html" hreflang="es-es" /><link rel="alternative" href="https://docs.aws.amazon.com/es_es/sagemaker/latest/dg/execution-roles-and-spaces.html" hreflang="es" /><link rel="alternative" href="https://docs.aws.amazon.com/fr_fr/sagemaker/latest/dg/execution-roles-and-spaces.html" hreflang="fr-fr" /><link rel="alternative" href="https://docs.aws.amazon.com/fr_fr/sagemaker/latest/dg/execution-roles-and-spaces.html" hreflang="fr" /><link rel="alternative" href="https://docs.aws.amazon.com/it_it/sagemaker/latest/dg/execution-roles-and-spaces.html" hreflang="it-it" /><link rel="alternative" href="https://docs.aws.amazon.com/it_it/sagemaker/latest/dg/execution-roles-and-spaces.html" hreflang="it" /><link rel="alternative" href="https://docs.aws.amazon.com/ja_jp/sagemaker/latest/dg/execution-roles-and-spaces.html" hreflang="ja-jp" /><link rel="alternative" href="https://docs.aws.amazon.com/ja_jp/sagemaker/latest/dg/execution-roles-and-spaces.html" hreflang="ja" /><link rel="alternative" href="https://docs.aws.amazon.com/ko_kr/sagemaker/latest/dg/execution-roles-and-spaces.html" hreflang="ko-kr" /><link rel="alternative" href="https://docs.aws.amazon.com/ko_kr/sagemaker/latest/dg/execution-roles-and-spaces.html" hreflang="ko" /><link rel="alternative" href="https://docs.aws.amazon.com/pt_br/sagemaker/latest/dg/execution-roles-and-spaces.html" hreflang="pt-br" /><link rel="alternative" href="https://docs.aws.amazon.com/pt_br/sagemaker/latest/dg/execution-roles-and-spaces.html" hreflang="pt" /><link rel="alternative" href="https://docs.aws.amazon.com/zh_cn/sagemaker/latest/dg/execution-roles-and-spaces.html" hreflang="zh-cn" /><link rel="alternative" href="https://docs.aws.amazon.com/zh_tw/sagemaker/latest/dg/execution-roles-and-spaces.html" hreflang="zh-tw" /><link rel="alternative" href="https://docs.aws.amazon.com/sagemaker/latest/dg/execution-roles-and-spaces.html" hreflang="x-default" /><meta name="feedback-item" content="SageMaker" /><meta name="this_doc_product" content="Amazon SageMaker AI" /><meta name="this_doc_guide" content="デベロッパーガイド" /><script defer="" src="/assets/r/vendor4.js?version=2021.12.02"></script><script defer="" src="/assets/r/vendor3.js?version=2021.12.02"></script><script defer="" src="/assets/r/vendor1.js?version=2021.12.02"></script><script defer="" src="/assets/r/awsdocs-common.js?version=2021.12.02"></script><script defer="" src="/assets/r/awsdocs-doc-page.js?version=2021.12.02"></script><link href="/assets/r/vendor4.css?version=2021.12.02" rel="stylesheet" /><link href="/assets/r/awsdocs-common.css?version=2021.12.02" rel="stylesheet" /><link href="/assets/r/awsdocs-doc-page.css?version=2021.12.02" rel="stylesheet" /><script async="" id="awsc-panorama-bundle" type="text/javascript" src="https://prod.pa.cdn.uis.awsstatic.com/panorama-nav-init.js" data-config="{'appEntity':'aws-documentation','region':'us-east-1','service':'sagemaker'}"></script><meta id="panorama-serviceSubSection" value="デベロッパーガイド" /><meta id="panorama-serviceConsolePage" value="ドメインスペースのアクセス許可と実行ロールを理解する" /></head><body class="awsdocs awsui"><div class="awsdocs-container"><awsdocs-header></awsdocs-header><awsui-app-layout id="app-layout" class="awsui-util-no-gutters" ng-controller="ContentController as $ctrl" header-selector="awsdocs-header" navigation-hide="false" navigation-width="$ctrl.navWidth" navigation-open="$ctrl.navOpen" navigation-change="$ctrl.onNavChange($event)" tools-hide="$ctrl.hideTools" tools-width="$ctrl.toolsWidth" tools-open="$ctrl.toolsOpen" tools-change="$ctrl.onToolsChange($event)"><div id="guide-toc" dom-region="navigation"><awsdocs-toc></awsdocs-toc></div><div id="main-column" dom-region="content" tabindex="-1"><awsdocs-view class="awsdocs-view"><div id="awsdocs-content"><head><title>ドメインスペースのアクセス許可と実行ロールを理解する - Amazon SageMaker AI</title><meta name="pdf" content="sagemaker-dg.pdf#execution-roles-and-spaces" /><meta name="rss" content="amazon-sagemaker-release-notes.rss" /><meta name="forums" content="https://repost.aws/ja/tags/TAT80swPyVRPKPcA0rsJYPuA" /><meta name="feedback" content="https://docs.aws.amazon.com/forms/aws-doc-feedback?hidden_service_name=SageMaker&amp;topic_url=https://docs.aws.amazon.com/ja_jp/sagemaker/latest/dg/execution-roles-and-spaces.html" /><meta name="feedback-yes" content="feedbackyes.html?topic_url=https://docs.aws.amazon.com/ja_jp/sagemaker/latest/dg/execution-roles-and-spaces.html" /><meta name="feedback-no" content="feedbackno.html?topic_url=https://docs.aws.amazon.com/ja_jp/sagemaker/latest/dg/execution-roles-and-spaces.html" /><meta name="keywords" content="SageMaker,Amazon SageMaker,機械学習,ノートブックインスタンス,概念,リソース,とは?,ドメイン,エンティティ,ステータス,ユーザープロファイル,共有スペース,アプリケーション,できます,メンテナンス,スペース,実行ロール,アクセス許可,プライベートスペース,ユーザープロファイルの実行ロール,スペースの実行ロール,ドメインの実行ロール" /><script type="application/ld+json">
+{
+    "@context" : "https://schema.org",
+    "@type" : "BreadcrumbList",
+    "itemListElement" : [
+      {
+        "@type" : "ListItem",
+        "position" : 1,
+        "name" : "AWS",
+        "item" : "https://aws.amazon.com"
+      },
+      {
+        "@type" : "ListItem",
+        "position" : 2,
+        "name" : "Amazon SageMaker",
+        "item" : "https://docs.aws.amazon.com/sagemaker/index.html"
+      },
+      {
+        "@type" : "ListItem",
+        "position" : 3,
+        "name" : "デベロッパーガイド",
+        "item" : "https://docs.aws.amazon.com/ja_jp/sagemaker/latest/dg"
+      },
+      {
+        "@type" : "ListItem",
+        "position" : 4,
+        "name" : "Amazon SageMaker AI のセットアップガイド",
+        "item" : "https://docs.aws.amazon.com/ja_jp/sagemaker/latest/dg/gs.html"
+      },
+      {
+        "@type" : "ListItem",
+        "position" : 5,
+        "name" : "Amazon SageMaker AI ドメインの概要",
+        "item" : "https://docs.aws.amazon.com/ja_jp/sagemaker/latest/dg/gs-studio-onboard.html"
+      },
+      {
+        "@type" : "ListItem",
+        "position" : 6,
+        "name" : "Amazon SageMaker AI ドメインエンティティとステータス",
+        "item" : "https://docs.aws.amazon.com/ja_jp/sagemaker/latest/dg/sm-domain.html"
+      },
+      {
+        "@type" : "ListItem",
+        "position" : 7,
+        "name" : "ドメインスペースのアクセス許可と実行ロールを理解する",
+        "item" : "https://docs.aws.amazon.com/ja_jp/sagemaker/latest/dg/sm-domain.html"
+      }
+    ]
+}
+</script></head><body><div id="main"><div style="display: none"><a href="sagemaker-dg.pdf#execution-roles-and-spaces" target="_blank" rel="noopener noreferrer" title="PDF を開く"></a></div><div id="breadcrumbs" class="breadcrumb"><a href="/index.html">ドキュメント</a><a href="/sagemaker/index.html">Amazon SageMaker</a><a href="whatis.html">デベロッパーガイド</a></div><div id="page-toc-src"><a href="#sagemaker-execution-roles">SageMaker AI 実行ロール</a><a href="#sagemaker-execution-roles-example">実行ロールを使用した柔軟なアクセス許可の例</a></div><div id="main-content" class="awsui-util-container"><div id="main-col-body"><awsdocs-language-banner data-service="$ctrl.pageService"></awsdocs-language-banner><awsui-alert class="awsdocs-page-banner awsui-util-mb-l"><p>翻訳は機械翻訳により提供されています。提供された翻訳内容と英語版の間で齟齬、不一致または矛盾がある場合、英語版が優先します。</p></awsui-alert><h1 class="topictitle" id="execution-roles-and-spaces">ドメインスペースのアクセス許可と実行ロールを理解する</h1><div class="awsdocs-page-header-container"><awsdocs-page-header></awsdocs-page-header><awsdocs-filter-selector id="awsdocs-filter-selector"></awsdocs-filter-selector></div><p>多くの SageMaker AI アプリケーションの場合、ドメイン内で SageMaker AI アプリケーションを起動すると、アプリケーション用のスペースが作成されます。ユーザープロファイルがスペースを作成すると、そのスペースは、そのスペースに付与されたアクセス許可を定義する AWS Identity and Access Management (IAM) ロールを引き受けます。次のページでは、スペースタイプと、スペースのアクセス許可を定義する実行ロールについて説明します。</p><p> IAM <a href="https://docs.aws.amazon.com/IAM/latest/UserGuide/id_roles.html">ロール</a>は、特定の許可があり、アカウントで作成できるもう 1 つの IAM アイデンティティです。IAM ロールは、 AWS アイデンティティができることとできないことを決定するアクセス許可ポリシーを持つアイデンティティであるという点で、IAM ユーザーと似ています AWS。ただし、ユーザーは 1 人の特定の人に一意に関連付けられますが、ロールはそれを必要とする任意の人が引き受けるようになっています。また、ロールには標準の長期認証情報 (パスワードやアクセスキーなど) も関連付けられません。代わりに、ロールを引き受けると、ロールセッション用の一時的なセキュリティ認証情報が提供されます。</p><div class="awsdocs-note"><div class="awsdocs-note-title"><awsui-icon name="status-info" variant="link"></awsui-icon><h6>注記</h6></div><div class="awsdocs-note-text"><p>Amazon SageMaker Canvas または RStudio を起動しても、IAM ロールを引き受けるスペースは作成されません。代わりに、ユーザープロファイルに関連付けられたロールを変更して、アプリケーションのアクセス許可を管理します。SageMaker AI ユーザープロファイルのロールを取得する方法については、「」を参照してください<a href="./sagemaker-roles.html#sagemaker-roles-get-execution-role-user">ユーザーの実行ロールを取得する</a>。</p><p>SageMaker Canvas については、「<a href="./canvas-setting-up.html">Amazon SageMaker Canvas の設定と権限の管理 (IT 管理者向け)</a>」を参照してください。</p><p>RStudio については、「<a href="./rstudio-create-cli.html#rstudio-create-cli-domain">RStudio アプリで Amazon SageMaker AI ドメインを作成する</a>」を参照してください。</p></div></div><p>ユーザーは、共有スペースまたはプライベートスペース内で SageMaker AI アプリケーションにアクセスできます。</p><p><b>共有スペース</b></p><div class="itemizedlist">
+     
+     
+     
+     
+  <ul class="itemizedlist"><li class="listitem">
+      <p>アプリケーションに関連付けられたスペースは 1 つのみです。共有スペースには、ドメイン内のすべてのユーザープロファイルからアクセスできます。これにより、ドメイン内のすべてのユーザープロファイルに、アプリケーションと同じ基盤となるファイルストレージシステムへのアクセスが付与されます。</p>
+    </li><li class="listitem">
+      <p>共有スペースには、<b>スペースのデフォルトの実行ロール</b>で定義されたアクセス許可が付与されます。共有スペースの実行ロールを変更する場合は、スペースのデフォルトの実行ロールを変更する必要があります。</p>
+      <p>スペースのデフォルトの実行ロールを取得する方法については、「<a href="./sagemaker-roles.html#sagemaker-roles-get-execution-role-space">スペースの実行ロールを取得する</a>」を参照してください。</p>
+      <p>実行ロールを変更する方法については、「<a href="./sagemaker-roles.html#sagemaker-roles-modify-to-execution-role">実行ロールのアクセス許可を変更する</a>」を参照してください。</p>
+    </li><li class="listitem">
+      <p>共有スペースの詳細については、「<a href="./domain-space.html">共有スペースでコラボレーション</a>」を参照してください。</p>
+    </li><li class="listitem">
+      <p>共有スペース作成するには、「<a href="./domain-space-create.html#domain-space-create-app">共有スペースの作成</a>」を参照してください。</p>
+    </li></ul></div><p><b>プライベートスペース</b></p><div class="itemizedlist">
+     
+     
+     
+     
+    
+  <ul class="itemizedlist"><li class="listitem">
+      <p>アプリケーションに関連付けられたスペースは 1 つのみです。プライベートスペースにアクセスできるのは、プライベートスペースを作成したユーザープロファイルのみです。このスペースを他のユーザーと共有することはできません。</p>
+    </li><li class="listitem">
+      <p>プライベートスペースは、スペースを作成したユーザープロファイルの<b>ユーザープロファイルの実行ロール</b>を引き受けます。プライベートスペースの実行ロールを変更する場合は、ユーザープロファイルの実行ロールを変更する必要があります。</p>
+      <p>ユーザープロファイルの実行ロールを取得する方法については、「<a href="./sagemaker-roles.html#sagemaker-roles-get-execution-role-user">ユーザーの実行ロールを取得する</a>」を参照してください。</p>
+      <p>実行ロールを変更する方法については、「<a href="./sagemaker-roles.html#sagemaker-roles-modify-to-execution-role">実行ロールのアクセス許可を変更する</a>」を参照してください。</p>
+    </li><li class="listitem">
+      <p>スペースをサポートするすべてのアプリケーションは、プライベートスペースもサポートします。</p>
+    </li><li class="listitem">
+      <p>Studio Classic 用のプライベートスペースは、デフォルトではユーザープロファイルごとに既に作成されています。</p>
+    </li></ul></div><div class="highlights" id="inline-topiclist"><h6>トピック</h6><ul><li><p><a href="#sagemaker-execution-roles">SageMaker AI 実行ロール</a></p></li><li><p><a href="#sagemaker-execution-roles-example">実行ロールを使用した柔軟なアクセス許可の例</a></p></li></ul></div>
+    <h2 id="sagemaker-execution-roles">SageMaker AI 実行ロール</h2>
+    <p>SageMaker AI 実行ロールは、SageMaker AI で実行を実行している IAM ID に割り当てられた <a href="https://docs.aws.amazon.com/IAM/latest/UserGuide/id_roles.html">AWS Identity and Access Management (IAM) ロール</a>です。<a href="https://docs.aws.amazon.com/IAM/latest/UserGuide/id.html">IAM ID</a> は、 AWS アカウントへのアクセスを提供し、ユーザーに代わって他の AWS リソースにアクセスするためのアクセス許可を SageMaker AI に付与する、認証され AWS、アクションを実行する権限を付与できる人間のユーザーまたはプログラムによるワークロードを表します。このロールにより、SageMaker AI はコンピューティングインスタンスの起動、Amazon S3 に保存されているデータやモデルアーティファクトへのアクセス、CloudWatch へのログの書き込みなどのアクションを実行できます。SageMaker AI は実行時に実行ロールを引き受け、ロールのポリシーで定義されたアクセス許可が一時的に付与されます。ロールには、該当するアイデンティティが実行できるアクションと、アイデンティティがアクセスできるリソースを定義する、必要となるアクセス許可が付与されている必要があります。さまざまなアイデンティティにロールを割り当てることで、ドメイン内のアクセス許可とアクセスを管理するための柔軟できめ細かなアプローチを提供できます。ドメインの詳細については、「<a href="./gs-studio-onboard.html">Amazon SageMaker AI ドメインの概要</a>」を参照してください。例えば、IAM ロールを以下に割り当てることができます。</p>
+
+    <div class="itemizedlist">
+       
+       
+       
+    <ul class="itemizedlist"><li class="listitem">
+        <p>ドメイン内のすべてのユーザープロファイルに広範なアクセス許可を付与する<b>ドメインの実行ロール</b></p>
+      </li><li class="listitem">
+        <p>ドメイン内の共有スペースに広範なアクセス許可を付与する<b>スペースの実行ロール</b>。ドメイン内のすべてのユーザープロファイルは共有スペースにアクセスでき、共有スペース内ではスペースの実行ロールを使用します。</p>
+      </li><li class="listitem">
+        <p>特定のユーザープロファイルにきめ細かなアクセス許可を付与する<b>ユーザープロファイルの実行ロール</b>。ユーザープロファイルが作成したプライベートスペースは、作成したユーザープロファイルの実行ロールを引き受けます。</p>
+      </li></ul></div>
+
+    <p>これにより、ユーザープロファイルへの最小特権アクセス許可の原則を維持しながら、「<em>AWS IAM Identity Center ユーザーガイド</em>」の「<a href="https://docs.aws.amazon.com/IAM/latest/UserGuide/best-practices.html">IAM でのセキュリティのベストプラクティス</a>」に準拠して、ドメインに必要なアクセス許可を付与できます。</p>
+
+    <p>実行ロールへの変更の伝播には数分かかる場合があります。詳細については、それぞれ「<a href="./sagemaker-roles.html#sagemaker-roles-change-execution-role">実行ロールを変更する</a>」または「<a href="./sagemaker-roles.html#sagemaker-roles-modify-to-execution-role">実行ロールのアクセス許可を変更する</a>」を参照してください。</p>
+
+
+   
+    <h2 id="sagemaker-execution-roles-example">実行ロールを使用した柔軟なアクセス許可の例</h2>
+
+    <p><a href="https://docs.aws.amazon.com/IAM/latest/UserGuide/id_roles.html">IAM ロール</a>を使用すると、広範かつきめ細かいレベルでアクセス許可を管理して付与できます。次の例では、スペースレベルとユーザーレベルのアクセス許可が付与されます。</p>
+
+    <p>データサイエンティストチームのドメインを設定する管理者の場合、ドメイン内のユーザープロファイルに Amazon Simple Storage Service (Amazon S3) バケットへのフルアクセスを許可して、SageMaker トレーニングジョブを実行し、<em>共有スペース</em> 内のアプリケーションを使用してモデルをデプロイできるように設定できます。この例では、広範なアクセス許可が付与されている「DataScienceTeamRole」という名前の IAM ロールを作成できます。その後、「DataScienceTeamRole」を<em>スペースのデフォルト実行ロール</em>として割り当て、チームに幅広いアクセス許可を付与できます。ユーザープロファイルが<em>共有スペース</em>を作成すると、そのスペースは<em>スペースのデフォルトの実行ロール</em>を引き受けます。既存のドメインに実行ロールを割り当てる方法については、「<a href="./sagemaker-roles.html#sagemaker-roles-get-execution-role-space">スペースの実行ロールを取得する</a>」を参照してください。</p>
+
+    <p>独自の<em>プライベートスペース</em>で作業する個別のユーザープロファイルに Amazon S3 バケットへのフルアクセスを許可する代わりに、ユーザープロファイルのアクセス許可を制限して、Amazon S3 バケットの変更を許可しないようにすることができます。この例では、Amazon S3 バケットへの読み取りアクセス権を付与して、データの取得、SageMaker トレーニングジョブの実行、<em>プライベートスペース</em>へのモデルのデプロイを実行できるようにすることができます。比較的限られたアクセス許可で、「DataScientistRole」というユーザーレベルの実行ロールを作成できます。その後「DataScientistRole」を<em>ユーザープロファイルの実行ロール</em>に割り当て、定義された範囲内で特定のデータサイエンスタスクを実行するために必要なアクセス許可を付与できます。ユーザープロファイルが<em>共有スペース</em>を作成すると、そのスペースは<em>ユーザーの実行ロール</em>を引き受けます。既存のユーザープロファイルに実行ロールを割り当てる方法については、「<a href="./sagemaker-roles.html#sagemaker-roles-get-execution-role-user">ユーザーの実行ロールを取得する</a>」を参照してください。</p>
+
+    <p>SageMaker AI 実行ロールとそのロールへの追加のアクセス許可の詳細については、「」を参照してください<a href="./sagemaker-roles.html">SageMaker AI 実行ロールの使用方法</a>。</p>
+
+
+  <awsdocs-copyright class="copyright-print"></awsdocs-copyright><awsdocs-thumb-feedback right-edge="{{$ctrl.thumbFeedbackRightEdge}}"></awsdocs-thumb-feedback></div><noscript><div><div><div><div id="js_error_message"><p><img src="https://d1ge0kk1l5kms0.cloudfront.net/images/G/01/webservices/console/warning.png" alt="警告" /> <strong>ブラウザで JavaScript が無効になっているか、使用できません。</strong></p><p>AWS ドキュメントを使用するには、JavaScript を有効にする必要があります。手順については、使用するブラウザのヘルプページを参照してください。</p></div></div></div></div></noscript><div id="main-col-footer" class="awsui-util-font-size-0"><div id="doc-conventions"><a target="_top" href="/general/latest/gr/docconventions.html">ドキュメントの表記規則</a></div><div class="prev-next"><div id="previous" class="prev-link" accesskey="p" href="./domain-groups-remove.html">グループの削除</div><div id="next" class="next-link" accesskey="n" href="./sm-console-domain-resources-view.html">ドメイン内の SageMaker AI リソースを表示する</div></div></div><awsdocs-page-utilities></awsdocs-page-utilities></div><div id="quick-feedback-yes" style="display: none;"><div class="title">このページは役に立ちましたか? - はい</div><div class="content"><p>ページが役に立ったことをお知らせいただき、ありがとうございます。</p><p>お時間がある場合は、何が良かったかお知らせください。今後の参考にさせていただきます。</p><p><awsui-button id="fblink" rel="noopener noreferrer" target="_blank" text="フィードバック" click="linkClick($event)" href="https://docs.aws.amazon.com/forms/aws-doc-feedback?hidden_service_name=SageMaker&amp;topic_url=https://docs.aws.amazon.com/ja_jp/sagemaker/latest/dg/execution-roles-and-spaces.html"></awsui-button></p></div></div><div id="quick-feedback-no" style="display: none;"><div class="title">このページは役に立ちましたか? - いいえ</div><div class="content"><p>このページは修正が必要なことをお知らせいただき、ありがとうございます。ご期待に沿うことができず申し訳ありません。</p><p>お時間がある場合は、ドキュメントを改善する方法についてお知らせください。</p><p><awsui-button id="fblink" rel="noopener noreferrer" target="_blank" text="フィードバック" click="linkClick($event)" href="https://docs.aws.amazon.com/forms/aws-doc-feedback?hidden_service_name=SageMaker&amp;topic_url=https://docs.aws.amazon.com/ja_jp/sagemaker/latest/dg/execution-roles-and-spaces.html"></awsui-button></p></div></div></div></body></div></awsdocs-view><div class="page-loading-indicator" id="page-loading-indicator"><awsui-spinner size="large"></awsui-spinner></div></div><div id="tools-panel" dom-region="tools"><awsdocs-tools-panel id="awsdocs-tools-panel"></awsdocs-tools-panel></div></awsui-app-layout><awsdocs-cookie-banner class="doc-cookie-banner"></awsdocs-cookie-banner></div></body></html>
