@@ -1,0 +1,1442 @@
+index,document
+0,SageMaker AI 実行ロールの使用方法 - Amazon SageMaker AI
+1,SageMaker AI 実行ロールの使用方法 - Amazon SageMaker AI
+2,ドキュメントAmazon SageMakerデベロッパーガイド
+3,実行ロールを作成する実行ロールを取得する実行ロールを変更する実行ロールのアクセス許可を変更するロールを渡すCreateAutoMLJob と CreateAutoMLJobV2 API: 実行ロールのアクセス許可CreateDomain API: 実行ロールアクセス許可CreateImage API と UpdateImage API: 実行ロールアクセス許可CreateNotebookInstance API: 実行ロールアクセス許可CreateHyperParameterTuningJob API: 実行ロールアクセス許可CreateProcessingJob API: 実行ロールのアクセス許可CreateTrainingJob API: 実行ロールアクセス許可CreateModel API: 実行ロールアクセス許可
+4,このページは役に立ちましたか? - はいページが役に立ったことをお知らせいただき、ありがとうございます。お時間がある場合は、何が良かったかお知らせください。今後の参考にさせていただきます。
+5,このページは役に立ちましたか? - いいえこのページは修正が必要なことをお知らせいただき、ありがとうございます。ご期待に沿うことができず申し訳ありません。お時間がある場合は、ドキュメントを改善する方法についてお知らせください。
+6, ブラウザで JavaScript が無効になっているか、使用できません。AWS ドキュメントを使用するには、JavaScript を有効にする必要があります。手順については、使用するブラウザのヘルプページを参照してください。
+7,ドキュメントの表記規則サービス間の混乱した代理の防止SageMaker 地理空間機能ロール
+8,翻訳は機械翻訳により提供されています。提供された翻訳内容と英語版の間で齟齬、不一致または矛盾がある場合、英語版が優先します。
+9,SageMaker AI 実行ロールの使用方法
+10,Amazon SageMaker AI は、ユーザーに代わって他の AWS サービスを使用してオペレーションを実行します。これらのサービスとそのサービスが動作するリソースを使用するためのアクセス許可を SageMaker AI に付与する必要があります。（ AWS Identity and Access Management IAM) 実行ロールを使用して、SageMaker AI にこれらのアクセス許可を付与します。IAM ロールの詳細については、「IAM ロール」を参照してください。
+11,実行ロールを作成して使用するには、以下の手順を実行します。
+12,以下の手順を実行して、IAM 管理ポリシー AmazonSageMakerFullAccess をアタッチした実行ロールを作成します。詳細なアクセス許可が必要なユースケースの場合は、このページの他のセクションを使用して、ビジネスニーズを満たす実行ロールを作成します。SageMaker AI コンソールまたは を使用して実行ロールを作成できます AWS CLI。
+13,重要以下の手順で使用されている IAM 管理ポリシー AmazonSageMakerFullAccess では、名前に SageMaker、Sagemaker、sagemaker、aws-glue を持つ特定の Amazon S3 アクションをバケットまたはオブジェクトで実行するアクセス許可のみが実行ロールに付与されます。実行ロールにポリシーを追加して、他の Amazon S3 バケットやオブジェクトへのアクセス権を付与する方法については、「SageMaker AI 実行ロールに Amazon S3 アクセス許可を追加する」を参照してください。
+14,注記SageMaker AI ドメインまたはノートブックインスタンスを作成するときに、実行ロールを直接作成できます。
+15,SageMaker AI ドメインを作成する方法については、「」を参照してくださいAmazon SageMaker AI のセットアップガイド。
+16,ノートブックインスタンスを作成する方法については、「チュートリアル用 Amazon SageMaker ノートブックインスタンスを作成する」を参照してください。
+17,SageMaker AI コンソールから新しい実行ロールを作成するには
+18,IAM コンソール (https://console.aws.amazon.com/iam/) を開きます。
+19,[Roles] (ロール)、[Create role] (ロールの作成) の順に選択します。
+20,AWS サービスを信頼されたエンティティタイプとして保持し、下矢印を使用して他のサービスのユースケースで SageMaker AI を見つけます。  AWS 
+21,SageMaker AI – Execution を選択し、Next を選択します。
+22,IAM マネージドポリシー AmazonSageMakerFullAccess は、ロールに自動的にアタッチされます。このポリシーに含まれるアクセス許可を表示するには、ポリシー名の横にあるプラス (+) 記号を選択します。[次へ] を選択します。
+23,[ロール名] と [説明] を入力します。
+24,(オプション) ロールにアクセス許可とタグを追加します。
+25,IAM コンソールの [ロール] セクションで、先ほど作成したロールを検索します。必要に応じて、テキストボックスを使用してロール名でロールを検索します。
+26,ロールの概要ページにある ARN を書き留めておきます。
+27, AWS CLIから新しい実行ロールを作成する
+28,を使用して実行ロールを作成する前に AWS CLI、「」の手順に従って実行ロールを更新および設定し（オプション) を設定する AWS CLI、「」の手順を続行してくださいを使用したカスタムセットアップ AWS CLI。
+29,実行ロールを作成したら、SageMaker AI ドメイン、ユーザープロファイル、または Jupyter ノートブックインスタンスに関連付けることができます。
+30,実行ロールを既存の SageMaker AI ドメインに関連付ける方法については、「」を参照してくださいドメイン設定を編集する。
+31,実行ロールを既存のユーザープロファイルに関連付ける方法については、「ユーザープロファイルの追加」を参照してください。
+32,実行ロールを既存のノートブックインスタンスに関連付ける方法については、「ノートブックインスタンスを更新する」を参照してください。
+33,実行ロールの ARN を API コールに渡すこともできます。例えば、Amazon SageMaker Python SDK を使用すると、実行ロールの ARN を推定器に渡すことができます。以下のコードサンプルでは、XGBoost アルゴリズムコンテナを使用して推定器を作成し、実行ロールの ARN をパラメータとして渡します。GitHub のサンプル全体については、「Customer Churn Prediction with XGBoost」を参照してください。
+34,"import sagemaker, boto3"
+35,from sagemaker import image_uris
+36,sess = sagemaker.Session()
+37,region = sess.boto_region_name
+38,bucket = sess.default_bucket()
+39,"prefix = ""sagemaker/DEMO-xgboost-churn"""
+40,"container = sagemaker.image_uris.retrieve(""xgboost"", region, ""1.7-1"")"
+41,xgb = sagemaker.estimator.Estimator(
+42,"    execution-role-ARN,"
+43,"    instance_count=1,"
+44,"    instance_type=""ml.m4.xlarge"","
+45,"    output_path=""s3://{}/{}/output"".format(bucket, prefix),"
+46,"    sagemaker_session=sess,"
+47,SageMaker AI 実行ロールに Amazon S3 アクセス許可を追加する
+48,入力データなどの Amazon S3 のリソースで SageMaker AI 機能を使用する場合、リクエストで指定した実行ロール ( などCreateTrainingJob) を使用してこれらのリソースにアクセスします。
+49,IAM 管理ポリシー AmazonSageMakerFullAccess を実行ロールにアタッチすると、そのロールには、名前に SageMaker、Sagemaker、sagemaker、aws-glue を持つ特定の Amazon S3 アクションをバケットやオブジェクトで実行するためのアクセス許可が付与されます。また、Amazon S3 リソースで以下のアクションを実行するアクセス許可が付与されます。
+50,"""s3:GetBucketLocation"","
+51,"""s3:ListAllMyBuckets"","
+52,Amazon S3 の 1 つ以上の特定のバケットにアクセスするためのアクセス許可を実行ロールに付与するには、以下のようなポリシーをロールにアタッチします。このポリシーは、AmazonSageMakerFullAccess が許可するすべてのアクションを実行するアクセス許可を IAM ロールに付与します。ただし、アクセスは amzn-s3-demo-bucket1 バケットと amzn-s3-demo-bucket2 バケットに制限されます。この機能に必要な Amazon S3 アクセス許可の詳細については、使用している特定の SageMaker AI 機能のセキュリティドキュメントを参照してください。
+53,"    ""Version"": ""2012-10-17"","
+54,"            ""Effect"": ""Allow"","
+55,"            ""Action"": ["
+56,"                ""s3:GetObject"","
+57,"                ""s3:PutObject"","
+58,"                ""s3:DeleteObject"","
+59,"                ""s3:AbortMultipartUpload"""
+60,"            ""Resource"": ["
+61,"                ""arn:aws:s3:::amzn-s3-demo-bucket1/*"","
+62,"                ""arn:aws:s3:::amzn-s3-demo-bucket2/*"""
+63,"            ""Effect"": ""Allow"","
+64,"            ""Action"": ["
+65,"                ""s3:CreateBucket"","
+66,"                ""s3:GetBucketLocation"","
+67,"                ""s3:ListBucket"","
+68,"                ""s3:ListAllMyBuckets"","
+69,"                ""s3:GetBucketCors"","
+70,"                ""s3:PutBucketCors"""
+71,"            ""Resource"": ""*"""
+72,"            ""Effect"": ""Allow"","
+73,"            ""Action"": ["
+74,"                ""s3:GetBucketAcl"","
+75,"                ""s3:PutObjectAcl"""
+76,"            ""Resource"": ["
+77,"                ""arn:aws:s3:::amzn-s3-demo-bucket1"","
+78,"                ""arn:aws:s3:::amzn-s3-demo-bucket2"""
+79,SageMaker AI コンソール、Amazon SageMaker Python SDK、または を使用してAWS CLI、SageMaker AI ドメイン、スペース、またはユーザープロファイルにアタッチされた実行ロールの ARN と名前を取得できます。
+80,トピックドメインの実行ロールを取得するスペースの実行ロールを取得するユーザーの実行ロールを取得する
+81,ドメインの実行ロールを検索する手順は次のとおりです。
+82,ドメインにアタッチされた実行ロールを検索する
+83,SageMaker AI コンソール、「https://https://console.aws.amazon.com/sagemaker/.
+84,左側のナビゲーションペインで、[管理者設定] の下にある [ドメイン] を選択します。
+85,ドメインに対応するリンクをクリックします。
+86,[全般設定] セクションでは、[実行ロール] に実行ロール ARN が一覧表示されます。
+87,実行ロール ARN の 最後の / の後にあるのが、実行ロール名です。
+88,スペースの実行ロールを検索する手順は次のとおりです。
+89,スペースにアタッチされた実行ロールを検索する
+90,SageMaker AI コンソール、「https://https://console.aws.amazon.com/sagemaker/.
+91,左側のナビゲーションペインで、[管理者設定] の下にある [ドメイン] を選択します。
+92,ドメインに対応するリンクをクリックします。
+93,[詳細] セクションでは、[実行ロール] に実行ロール ARN が一覧表示されます。
+94,実行ロール ARN の 最後の / の後にあるのが、実行ロール名です。
+95,注記次のコードは、Amazon SageMaker Studio の IDEs と同様に、SageMaker AI 環境で実行されることを目的としています。 Amazon SageMaker  SageMaker AI 環境のget_execution_role外部で を実行すると、エラーが表示されます。次の get_execution_role Amazon SageMaker Python SDK コマンドを使用すると、スペースにアタッチされた実行ロールの ARN を取得できます。from sagemaker import get_execution_role
+96,role = get_execution_role()
+97,print(role)実行ロール ARN の 最後の / の後にあるのが、実行ロール名です。
+98,ユーザーの実行ロールを検索する手順は次のとおりです。
+99,ユーザーにアタッチされた実行ロールを検索する
+100,SageMaker AI コンソール、「https://https://console.aws.amazon.com/sagemaker/://www.
+101,左側のナビゲーションペインで、[管理者設定] の下にある [ドメイン] を選択します。
+102,ドメインに対応するリンクをクリックします。
+103,[ユーザープロファイル] タブを選択します。
+104,ユーザーに対応するリンクをクリックします。
+105,[詳細] セクションでは、[実行ロール] に実行ロール ARN が一覧表示されます。
+106,実行ロール ARN の 最後の / の後にあるのが、実行ロール名です。
+107,注記次の例を使用するには、 AWS Command Line Interface （AWS CLI) をインストールして設定する必要があります。詳細については、「AWS Command Line Interface バージョン 2 用ユーザーガイド」の「Get started with the AWS CLI」を参照してください。次の get-caller-identity AWS CLI コマンドは、リクエストの認証に使用される IAM ID に関する情報を表示します。呼び出したのは IAM ユーザーです。aws sts get-caller-identity実行ロール ARN の 最後の / の後にあるのが、実行ロール名です。
+108,実行ロールは、SageMaker AI ID (SageMaker AI ユーザー、スペース、ドメインなど) が引き受ける IAM ロールです。IAM ロールを変更すると、そのロールを引き受けるすべての ID のアクセス許可が変更されます。
+109,実行ロールを変更すると、対応するスペースの実行ロールも変更されます。変更の影響が伝播されるまでに時間がかかる場合があります。
+110,ユーザーの実行ロールを変更すると、そのユーザーが作成したプライベートスペースが、変更された実行ロールを引き受けます。
+111,スペースのデフォルトの実行ロールを変更すると、ドメインの共有スペースが、変更された実行ロールを引き受けます。
+112,実行ロールとスペースの詳細については、「ドメインスペースのアクセス許可と実行ロールを理解する」を参照してください。
+113,次のいずれかの手順を使用して、アイデンティティの実行ロールを別の IAM ロールに変更できます。
+114,代わりに、アイデンティティが引き受けているロールを変更する場合は、「実行ロールのアクセス許可を変更する」を参照してください。
+115,トピックドメインのデフォルト実行ロールを変更するスペースのデフォルトの実行ロールを変更するユーザープロファイルの実行ロールを変更する
+116,ドメインのデフォルトの実行ロールを変更する手順は次のとおりです。
+117,ドメインにアタッチされたデフォルトの実行ロールを変更する
+118,SageMaker AI コンソール、「https://https://console.aws.amazon.com/sagemaker/.
+119,左側のナビゲーションペインで、[管理者設定] の下にある [ドメイン] を選択します。
+120,ドメインに対応するリンクをクリックします。
+121,[全般設定] セクションで、[編集] をクリックします。
+122,[アクセス許可] セクションの [デフォルトの実行ロール] の下で、ドロップダウンリストを展開します。
+123,ドロップダウンリストを使用して、既存のロールを選択することも、カスタム IAM ロール ARN を入力することも、新しいロールを作成することもできます。
+124,新しいロールを作成する場合は、[ロール作成ウィザードを使用してロールを作成] オプションを選択できます。
+125,次のステップで [次へ] をクリックして、最後のステップで [送信] をクリックします。
+126,スペースのデフォルトの実行ロールを変更する
+127,スペースのデフォルトの実行ロールを変更する手順は次のとおりです。この実行ロールを変更すると、ドメイン内のすべての共有スペースが引き受けるロールが変更されます。
+128,新しいスペースを作成する際に、スペースのデフォルトの実行ロールを変更する
+129,SageMaker AI コンソール、「https://https://console.aws.amazon.com/sagemaker/.
+130,左側のナビゲーションペインで、[管理者設定] の下にある [ドメイン] を選択します。
+131,ドメインに対応するリンクをクリックします。
+132,[全般設定] セクションで、[編集] をクリックします。
+133,[アクセス許可] セクションの [スペースのデフォルトの実行ロール] の下で、ドロップダウンリストを展開します。
+134,ドロップダウンリストを使用して、既存のロールを選択することも、カスタム IAM ロール ARN を入力することも、新しいロールを作成することもできます。
+135,新しいロールを作成する場合は、[ロール作成ウィザードを使用してロールを作成] オプションを選択できます。
+136,次のステップで [次へ] をクリックして、最後のステップで [送信] をクリックします。
+137,ユーザープロファイルの実行ロールを変更する
+138,ユーザープロファイルの実行ロールを変更する手順は次のとおりです。この実行ロールを変更すると、このユーザーが作成したすべてのプライベートスペースが引き受けるロールが変更されます。
+139,ユーザーにアタッチされた実行ロールを変更する
+140,SageMaker AI コンソール、「https://https://console.aws.amazon.com/sagemaker/://www.
+141,左側のナビゲーションペインで、[管理者設定] の下にある [ドメイン] を選択します。
+142,ドメインに対応するリンクをクリックします。
+143,[ユーザープロファイル] タブを選択します。
+144,ユーザープロファイル名に対応するリンクをクリックします。
+145,ドロップダウンリストを使用して、既存のロールを選択することも、カスタム IAM ロール ARN を入力することも、新しいロールを作成することもできます。
+146,新しいロールを作成する場合は、[ロール作成ウィザードを使用してロールを作成] オプションを選択できます。
+147,次のステップで [次へ] をクリックして、最後のステップで [送信] をクリックします。
+148,ID の実行ロール (SageMaker AI ユーザー、スペース、ドメインなど) に対する既存のアクセス許可を変更できます。これを行うには、アイデンティティが引き受けている適切な IAM ロールを検索してから、その IAM ロールを変更します。コンソールを使用してこれを実行する手順は次のとおりです。
+149,実行ロールを変更すると、対応するスペースの実行ロールも変更されます。この変更は直ちには反映されない場合があります。
+150,ユーザーの実行ロールを変更すると、そのユーザーが作成したプライベートスペースが、変更された実行ロールを引き受けます。
+151,スペースのデフォルトの実行ロールを変更すると、ドメインの共有スペースが、変更された実行ロールを引き受けます。
+152,実行ロールとスペースの詳細については、「ドメインスペースのアクセス許可と実行ロールを理解する」を参照してください。
+153,代わりに、アイデンティティが引き受けているロールを変更する場合は、「実行ロールを変更する」を参照してください。
+154,まず、変更する ID の名前を取得します。
+155,ID が引き受けているロールを変更するには、「AWS Identity and Access Management ユーザーガイド」の「ロールの変更」を参照してください。
+156,IAM ID にアクセス許可を追加する詳細と手順については、「AWS Identity and Access Management ユーザーガイド」の「IAM ID のアクセス許可の追加および削除」を参照してください。
+157,サービス間でロールを渡すなどのアクションは、SageMaker AI 内の一般的な機能です。SageMaker AI のアクション、リソース、および条件キーの詳細については、「サービス認可リファレンス」を参照してください。 
+158,ロール (iam:PassRole) は、以下の API コールを行う際に渡します。CreateAutoMLJob、CreateCompilationJob、CreateDomain、CreateFeatureGroup、CreateFlowDefiniton、CreateHyperParameterTuningJob、CreateImage、CreateLabelingJob、CreateModel、CreateMonitoringSchedule、CreateNotebookInstance、CreateProcessingJob、CreateTrainingJob、CreateUserProfile、RenderUiTemplate、UpdateImage、UpdateNotebookInstance。
+159,ロールを引き受けるアクセス許可を SageMaker AI プリンシパルに付与する IAM ロールには、次の信頼ポリシーをアタッチします。これは、すべての実行ロールで同じです。
+160,"    ""Version"": ""2012-10-17"","
+161,"            ""Effect"": ""Allow"","
+162,"            ""Principal"": {"
+163,"                ""Service"": ""sagemaker.amazonaws.com"""
+164,"            ""Action"": ""sts:AssumeRole"""
+165,ロールに付与する必要があるアクセス許可は、呼び出す API によって異なります。以下のセクションでは、これらのアクセス許可について説明します。
+166,注記アクセス許可ポリシーを作成してアクセス許可を管理する代わりに、 AWSマネージドアクセスAmazonSageMakerFullAccess許可ポリシーを使用できます。このポリシーのアクセス許可はかなり広く、SageMaker AI で実行したいアクションをすべて許可します。多くのアクセス許可を付与する理由に関する情報を含むポリシーのリストについては、「AWS マネージドポリシー: AmazonSageMakerFullAccess」を参照してください。カスタムポリシーを作成してアクセス許可を管理し、実行ロールで実行する必要があるアクションにのみアクセス許可を適用する場合は、以下のトピックを参照してください。
+167,重要問題が発生した場合は、「Amazon SageMaker AI Identity and Access のトラブルシューティング」を参照してください。
+168,IAM ロールの詳細については、「サービス認証リファレンス」の「IAM ロール」を参照してください。
+169,トピックCreateAutoMLJob と CreateAutoMLJobV2 API: 実行ロールのアクセス許可CreateDomain API: 実行ロールアクセス許可CreateImage API と UpdateImage API: 実行ロールアクセス許可CreateNotebookInstance API: 実行ロールアクセス許可CreateHyperParameterTuningJob API: 実行ロールアクセス許可CreateProcessingJob API: 実行ロールのアクセス許可CreateTrainingJob API: 実行ロールアクセス許可CreateModel API: 実行ロールアクセス許可SageMaker 地理空間機能ロール
+170,CreateAutoMLJob と CreateAutoMLJobV2 API: 実行ロールのアクセス許可
+171,CreateAutoMLJob または CreateAutoMLJobV2 API リクエストで渡すことのできる実行ロールについては、次の最小アクセス許可ポリシーをロールにアタッチできます。
+172,"    ""Version"": ""2012-10-17"","
+173,"            ""Effect"": ""Allow"","
+174,"            ""Action"": ["
+175,"                ""iam:PassRole"""
+176,"            ""Resource"": ""*"","
+177,"            ""Condition"": {"
+178,"                ""StringEquals"": {"
+179,"                    ""iam:PassedToService"": ""sagemaker.amazonaws.com"""
+180,"            ""Effect"": ""Allow"","
+181,"            ""Action"": ["
+182,"                ""sagemaker:DescribeEndpointConfig"","
+183,"                ""sagemaker:DescribeModel"","
+184,"                ""sagemaker:InvokeEndpoint"","
+185,"                ""sagemaker:ListTags"","
+186,"                ""sagemaker:DescribeEndpoint"","
+187,"                ""sagemaker:CreateModel"","
+188,"                ""sagemaker:CreateEndpointConfig"","
+189,"                ""sagemaker:CreateEndpoint"","
+190,"                ""sagemaker:DeleteModel"","
+191,"                ""sagemaker:DeleteEndpointConfig"","
+192,"                ""sagemaker:DeleteEndpoint"","
+193,"                ""cloudwatch:PutMetricData"","
+194,"                ""logs:CreateLogStream"","
+195,"                ""logs:PutLogEvents"","
+196,"                ""logs:CreateLogGroup"","
+197,"                ""logs:DescribeLogStreams"","
+198,"                ""s3:GetObject"","
+199,"                ""s3:PutObject"","
+200,"                ""s3:ListBucket"","
+201,"                ""ecr:GetAuthorizationToken"","
+202,"                ""ecr:BatchCheckLayerAvailability"","
+203,"                ""ecr:GetDownloadUrlForLayer"","
+204,"                ""ecr:BatchGetImage"""
+205,"            ""Resource"": ""*"""
+206,AutoML ジョブにプライベート VPC を指定する場合、次のアクセス許可を追加します。
+207,"    ""Effect"": ""Allow"","
+208,"        ""ec2:CreateNetworkInterface"","
+209,"        ""ec2:CreateNetworkInterfacePermission"","
+210,"        ""ec2:DeleteNetworkInterface"","
+211,"        ""ec2:DeleteNetworkInterfacePermission"","
+212,"        ""ec2:DescribeNetworkInterfaces"","
+213,"        ""ec2:DescribeVpcs"","
+214,"        ""ec2:DescribeDhcpOptions"","
+215,"        ""ec2:DescribeSubnets"","
+216,"        ""ec2:DescribeSecurityGroups"""
+217,入力が KMS マネージドキー (SSE-KMS) AWS によるサーバー側の暗号化を使用して暗号化されている場合は、次のアクセス許可を追加します。
+218,"    ""Effect"": ""Allow"","
+219,"        ""kms:Decrypt"""
+220,AutoML ジョブの出力設定に KMS キーを指定する場合、次のアクセス許可を追加します。
+221,"    ""Effect"": ""Allow"","
+222,AutoML ジョブのリソース設定にボリューム KMS キーを指定する場合、次のアクセス許可を追加します。
+223,"    ""Effect"": ""Allow"","
+224,"    ""kms:CreateGrant"""
+225,CreateDomain API: 実行ロールアクセス許可
+226,IAM Identity Center を使用するドメインの実行ロールと IAM ドメインのユーザー/実行ロールは、CreateDomainAPI リクエストKmsKeyIdで AWS KMS カスタマーマネージドキーを として渡すときに、次のアクセス許可が必要です。アクセス許可は、CreateApp API コールの際に適用されます。
+227,CreateDomain API リクエストで渡すことのできる実行ロールについては、次のアクセス許可ポリシーをロールにアタッチできます。
+228,"    ""Version"": ""2012-10-17"","
+229,"            ""Effect"": ""Allow"","
+230,"            ""Action"": ["
+231,"                ""kms:CreateGrant"","
+232,"                ""kms:DescribeKey"""
+233,"            ""Resource"": ""arn:aws:kms:region:account-id:key/kms-key-id"""
+234,また、アクセス許可が KMS ポリシーで指定されている場合は、以下のポリシーをロールにアタッチできます。
+235,"    ""Version"": ""2012-10-17"","
+236,"            ""Sid"": ""Allow use of the key"","
+237,"            ""Effect"": ""Allow"","
+238,"            ""Principal"": {"
+239,"                ""AWS"": ["
+240,"                    ""arn:aws:iam::account-id:role/ExecutionRole"""
+241,"            ""Action"": ["
+242,"                ""kms:CreateGrant"","
+243,"                ""kms:DescribeKey"""
+244,"            ""Resource"": ""*"""
+245,CreateImage API と UpdateImage API: 実行ロールアクセス許可
+246,CreateImage または UpdateImage API リクエストで渡すことのできる実行ロールについては、以下のアクセス許可ポリシーをロールにアタッチできます。
+247,"    ""Version"": ""2012-10-17"","
+248,"            ""Effect"": ""Allow"","
+249,"            ""Action"": ["
+250,"                ""ecr:BatchGetImage"","
+251,"                ""ecr:GetDownloadUrlForLayer"""
+252,"            ""Resource"": ""*"""
+253,CreateNotebookInstance API: 実行ロールアクセス許可
+254,CreateNotebookInstance API を呼び出すために実行ロールに付与されるアクセス許可は、ノートブックインスタンスで行う予定の作業によって異なります。これを使用して SageMaker AI APIs を呼び出し、 および API を呼び出すときに同じロールを渡す場合はCreateTrainingJobCreateModelAPIs 、次のアクセス許可ポリシーをロールにアタッチします。
+255,"    ""Version"": ""2012-10-17"","
+256,"            ""Effect"": ""Allow"","
+257,"            ""Action"": ["
+258,"                ""sagemaker:*"","
+259,"                ""ecr:GetAuthorizationToken"","
+260,"                ""ecr:GetDownloadUrlForLayer"","
+261,"                ""ecr:BatchGetImage"","
+262,"                ""ecr:BatchCheckLayerAvailability"","
+263,"                ""ecr:SetRepositoryPolicy"","
+264,"                ""ecr:CompleteLayerUpload"","
+265,"                ""ecr:BatchDeleteImage"","
+266,"                ""ecr:UploadLayerPart"","
+267,"                ""ecr:DeleteRepositoryPolicy"","
+268,"                ""ecr:InitiateLayerUpload"","
+269,"                ""ecr:DeleteRepository"","
+270,"                ""ecr:PutImage"","
+271,"                ""ecr:CreateRepository"","
+272,"                ""cloudwatch:PutMetricData"","
+273,"                ""cloudwatch:GetMetricData"","
+274,"                ""cloudwatch:GetMetricStatistics"","
+275,"                ""cloudwatch:ListMetrics"","
+276,"                ""logs:CreateLogGroup"","
+277,"                ""logs:CreateLogStream"","
+278,"                ""logs:DescribeLogStreams"","
+279,"                ""logs:PutLogEvents"","
+280,"                ""logs:GetLogEvents"","
+281,"                ""s3:CreateBucket"","
+282,"                ""s3:ListBucket"","
+283,"                ""s3:GetBucketLocation"","
+284,"                ""s3:GetObject"","
+285,"                ""s3:PutObject"","
+286,"                ""s3:DeleteObject"","
+287,"                ""robomaker:CreateSimulationApplication"","
+288,"                ""robomaker:DescribeSimulationApplication"","
+289,"                ""robomaker:DeleteSimulationApplication"","
+290,"                ""robomaker:CreateSimulationJob"","
+291,"                ""robomaker:DescribeSimulationJob"","
+292,"                ""robomaker:CancelSimulationJob"","
+293,"                ""ec2:CreateVpcEndpoint"","
+294,"                ""ec2:DescribeRouteTables"","
+295,"                ""elasticfilesystem:DescribeMountTargets"""
+296,"            ""Resource"": ""*"""
+297,"            ""Effect"": ""Allow"","
+298,"            ""Action"": ["
+299,"                ""codecommit:GitPull"","
+300,"                ""codecommit:GitPush"""
+301,"            ""Resource"": ["
+302,"                ""arn:aws:codecommit:*:*:*sagemaker*"","
+303,"                ""arn:aws:codecommit:*:*:*SageMaker*"","
+304,"                ""arn:aws:codecommit:*:*:*Sagemaker*"""
+305,"            ""Effect"": ""Allow"","
+306,"            ""Action"": ["
+307,"                ""iam:PassRole"""
+308,"            ""Resource"": ""*"","
+309,"            ""Condition"": {"
+310,"                ""StringEquals"": {"
+311,"                    ""iam:PassedToService"": ""sagemaker.amazonaws.com"""
+312,"アクセス許可を絞り込むには、次のように ""Resource"": ""*"" を制限することで、アクセス許可を特定の Amazon S3 リソースや Amazon ECR リソースに限定します。"
+313,"    ""Version"": ""2012-10-17"","
+314,"            ""Effect"": ""Allow"","
+315,"            ""Action"": ["
+316,"                ""sagemaker:*"","
+317,"                ""ecr:GetAuthorizationToken"","
+318,"                ""cloudwatch:PutMetricData"","
+319,"                ""logs:CreateLogGroup"","
+320,"                ""logs:CreateLogStream"","
+321,"                ""logs:DescribeLogStreams"","
+322,"                ""logs:PutLogEvents"","
+323,"                ""logs:GetLogEvents"""
+324,"            ""Resource"": ""*"""
+325,"            ""Effect"": ""Allow"","
+326,"            ""Action"": ["
+327,"                ""iam:PassRole"""
+328,"            ""Resource"": ""*"","
+329,"            ""Condition"": {"
+330,"                ""StringEquals"": {"
+331,"                    ""iam:PassedToService"": ""sagemaker.amazonaws.com"""
+332,"            ""Effect"": ""Allow"","
+333,"            ""Action"": ["
+334,"                ""s3:ListBucket"""
+335,"            ""Resource"": ["
+336,"                ""arn:aws:s3:::inputbucket"""
+337,"            ""Effect"": ""Allow"","
+338,"            ""Action"": ["
+339,"                ""s3:GetObject"","
+340,"                ""s3:PutObject"","
+341,"                ""s3:DeleteObject"""
+342,"            ""Resource"": ["
+343,"                ""arn:aws:s3:::inputbucket/object1"","
+344,"                ""arn:aws:s3:::outputbucket/path"","
+345,"                ""arn:aws:s3:::inputbucket/object2"","
+346,"                ""arn:aws:s3:::inputbucket/object3"""
+347,"            ""Effect"": ""Allow"","
+348,"            ""Action"": ["
+349,"                ""ecr:BatchCheckLayerAvailability"","
+350,"                ""ecr:GetDownloadUrlForLayer"","
+351,"                ""ecr:BatchGetImage"""
+352,"            ""Resource"": ["
+353,"                ""arn:aws:ecr:region::repository/my-repo1"","
+354,"                ""arn:aws:ecr:region::repository/my-repo2"","
+355,"                ""arn:aws:ecr:region::repository/my-repo3"""
+356,Amazon DynamoDB や Amazon Relational Database Service などの他のリソースにアクセスする場合は、関連するアクセス許可をこのポリシーに追加します。
+357,上記のポリシーでは、ポリシーの適用範囲を次のように指定します。
+358,s3:ListBucket アクセス許可の適用範囲を、InputDataConfig.DataSource.S3DataSource.S3Uri リクエストで CreateTrainingJob として指定した特定のバケットに設定します。
+359,s3:GetObject 、s3:PutObject、および s3:DeleteObject アクセス許可の範囲を次のように設定します。
+360,CreateTrainingJob リクエストで指定する以下の値に範囲を設定します。
+361,InputDataConfig.DataSource.S3DataSource.S3Uri
+362,OutputDataConfig.S3OutputPath
+363,CreateModel リクエストで指定する以下の値に範囲を設定します。
+364,PrimaryContainer.ModelDataUrl
+365,SuplementalContainers.ModelDataUrl
+366,ecr アクセス許可の範囲を次のように設定します。
+367,AlgorithmSpecification.TrainingImage リクエストで指定する CreateTrainingJob 値に範囲を設定します。
+368,PrimaryContainer.Image リクエストで指定する CreateModel 値に範囲を設定します。
+369,"cloudwatch および logs アクションは ""*"" リソースに適用できます。詳細については、Amazon CloudWatch ユーザーガイドの「CloudWatch リソースおよびオペレーション」を参照してください。"
+370,CreateHyperParameterTuningJob API: 実行ロールアクセス許可
+371,CreateHyperParameterTuningJob API リクエストで渡すことのできる実行ロールについては、次のアクセス許可ポリシーをロールにアタッチできます。
+372,"    ""Version"": ""2012-10-17"","
+373,"            ""Effect"": ""Allow"","
+374,"            ""Action"": ["
+375,"                ""cloudwatch:PutMetricData"","
+376,"                ""logs:CreateLogStream"","
+377,"                ""logs:PutLogEvents"","
+378,"                ""logs:CreateLogGroup"","
+379,"                ""logs:DescribeLogStreams"","
+380,"                ""s3:GetObject"","
+381,"                ""s3:PutObject"","
+382,"                ""s3:ListBucket"","
+383,"                ""ecr:GetAuthorizationToken"","
+384,"                ""ecr:BatchCheckLayerAvailability"","
+385,"                ""ecr:GetDownloadUrlForLayer"","
+386,"                ""ecr:BatchGetImage"""
+387,"            ""Resource"": ""*"""
+388,"""Resource"": ""*"" を指定する代わりに、これらのアクセス許可の範囲を特定の Amazon S3 リソース、Amazon ECR リソース、Amazon CloudWatch Logs リソースに設定できます。"
+389,"    ""Version"": ""2012-10-17"","
+390,"            ""Effect"": ""Allow"","
+391,"            ""Action"": ["
+392,"                ""cloudwatch:PutMetricData"","
+393,"                ""ecr:GetAuthorizationToken"""
+394,"            ""Resource"": ""*"""
+395,"            ""Effect"": ""Allow"","
+396,"            ""Action"": ["
+397,"                ""s3:ListBucket"""
+398,"            ""Resource"": ["
+399,"                ""arn:aws:s3:::inputbucket"""
+400,"            ""Effect"": ""Allow"","
+401,"            ""Action"": ["
+402,"                ""s3:GetObject"","
+403,"                ""s3:PutObject"""
+404,"            ""Resource"": ["
+405,"                ""arn:aws:s3:::inputbucket/object"","
+406,"                ""arn:aws:s3:::outputbucket/path"""
+407,"            ""Effect"": ""Allow"","
+408,"            ""Action"": ["
+409,"                ""ecr:BatchCheckLayerAvailability"","
+410,"                ""ecr:GetDownloadUrlForLayer"","
+411,"                ""ecr:BatchGetImage"""
+412,"            ""Resource"": ""arn:aws:ecr:region::repository/my-repo"""
+413,"            ""Effect"": ""Allow"","
+414,"            ""Action"": ["
+415,"                ""logs:CreateLogStream"","
+416,"                ""logs:PutLogEvents"","
+417,"                ""logs:CreateLogGroup"","
+418,"                ""logs:DescribeLogStreams"""
+419,"            ""Resource"": ""arn:aws:logs:*:*:log-group:/aws/sagemaker/TrainingJobs*"""
+420,ハイパーパラメータチューニングジョブに関連付けられているトレーニングコンテナが、DynamoDB リソースや Amazon RDS リソースなどの他のデータソースにアクセスする必要がある場合、このポリシーに適切なアクセス許可を追加します。
+421,上記のポリシーでは、ポリシーの適用範囲を次のように指定します。
+422,s3:ListBucket アクセス許可の範囲を、InputDataConfig.DataSource.S3DataSource.S3Uri リクエストで CreateTrainingJob として指定した特定のバケットに設定します。
+423,s3:GetObject および s3:PutObject アクセス許可の範囲を、CreateHyperParameterTuningJob リクエストの入力および出力データ設定で指定する次のオブジェクトに設定します。
+424,InputDataConfig.DataSource.S3DataSource.S3Uri
+425,OutputDataConfig.S3OutputPath
+426,Amazon ECR アクセス許可の範囲を、CreateHyperParameterTuningJob リクエストで指定するレジストリパス (AlgorithmSpecification.TrainingImage) に設定します。
+427,Amazon CloudWatch Logs のアクセス許可の範囲を、SageMaker トレーニングジョブのロググループに設定します。
+428,"cloudwatch アクションは ""*"" リソースに適用できます。詳細については、「Amazon CloudWatch ユーザーガイド」の「CloudWatch Resources and Operations」を参照してください。"
+429,ハイパーパラメータ調整ジョブにプライベート VPC を指定する場合は、次のアクセス許可を追加します。
+430,"    ""Effect"": ""Allow"","
+431,"        ""ec2:CreateNetworkInterface"","
+432,"        ""ec2:CreateNetworkInterfacePermission"","
+433,"        ""ec2:DeleteNetworkInterface"","
+434,"        ""ec2:DeleteNetworkInterfacePermission"","
+435,"        ""ec2:DescribeNetworkInterfaces"","
+436,"        ""ec2:DescribeVpcs"","
+437,"        ""ec2:DescribeDhcpOptions"","
+438,"        ""ec2:DescribeSubnets"","
+439,"        ""ec2:DescribeSecurityGroups"""
+440,入力が KMS マネージドキー (SSE-KMS) AWS によるサーバー側の暗号化を使用して暗号化されている場合は、次のアクセス許可を追加します。
+441,"    ""Effect"": ""Allow"","
+442,"        ""kms:Decrypt"""
+443,ハイパーパラメータの調整ジョブの出力設定に KMS キーを指定する場合は、次のアクセス許可を追加します。
+444,"    ""Effect"": ""Allow"","
+445,ハイパーパラメータの調整ジョブのリソース設定にボリューム KMS キーを指定する場合は、次のアクセス許可を追加します。
+446,"    ""Effect"": ""Allow"","
+447,"    ""kms:CreateGrant"""
+448,CreateProcessingJob API: 実行ロールのアクセス許可
+449,CreateProcessingJob API リクエストで渡すことのできる実行ロールについては、次のアクセス許可ポリシーをロールにアタッチできます。
+450,"    ""Version"": ""2012-10-17"","
+451,"            ""Effect"": ""Allow"","
+452,"            ""Action"": ["
+453,"                ""cloudwatch:PutMetricData"","
+454,"                ""logs:CreateLogStream"","
+455,"                ""logs:PutLogEvents"","
+456,"                ""logs:CreateLogGroup"","
+457,"                ""logs:DescribeLogStreams"","
+458,"                ""s3:GetObject"","
+459,"                ""s3:PutObject"","
+460,"                ""s3:ListBucket"","
+461,"                ""ecr:GetAuthorizationToken"","
+462,"                ""ecr:BatchCheckLayerAvailability"","
+463,"                ""ecr:GetDownloadUrlForLayer"","
+464,"                ""ecr:BatchGetImage"""
+465,"            ""Resource"": ""*"""
+466,"""Resource"": ""*"" を指定する代わりに、これらのアクセス許可の範囲を特定の Amazon S3 リソースおよび Amazon ECR リソースに設定できます。"
+467,"    ""Version"": ""2012-10-17"","
+468,"            ""Effect"": ""Allow"","
+469,"            ""Action"": ["
+470,"                ""cloudwatch:PutMetricData"","
+471,"                ""logs:CreateLogStream"","
+472,"                ""logs:PutLogEvents"","
+473,"                ""logs:CreateLogGroup"","
+474,"                ""logs:DescribeLogStreams"","
+475,"                ""ecr:GetAuthorizationToken"""
+476,"            ""Resource"": ""*"""
+477,"            ""Effect"": ""Allow"","
+478,"            ""Action"": ["
+479,"                ""s3:ListBucket"""
+480,"            ""Resource"": ["
+481,"                ""arn:aws:s3:::inputbucket"""
+482,"            ""Effect"": ""Allow"","
+483,"            ""Action"": ["
+484,"                ""s3:GetObject"","
+485,"                ""s3:PutObject"""
+486,"            ""Resource"": ["
+487,"                ""arn:aws:s3:::inputbucket/object"","
+488,"                ""arn:aws:s3:::outputbucket/path"""
+489,"            ""Effect"": ""Allow"","
+490,"            ""Action"": ["
+491,"                ""ecr:BatchCheckLayerAvailability"","
+492,"                ""ecr:GetDownloadUrlForLayer"","
+493,"                ""ecr:BatchGetImage"""
+494,"            ""Resource"": ""arn:aws:ecr:region::repository/my-repo"""
+495,CreateProcessingJob.AppSpecification.ImageUri が DynamoDB リソースや Amazon RDS リソースなどの他のデータソースにアクセスする必要がある場合は、関連するアクセス許可をこのポリシーに追加します。
+496,上記のポリシーでは、ポリシーの適用範囲を次のように指定します。
+497,s3:ListBucket アクセス許可の範囲を、ProcessingInputs リクエストで CreateProcessingJob として指定した特定のバケットに設定します。
+498,s3:GetObject  および s3:PutObject アクセス許可の範囲を、CreateProcessingJob リクエストの ProcessingInputs および ProcessingOutputConfig でダウンロードもしくはアップロードされるオブジェクトに設定します。
+499,Amazon ECR アクセス許可の範囲を、CreateProcessingJob リクエストで指定するレジストリパス (AppSpecification.ImageUri) に設定します。
+500,"cloudwatch および logs アクションは ""*"" リソースに適用できます。詳細については、Amazon CloudWatch ユーザーガイドの「CloudWatch リソースおよびオペレーション」を参照してください。"
+501,処理ジョブにプライベート VPC を指定する場合は、次のアクセス許可を追加します。ポリシーの範囲に条件やリソースフィルターを含めないでください。そうしないと、処理ジョブの作成中に行われる検証チェックが失敗します。
+502,"    ""Effect"": ""Allow"","
+503,"        ""ec2:CreateNetworkInterface"","
+504,"        ""ec2:CreateNetworkInterfacePermission"","
+505,"        ""ec2:DeleteNetworkInterface"","
+506,"        ""ec2:DeleteNetworkInterfacePermission"","
+507,"        ""ec2:DescribeNetworkInterfaces"","
+508,"        ""ec2:DescribeVpcs"","
+509,"        ""ec2:DescribeDhcpOptions"","
+510,"        ""ec2:DescribeSubnets"","
+511,"        ""ec2:DescribeSecurityGroups"""
+512,入力が KMS マネージドキー (SSE-KMS) AWS によるサーバー側の暗号化を使用して暗号化されている場合は、次のアクセス許可を追加します。
+513,"    ""Effect"": ""Allow"","
+514,"        ""kms:Decrypt"""
+515,処理ジョブの出力設定に KMS キーを指定する場合は、次のアクセス許可を追加します。
+516,"    ""Effect"": ""Allow"","
+517,処理ジョブのリソース設定でボリューム KMS キーを指定する場合は、次のアクセス許可を追加します。
+518,"    ""Effect"": ""Allow"","
+519,"    ""kms:CreateGrant"""
+520,CreateTrainingJob API: 実行ロールアクセス許可
+521,CreateTrainingJob API リクエストで渡すことのできる実行ロールについては、次のアクセス許可ポリシーをロールにアタッチできます。
+522,"    ""Version"": ""2012-10-17"","
+523,"            ""Effect"": ""Allow"","
+524,"            ""Action"": ["
+525,"                ""cloudwatch:PutMetricData"","
+526,"                ""logs:CreateLogStream"","
+527,"                ""logs:PutLogEvents"","
+528,"                ""logs:CreateLogGroup"","
+529,"                ""logs:DescribeLogStreams"","
+530,"                ""s3:GetObject"","
+531,"                ""s3:PutObject"","
+532,"                ""s3:ListBucket"","
+533,"                ""ecr:GetAuthorizationToken"","
+534,"                ""ecr:BatchCheckLayerAvailability"","
+535,"                ""ecr:GetDownloadUrlForLayer"","
+536,"                ""ecr:BatchGetImage"""
+537,"            ""Resource"": ""*"""
+538,"""Resource"": ""*"" を指定する代わりに、これらのアクセス許可の範囲を特定の Amazon S3 リソースおよび Amazon ECR リソースに設定できます。"
+539,"    ""Version"": ""2012-10-17"","
+540,"            ""Effect"": ""Allow"","
+541,"            ""Action"": ["
+542,"                ""cloudwatch:PutMetricData"","
+543,"                ""logs:CreateLogStream"","
+544,"                ""logs:PutLogEvents"","
+545,"                ""logs:CreateLogGroup"","
+546,"                ""logs:DescribeLogStreams"","
+547,"                ""ecr:GetAuthorizationToken"""
+548,"            ""Resource"": ""*"""
+549,"            ""Effect"": ""Allow"","
+550,"            ""Action"": ["
+551,"                ""s3:ListBucket"""
+552,"            ""Resource"": ["
+553,"                ""arn:aws:s3:::inputbucket"""
+554,"            ""Effect"": ""Allow"","
+555,"            ""Action"": ["
+556,"                ""s3:GetObject"","
+557,"                ""s3:PutObject"""
+558,"            ""Resource"": ["
+559,"                ""arn:aws:s3:::inputbucket/object"","
+560,"                ""arn:aws:s3:::outputbucket/path"""
+561,"            ""Effect"": ""Allow"","
+562,"            ""Action"": ["
+563,"                ""ecr:BatchCheckLayerAvailability"","
+564,"                ""ecr:GetDownloadUrlForLayer"","
+565,"                ""ecr:BatchGetImage"""
+566,"            ""Resource"": ""arn:aws:ecr:region::repository/my-repo"""
+567,CreateTrainingJob.AlgorithSpecifications.TrainingImage が DynamoDB リソースや Amazon RDS リソースなどの他のデータソースにアクセスする必要がある場合は、関連するアクセス許可をこのポリシーに追加します。
+568,上記のポリシーでは、ポリシーの適用範囲を次のように指定します。
+569,s3:ListBucket アクセス許可の範囲を、InputDataConfig.DataSource.S3DataSource.S3Uri リクエストで CreateTrainingJob として指定した特定のバケットに設定します。
+570,s3:GetObject および s3:PutObject アクセス許可の範囲を、CreateTrainingJob リクエストの入力および出力データ設定で指定する次のオブジェクトに設定します。
+571,InputDataConfig.DataSource.S3DataSource.S3Uri
+572,OutputDataConfig.S3OutputPath
+573,Amazon ECR アクセス許可の範囲を、CreateTrainingJob リクエストで指定するレジストリパス (AlgorithmSpecification.TrainingImage) に設定します。
+574,"cloudwatch および logs アクションは ""*"" リソースに適用できます。詳細については、Amazon CloudWatch ユーザーガイドの「CloudWatch リソースおよびオペレーション」を参照してください。"
+575,トレーニングジョブにプライベート VPC を指定する場合は、次のアクセス許可を追加します。
+576,"    ""Effect"": ""Allow"","
+577,"      ""ec2:CreateNetworkInterface"","
+578,"      ""ec2:CreateNetworkInterfacePermission"","
+579,"      ""ec2:DeleteNetworkInterface"","
+580,"      ""ec2:DeleteNetworkInterfacePermission"","
+581,"      ""ec2:DescribeNetworkInterfaces"","
+582,"      ""ec2:DescribeVpcs"","
+583,"      ""ec2:DescribeDhcpOptions"","
+584,"      ""ec2:DescribeSubnets"","
+585,"      ""ec2:DescribeSecurityGroups"""
+586,入力が KMS マネージドキー (SSE-KMS) AWS によるサーバー側の暗号化を使用して暗号化されている場合は、次のアクセス許可を追加します。
+587,"    ""Effect"": ""Allow"","
+588,"        ""kms:Decrypt"""
+589,トレーニングジョブの出力設定に KMS キーを指定する場合は、次のアクセス許可を追加します。
+590,"    ""Effect"": ""Allow"","
+591,トレーニングジョブのリソース設定にボリューム KMS キーを指定する場合は、次のアクセス許可を追加します。
+592,"    ""Effect"": ""Allow"","
+593,"    ""kms:CreateGrant"""
+594,CreateModel API: 実行ロールアクセス許可
+595,CreateModel API リクエストで渡すことのできる実行ロールについては、次のアクセス許可ポリシーをロールにアタッチできます。
+596,"    ""Version"": ""2012-10-17"","
+597,"            ""Effect"": ""Allow"","
+598,"            ""Action"": ["
+599,"                ""cloudwatch:PutMetricData"","
+600,"                ""logs:CreateLogStream"","
+601,"                ""logs:PutLogEvents"","
+602,"                ""logs:CreateLogGroup"","
+603,"                ""logs:DescribeLogStreams"","
+604,"                ""s3:GetObject"","
+605,"                ""s3:ListBucket"","
+606,"                ""ecr:GetAuthorizationToken"","
+607,"                ""ecr:BatchCheckLayerAvailability"","
+608,"                ""ecr:GetDownloadUrlForLayer"","
+609,"                ""ecr:BatchGetImage"""
+610,"            ""Resource"": ""*"""
+611,"""Resource"": ""*"" を指定する代わりに、これらのアクセス許可の範囲を特定の Amazon S3 リソースおよび Amazon ECR リソースに設定できます。"
+612,"    ""Version"": ""2012-10-17"","
+613,"            ""Effect"": ""Allow"","
+614,"            ""Action"": ["
+615,"                ""cloudwatch:PutMetricData"","
+616,"                ""logs:CreateLogStream"","
+617,"                ""logs:PutLogEvents"","
+618,"                ""logs:CreateLogGroup"","
+619,"                ""logs:DescribeLogStreams"","
+620,"                ""ecr:GetAuthorizationToken"""
+621,"            ""Resource"": ""*"""
+622,"            ""Effect"": ""Allow"","
+623,"            ""Action"": ["
+624,"                ""s3:GetObject"""
+625,"            ""Resource"": ["
+626,"                ""arn:aws:s3:::inputbucket/object"""
+627,"            ""Effect"": ""Allow"","
+628,"            ""Action"": ["
+629,"                ""ecr:BatchCheckLayerAvailability"","
+630,"                ""ecr:GetDownloadUrlForLayer"","
+631,"                ""ecr:BatchGetImage"""
+632,"            ""Resource"": ["
+633,"                ""arn:aws:ecr:region::repository/my-repo"","
+634,"                ""arn:aws:ecr:region::repository/my-repo"""
+635,CreateModel.PrimaryContainer.Image が Amazon DynamoDB リソースや Amazon RDS リソースなどの他のデータソースにアクセスする必要がある場合は、関連するアクセス許可をこのポリシーに追加します。
+636,上記のポリシーでは、ポリシーの適用範囲を次のように指定します。
+637,S3 アクセス許可の範囲を、PrimaryContainer.ModelDataUrl リクエストの CreateModel で指定するオブジェクトに設定します。
+638,Amazon ECR アクセス許可の範囲を、CreateModel リクエストで PrimaryContainer.Image および SecondaryContainer.Image として指定する特定のレジストリパスに設定します。
+639,"cloudwatch および logs アクションは ""*"" リソースに適用できます。詳細については、Amazon CloudWatch ユーザーガイドの「CloudWatch リソースおよびオペレーション」を参照してください。"
+640,注記本番環境でのモデルデプロイに SageMaker AI デプロイガードレール機能を使用する場合は、実行ロールに自動ロールバックアラームでcloudwatch:DescribeAlarmsアクションを実行するアクセス許可があることを確認してください。
+641,モデルにプライベート VPC を指定する場合は、次のアクセス許可を追加します。
+642,"    ""Effect"": ""Allow"","
+643,"        ""ec2:CreateNetworkInterface"","
+644,"        ""ec2:CreateNetworkInterfacePermission"","
+645,"        ""ec2:DeleteNetworkInterface"","
+646,"        ""ec2:DeleteNetworkInterfacePermission"","
+647,"        ""ec2:DescribeNetworkInterfaces"","
+648,"        ""ec2:DescribeVpcs"","
+649,"        ""ec2:DescribeDhcpOptions"","
+650,"        ""ec2:DescribeSubnets"","
+651,"        ""ec2:DescribeSecurityGroups"""
+652,Amazon SageMaker ノートブックインスタンス - Amazon SageMaker AIAmazon SageMaker ノートブックインスタンス - Amazon SageMaker AIドキュメントAmazon SageMakerデベロッパーガイドメンテナンスSageMaker Python SDK を使用した機械学習翻訳は機械翻訳により提供されています。提供された翻訳内容と英語版の間で齟齬、不一致または矛盾がある場合、英語版が優先します。Amazon SageMaker ノートブックインスタンスAmazon SageMaker ノートブックインスタンスは、Jupyter Notebook アプリケーションを実行する機械学習 (ML) コンピューティングインスタンスです。機械学習 (ML) 実務者が Amazon SageMaker AI を使用する最善の方法の 1 つは、SageMaker ノートブックインスタンスを使用して ML モデルをトレーニングおよびデプロイすることです。SageMaker ノートブックインスタンスは、Amazon Elastic Compute Cloud (Amazon EC2) で Jupyter サーバーを起動し、Amazon SageMaker Python SDK、、 AWS Command Line Interface （AWS CLI） AWS SDK for Python (Boto3)、Conda、Pandas、深層学習フレームワークライブラリ、およびデータサイエンスと機械学習用のその他のライブラリのパッケージで事前設定されたカーネルを提供することで、環境の作成に役立ちます。ノートブックインスタンスで Jupyter Notebook を使用して、次の操作を行います。
+653,モデルをトレーニングするためのコードの記述
+654,SageMaker ホスティングへのモデルのデプロイ
+655,SageMaker AI には、完全なコード例を含むサンプルノートブックも用意されています。これらの例は、SageMaker AI を使用して一般的な ML タスクを実行する方法を示しています。詳細については、「サンプルノートブックにアクセスする」を参照してください。Amazon SageMaker ノートブックインスタンスの料金については、「Amazon SageMaker の料金」を参照してください。
+656,SageMaker AI は、Amazon SageMaker ノートブックインスタンスの基盤となるソフトウェアを少なくとも 90 日に 1 回更新します。オペレーティングシステムのアップグレードなどの一部のメンテナンス更新では、アプリケーションを短期間オフラインにする必要がある場合があります。基盤ソフトウェアの更新中は、すべての操作は実行できません。パッチを自動的に適用するために、少なくとも 30 日に 1 回はノートブックを再起動することをお勧めします。
+657,詳細については、「AWS サポート」にお問い合わせください。
+658,SageMaker Python SDK を使用した機械学習
+659,SageMaker ノートブックインスタンスで機械学習モデルをトレーニング、検証、デプロイ、評価するには、SageMaker Python SDK を使用します。SageMaker Python SDK の抽象化 AWS SDK for Python (Boto3) と SageMaker API オペレーション。これにより、データとモデルアーティファクトを保存するための Amazon Simple Storage Service (Amazon S3)、ML モデルをインポートしてサービスするための Amazon Elastic Container Registry (ECR)、トレーニングと推論のための Amazon Elastic Compute Cloud (Amazon EC2) など、他の AWS サービスと統合してオーケストレーションできます。
+660,また、データラベリング、データ前処理、モデルトレーニング、モデルデプロイ、予測パフォーマンスの評価、本番稼働におけるモデルの品質のモニタリングなど、完全な ML サイクルのすべての段階に対処するのに役立つ SageMaker AI 機能を活用することもできます。
+661,SageMaker AI を初めて使用する場合は、end-to-endの ML チュートリアルに従って SageMaker Python SDK を使用することをお勧めします。オープンソースのドキュメントを見つけるには、「Amazon SageMaker Python SDK」を参照してください。
+662,トピックノートブックインスタンスを使用してモデルを構築するためのチュートリアルAmazon Linux 2 ノートブックインスタンスJupyterLab のバージョニングAmazon SageMaker ノートブックインスタンスを作成するノートブックインスタンスへのアクセスノートブックインスタンスを更新するLCC スクリプトを使用した SageMaker ノートブックインスタンスのカスタマイズサンプルノートブックにアクセスするノートブックカーネルの設定SageMaker AI ノートブックインスタンスを使用した Git リポジトリノートブックインスタンスのメタデータAmazon CloudWatch Logs で Jupyter ログをモニタリングする ブラウザで JavaScript が無効になっているか、使用できません。AWS ドキュメントを使用するには、JavaScript を有効にする必要があります。手順については、使用するブラウザのヘルプページを参照してください。ドキュメントの表記規則クォータノートブックインスタンスを使用してモデルを構築するためのチュートリアルこのページは役に立ちましたか? - はいページが役に立ったことをお知らせいただき、ありがとうございます。お時間がある場合は、何が良かったかお知らせください。今後の参考にさせていただきます。このページは役に立ちましたか? - いいえこのページは修正が必要なことをお知らせいただき、ありがとうございます。ご期待に沿うことができず申し訳ありません。お時間がある場合は、ドキュメントを改善する方法についてお知らせください。
+663,IaC ジェネレーターを使用して既存のリソースからテンプレートを生成する - AWS CloudFormationIaC ジェネレーターを使用して既存のリソースからテンプレートを生成する - AWS CloudFormationドキュメントAWS CloudFormationユーザーガイド考慮事項アクセス許可よく使われるコマンドテンプレートを AWS CDK に移行するIaC ジェネレーターを使用して既存のリソースからテンプレートを生成するIaC ジェネレーター (Infrastructure as Code ジェネレーター) では、まだ CloudFormation の管理対象になっていないアカウントにプロビジョニングされた AWS リソースを使用してテンプレートを生成することができます。IaC ジェネレーターの利点は次のとおりです。
+664,CloudFormation 管理でアプリケーション全体を使用するか、AWS CDK アプリに移行します。
+665,プロパティでリソースプロパティを記述することなくテンプレートを生成し、それを JSON または YAML 構文に変換します。
+666,新しいアカウントかリージョンにリソースをレプリケートするときは、こちらのテンプレートを使用します。
+667,IaC 生成プロセスは、以下のステップで構成されています。
+668,リソースのスキャン – 最初のステップは、リソースのスキャンを開始することです。このスキャンはリージョン全体で実行され、30 日後に失効します。この間、同じスキャンから複数のテンプレートを作成できます。
+669,テンプレートの作成 – テンプレートを作成するには、次の 2 つのオプションがあります。
+670,新しいテンプレートを最初から作成し、スキャンしたリソースと関連リソースをそこに追加します。
+671,既存の CloudFormation スタックを開始点として使用して、スキャンされたリソースと関連リソースをそのテンプレートに追加します。
+672,リソースのインポート – テンプレートを使用して、リソースを CloudFormation スタックとしてインポートするか、AWS CDK アプリに移行します。
+673,IaC ジェネレーターの機能は、すべての商用リージョンで利用可能で、多くの一般的な AWS リソースタイプをサポートしています。サポートされているリソースの一覧については、「リソースタイプのサポート」を参照してください。トピック考慮事項リソースのスキャンに必要な IAM アクセス許可テンプレートの生成、管理、削除によく使用されるコマンドテンプレートを AWS CDK に移行するCloudFormation IaC ジェネレーターを使用してリソーススキャンを開始するCloudFormation コンソールでスキャンの概要を表示するIaC ジェネレーターを使用してスキャンされたリソースから CloudFormation テンプレートを作成するスキャンしたリソースから CloudFormation スタックを作成する書き込み専用プロパティを解決する
+674,読み取り権限のある AWS リソースであれば、JSON テンプレートまたは YAML テンプレートを生成できます。IaC ジェネレーターの機能のテンプレートは、リソースプロパティをプロパティごとに記述することなく、クラウドリソースを確実かつ迅速にモデル化します。
+675,次の表は、IaC の生成機能に使用できるクォータの一覧です。
+676,1 回のスキャンで処理できるリソースの最大数
+677,"1 日あたりのスキャン数 (スキャンするリソースの数が 10,000 未満の場合)"
+678,"1 日あたりのスキャン数 (スキャンするリソースの数が 10,000 以上の場合)"
+679,アカウントあたりの同時に生成されるテンプレートの数
+680,1 回のテンプレート生成で同時にモデル化されるリソースの数
+681,1 つのテンプレートでモデル化できるリソースの合計数
+682,生成されたテンプレートのアカウントあたりの最大数
+683,重要IaC ジェネレーターは、お使いのリージョンの Cloud Control API でサポートされている AWS リソースのみをサポートします。詳細については、「リソースタイプのサポート」を参照してください。
+684,リソースのスキャンに必要な IAM アクセス許可
+685,IaC ジェネレーターでリソースをスキャンするときは、お使いの IAM プリンシパル (ユーザー、ロール、またはグループ) に次のものが必要です。
+686,CloudFormation のスキャンのアクセス許可
+687,ターゲットの AWS サービスの読み取りアクセス許可
+688,スキャンの範囲は、ユーザーが読み取りアクセス許可を持っているリソースに限られます。アクセス許可がないためにスキャンに失敗することはありませんが、そのようなリソースは除外されます。
+689,スキャンとテンプレート管理のアクセス許可を付与する IAM ポリシーの例については、「すべての IaC ジェネレーターオペレーションを許可する」を参照してください。
+690,テンプレートの生成、管理、削除によく使用されるコマンド
+691,IaC ジェネレーターの操作用によく使用されるコマンドには以下が含まれます。
+692,start-resource-scan - AWS リージョンでアカウント内のリソースのスキャンを開始します。
+693,describe-resource-scan - リソーススキャンの進行状況をモニタリングします。
+694,list-resource-scans - AWS リージョン内のリソーススキャンを一覧表示します。
+695,list-resource-scan-resources - リソーススキャン中に見つかったリソースを一覧表示します。
+696, list-resource-scan-related-resources - スキャンしたリソースに関連するリソースを一覧表示します。
+697,create-generated-template - スキャンされたリソースのセットから CloudFormation テンプレートを生成します。
+698,update-generated-template - 生成されたテンプレートを更新します。
+699,describe-generated-template - 生成されたテンプレートに関する情報を返します。
+700,list-generated-templates - アカウントと現在のリージョンで生成されたすべてのテンプレートを一覧表示します。
+701,delete-generated-template - 生成されたテンプレートを削除します。
+702,テンプレートを AWS CDK に移行する
+703,AWS Cloud Development Kit (AWS CDK) は、一般的なプログラミング言語を使って CloudFormation リソースを開発、管理、デプロイするときに使用できるオープンソースのソフトウェア開発フレームワークです。
+704,AWS CDK CLI は、IaC ジェネレーターとの統合を提供します。CloudFormation テンプレートを変換し、ユーザーのリソースを含む新しい CDK アプリを作成するには、AWS CDK CLI cdk
+705,                migrate コマンドを使用します。その後、AWS CDK を使用してリソースを管理し、CloudFormation にデプロイできます。
+706,詳細については、「AWS Cloud Development Kit (AWS CDK) デベロッパーガイド」の「Migrate to AWS CDK」を参照してください。
+707, ブラウザで JavaScript が無効になっているか、使用できません。AWS ドキュメントを使用するには、JavaScript を有効にする必要があります。手順については、使用するブラウザのヘルプページを参照してください。ドキュメントの表記規則Infrastructure Composerリソーススキャンを開始するこのページは役に立ちましたか? - はいページが役に立ったことをお知らせいただき、ありがとうございます。お時間がある場合は、何が良かったかお知らせください。今後の参考にさせていただきます。このページは役に立ちましたか? - いいえこのページは修正が必要なことをお知らせいただき、ありがとうございます。ご期待に沿うことができず申し訳ありません。お時間がある場合は、ドキュメントを改善する方法についてお知らせください。
+708,SageMaker AI で適切なデータ準備ツールを選択するための推奨事項 - Amazon SageMaker AISageMaker AI で適切なデータ準備ツールを選択するための推奨事項 - Amazon SageMaker AIドキュメントAmazon SageMakerデベロッパーガイド機能を選択する翻訳は機械翻訳により提供されています。提供された翻訳内容と英語版の間で齟齬、不一致または矛盾がある場合、英語版が優先します。SageMaker AI で適切なデータ準備ツールを選択するための推奨事項機械学習におけるデータ準備とは、分析とモデリングのために適切となるように raw データを収集、前処理、整理するプロセスを指します。このステップでは、データが機械学習アルゴリズムが効果的に学習できる形式であることを確認します。データ準備タスクには、欠損値の処理、外れ値の削除、特徴量のスケーリング、カテゴリ変数のエンコーディング、潜在的なバイアスの評価と軽減策の実行、データのトレーニングセットとテストセットへの分割、ラベル付け、今後の機械学習タスクに向けたデータの品質とユーザビリティを最適化するために必要な変換などがある可能性があります。
+709,Amazon SageMaker AI によるデータ準備には、主に 3 つのユースケースがあります。 Amazon SageMaker  要件に合ったユースケースを選択して、対応する推奨機能を参照してください。
+710,機械学習のためのデータ準備を実行する場合の主なユースケースは、以下のとおりです。
+711,ユースケース 1: ビジュアルインターフェイスを好むユーザーにとって、SageMaker AI はpoint-and-click環境を通じてモデルトレーニングの機能を探索、準備、エンジニアリングする方法を提供します。
+712,ユースケース 2: データ準備をより柔軟に制御したいコーディングに慣れているユーザーにとって、SageMaker AI はツールをコーディング環境に統合して探索、変換、特徴量エンジニアリングを行います。
+713,ユースケース 3: スケーラブルなデータ準備に重点を置くユーザー向けに、SageMaker AI は Hadoop/Spark エコシステムを活用してビッグデータを分散処理するサーバーレス機能を提供します。
+714,次の表は、機械学習の各データ準備ユースケースに関連する SageMaker AI 機能の主な考慮事項とトレードオフの概要を示しています。開始するには、要件に合ったユースケースを特定し、推奨される SageMaker AI 機能に移動します。
+715,Amazon SageMaker Canvas 内の Data Wrangler
+716,Studio での SQL によるデータ準備
+717,Studio での EMR Serverless を使用してデータを準備する アプリケーション
+718,SageMaker Canvas は、SageMaker AI で機械学習モデルを構築、トレーニング、デプロイするための視覚的なローコード環境です。Data Wrangler ツールが統合されているため、ユーザーはポイントアンドクリック操作でデータセットを結合、変換、クリーンアップできます。
+719,Studio の SQL 拡張機能を使用すると、ユーザーは Amazon Redshift、Snowflake、Athena、Amazon S3 に接続してアドホック SQL クエリを作成し、JupyterLab ノートブックで結果をプレビューできます。このようなクエリの出力は、機械学習モデルの開発に使用できる形式への追加の処理、可視化、変換のために、Python や Pandas を使用して操作できます。
+720,EMR Serverless と Amazon SageMaker Studio の統合により、Apache Spark や Apache Hive などのオープンソースフレームワークを使用した機械学習用の大規模なデータ準備のためのスケーラブルなサーバーレス環境が提供されます。ユーザーは、Studio ノートブックから EMR Serverless アプリケーションとデータに直接アクセスして、大規模なデータ準備タスクを実行できます。
+721,以下を実行できるビジュアルインターフェイスの使用: 
+722,データ変換に生成 AI を活用した自然言語の手順を使用する
+723,欠損値の処理、カテゴリ変数のエンコーディング、データ変換の適用など、表形式データのタスク向けに最適化されています。
+724,Amazon Redshift、Snowflake、Athena、または Amazon S3 にデータがあり、Spark を学ぶ必要なく、探索的 SQL と Python を組み合わせてデータ分析と準備を行うことを求めるユーザー向けです。
+725,SageMaker AI の機械学習機能を活用しながら、Apache Spark を中心とした短時間実行型または断続的なインタラクティブワークロードをスケーリングするための、自動リソースプロビジョニングと終了によるサーバーレスエクスペリエンスを好むユーザー向け。
+726,Python、Spark、またはその他の言語に関する専門知識を既にチームが身に着けている場合、これは最適な選択ではない可能性があります。
+727,複雑なビジネスロジックを追加する完全な柔軟性が必要な場合や、データ処理環境のフルコントロールが必要な場合には、最適ではない場合があります。
+728,この機能は、Amazon Redshift、Snowflake、Athena、または Amazon S3 のみに存在する構造化データ用に設計されています。
+729,クエリ結果のサイズが SageMaker AI インスタンスのメモリを超える場合、次のノートブックは、SageMaker AI アルゴリズムによる取り込み用にデータを準備するために Athena の使用を開始する方法をガイドします。
+730,EMR Serverless アプリケーションや Spark ベースのツールに精通していないユーザーにとっては、学ぶのが困難となる可能性があります。
+731,この機能は、インタラクティブなデータ準備タスクに適しています。大量のデータ、他のサービスとの広範な統合、カスタムアプリケーション、Apache Spark 以外の多様な分散データ処理フレームワークを使用した、大規模実行、長時間実行、または複雑なデータ処理要件に対応する Amazon EMR クラスターと比べて効率的ではない場合があります。
+732,サーバーレスコンピューティングは、短期間のタスクではコスト効率に優れているとはいえ、特に長時間稼働またはリソース集約型のワークロードでは、コストを慎重にモニタリングして管理することが重要です。
+733,SageMaker Canvas の使用を開始する
+734, SageMaker AI には、機械学習モデルで使用するデータを準備するための以下の追加オプションが用意されています。
+735,Amazon EMR を使用したデータ準備: 長時間実行され、コンピューティング集約的で大規模なデータ処理タスクの場合は、SageMaker Studio の Amazon EMR クラスターの使用を検討してください。Amazon EMR クラスターは、大規模な並列処理を処理するように設計されており、数百または数千のノードにスケールできるため、Apache Spark、Hadoop、Hive、Presto などのフレームワークを必要とするビッグデータワークロードに適しています。Amazon EMR と SageMaker Studio の統合により、Amazon EMR のスケーラビリティとパフォーマンスを活用しながら、完全な ML 実験、モデルトレーニングとデプロイ、SageMaker Studio 環境内の一元化と管理を維持できます。
+736,Glue インタラクティブセッションを使用してデータを準備する: AWS Glue
+737,インタラクティブセッションから Apache Spark ベースのサーバーレスエンジンを使用して、SageMaker Studio の複数のソースからデータを集約、変換、準備できます。
+738,Amazon SageMaker Clarify 処理ジョブを使用してトレーニングデータのバイアスを特定する: SageMaker Clarify を使用すると、データを分析し、複数の側面にわたる潜在的なバイアスを検出できます。例えば、Studio の Clarify API を使用して、トレーニングデータに性別、人種、年齢などのグループ間の偏った表現やラベル付けバイアスがあるかを検出できます。Clarify は、モデルの予測へのバイアスの伝播を回避するために、モデルをトレーニングする前にこのようなバイアスを特定するのに役立ちます。
+739,特徴量の作成、保存、共有: Amazon SageMaker 特徴量ストアは、機械学習用の厳選された特徴量の検出と再利用を最適化します。モデルトレーニング用に検索および取得できる特徴量データを保存する、一元化されたリポジトリを提供します。特徴量を標準化された形式で保存すると、ML プロジェクト間で再利用できます。特徴量ストアは、スケーラブルで管理された機械学習の特徴量エンジニアリングのためのリネージ追跡、統計、監査証跡など、特徴量ライフサイクル全体を管理します。
+740,データをヒューマンインザループでラベル付けする: SageMaker Ground Truth を使用すると、トレーニングデータセットのデータラベリングワークフローを管理できます。
+741,SageMaker Processing API を使用する: 探索的データ分析を実行してデータ変換ステップを作成したら、SageMaker AI Processing ジョブを使用して変換コードを本番稼働させ、SageMaker Model Building Pipelines を使用して準備ワークフローを自動化できます。
+742, ブラウザで JavaScript が無効になっているか、使用できません。AWS ドキュメントを使用するには、JavaScript を有効にする必要があります。手順については、使用するブラウザのヘルプページを参照してください。ドキュメントの表記規則API リファレンスStudio での SQL によるデータ準備このページは役に立ちましたか? - はいページが役に立ったことをお知らせいただき、ありがとうございます。お時間がある場合は、何が良かったかお知らせください。今後の参考にさせていただきます。このページは役に立ちましたか? - いいえこのページは修正が必要なことをお知らせいただき、ありがとうございます。ご期待に沿うことができず申し訳ありません。お時間がある場合は、ドキュメントを改善する方法についてお知らせください。
+743,Choose the best data source for your Amazon SageMaker training job | AWS Machine Learning Blog
+744, Skip to Main Content
+745,Click here to return to Amazon Web Services homepage
+746, Create an AWS Account
+747,Sign out of AWS Builder ID
+748,AWS Management Console
+749,Billing &amp; Cost Management
+750,AWS Personal Health Dashboard
+751,Click here to return to Amazon Web Services homepage
+752, Get Started for Free
+753,Training and Certification
+754,Download the Mobile App
+755, AWS Cloud Operations
+756, Business Intelligence
+757, Business Productivity
+758, Cloud Enterprise Strategy
+759, Cloud Financial Management
+760, Desktop &amp; Application Streaming
+761, DevOps &amp; Developer Productivity
+762, Front-End Web &amp; Mobile
+763, Integration &amp; Automation
+764, Messaging &amp; Targeting
+765, Microsoft Workloads on AWS
+766, Migration and Modernization
+767, Networking &amp; Content Delivery
+768, Supply Chain &amp; Logistics
+769, Training &amp; Certification
+770,Edisi Bahasa Indonesia
+771, Sign In to the Console
+772,What Is Cloud Computing?
+773,"AWS Inclusion, Diversity &amp; Equity"
+774,What is Artificial Intelligence (AI)?
+775,What is Generative AI?
+776,What is Machine Learning (ML)?
+777,Training and Certification
+778,AWS Solutions Library
+779,Product and Technical FAQs
+780,File a Support Ticket
+781, Create an AWS Account
+782,          Amazon is an Equal Opportunity Employer: 
+783,          Minority / Women / Disability / Veteran / Gender Identity / Sexual Orientation / Age.
+784,"© 2024, Amazon Web Services, Inc. or its affiliates. All rights reserved."
+785,AWS Machine Learning Blog
+786,Choose the best data source for your Amazon SageMaker training job
+787,by Gili Nachum and Alexander Arzhanov
+788,"in Amazon SageMaker, Artificial Intelligence"
+789,"Amazon SageMaker is a managed service that makes it easy to build, train, and deploy machine learning (ML) models. Data scientists use SageMaker training jobs to easily train ML models; you don’t have to worry about managing compute resources, and you pay only for the actual training time. Data ingestion is an integral part of any training pipeline, and SageMaker training jobs support a variety of data storage and input modes to suit a wide range of training workloads."
+790,"This post helps you choose the best data source for your SageMaker ML training use case. We introduce the data sources options that SageMaker training jobs support natively. For each data source and input mode, we outline its ease of use, performance characteristics, cost, and limitations. To help you get started quickly, we provide the diagram with a sample decision flow that you can follow based on your key workload characteristics. We also perform several benchmarks for realistic training scenarios to demonstrate the practical implications on the overall training cost and performance. Lastly, we provide instructions to replicate our benchmarks or perform your own I/O experiments with SageMaker Bencher utility."
+791,Native SageMaker data sources and input modes
+792,"Reading training data easily and flexibly in a performant way is a common recurring concern for ML training. SageMaker simplifies data ingestion with a selection of efficient, high-throughput data ingestion mechanisms called data sources and their respective input modes. This allows you to decouple training code from the actual data source, automatically mount file systems, read with high performance, easily turn on data sharding between GPUs and instances to enable data parallelism, and auto shuffle data at the start of each epoch."
+793,The SageMaker training ingestion mechanism natively integrates with three AWS managed storage services:
+794,"Amazon Simple Storage Service (Amazon S3) is an object storage service that offers industry-leading scalability, data availability, security, and performance."
+795,Amazon FSx for Lustre is a fully managed shared storage with the scalability and performance of the popular Lustre file system. It’s usually linked to an existing S3 bucket.
+796,"Amazon Elastic File System (Amazon EFS) is a general purpose, scalable, and highly available shared file system with multiple price tiers. Amazon EFS is serverless and automatically grows and shrinks as you add and remove files."
+797,"SageMaker training allows your training script to access datasets stored on Amazon S3, FSx for Lustre, or Amazon EFS, as if it were available on a local file system (via a POSIX-compliant file system interface)."
+798,"With Amazon S3 as a data source, you can choose between File mode, FastFile mode, and Pipe mode:"
+799,"File mode – SageMaker copies a dataset from Amazon S3 to the ML instance storage, which is an attached Amazon Elastic Block Store (Amazon EBS) volume or NVMe SSD volume, before your training script starts."
+800,FastFile mode – SageMaker exposes a dataset residing in Amazon S3 as a POSIX file system on the training instance. Dataset files are streamed from Amazon S3 on demand as your training script reads them.
+801,"Pipe mode – SageMaker streams a dataset residing in Amazon S3 to the ML training instance as a Unix pipe, which streams from Amazon S3 on demand as your training script reads the data from the pipe."
+802,"With FSx for Lustre or Amazon EFS as a data source, SageMaker mounts the file system before your training script starts."
+803,Training input channels
+804,"When launching an SageMaker training job, you can specify up to 20 managed training input channels. You can think of channels as an abstraction unit to tell the training job how and where to get the data that is made available to the algorithm code to read from a file system path (for example, /opt/ml/input/data/input-channel-name) on the ML instance. The selected training channels are captured as part of the training job metadata in order to enable a full model lineage tracking for use cases such as reproducibility of training jobs or model governance purposes."
+805,"To use Amazon S3 as your data source, you define a TrainingInput to specify the following:"
+806,"Your input mode (File, FastFile, or Pipe mode)"
+807,Distribution and shuffling configuration
+808,An S3DataType as one of three methods for specifying objects in Amazon S3 that make up your dataset: 
+809,S3Prefix (all objects under the S3 prefix)
+810,Manifest file (a list of S3 objects)
+811,Augmented manifest file (a list of S3 objects and their respective labels)
+812,"Alternatively, for FSx for Lustre or Amazon EFS, you define a FileSystemInput."
+813,"The following diagram shows five training jobs, each configured with a different data source and input mode combination:"
+814,Data sources and input modes
+815,"The follow sections provide a deep dive into the differences between Amazon S3 (File mode, FastFile mode, and Pipe mode), FSx for Lustre, and Amazon EFS as SageMaker ingestion mechanisms."
+816,"File mode is the default input mode (if you didn’t explicitly specify one), and it’s the more straightforward to use. When you use this input option, SageMaker downloads the dataset from Amazon S3 into the ML training instance storage (Amazon EBS or local NVMe depending on the instance type) on your behalf before launching model training, so that the training script can read the dataset from the local file system. In this case, the instance must have enough storage space to fit the entire dataset."
+817,"You configure the dataset for File mode by providing either an S3 prefix, manifest file, or augmented manifest file."
+818,You should use an S3 prefix when all your dataset files are located within a common S3 prefix (subfolders are okay).
+819,"The manifest file lists the files comprising your dataset. You typically use a manifest when a data preprocessing job emits a manifest file, or when your dataset files are spread across multiple S3 prefixes. An augmented manifest is a JSON line file, where each line contains a list of attributes, such as a reference to a file in Amazon S3, alongside additional attributes, mostly labels. Its use cases are similar to that of a manifest."
+820,"File mode is compatible with SageMaker local mode (starting a SageMaker training container interactively in seconds). For distributed training, you can shard the dataset across multiple instances with the ShardedByS3Key option."
+821,"File mode download speed depends on dataset size, average file size, and number of files. For example, the larger the dataset is (or the more files it has), the longer the downloading stage is, during which the compute resource of the instance remains effectively idle. When training with Spot Instances, the dataset is downloaded each time the job resumes after a Spot interruption. Typically, data downloading takes place at approximately 200 MB/s for large files (for example, 5 minutes/50 GB). Whether this startup overhead is acceptable primarily depends on the overall duration of your training job, because a longer training phase means a proportionally smaller download phase."
+822,Amazon S3 FastFile mode
+823,"FastFile mode exposes S3 objects via a POSIX-compliant file system interface, as if the files were available on the local disk of your training instance, and streams their content on demand when data is consumed by the training script. This means your dataset no longer needs to fit into the training instance storage space, and you don’t need to wait for the dataset to be downloaded to the training instance before training can start."
+824,"To facilitate this, SageMaker lists all the object metadata stored under the specified S3 prefix before your training script runs. This metadata is used to create a read-only FUSE (file system in userspace) that is available to your training script via /opt/ml/data/training-channel-name. Listing S3 objects runs as fast as 5,500 objects per seconds regardless of their size. This is much quicker than downloading files upfront, as is the case with File mode. While your training script is running, it can list or read files as if they were available locally. Each read operation is delegated to the FUSE service, which proxies GET requests to Amazon S3 in order to deliver the actual file content to the caller. Like a local file system, FastFile treats files as bytes, so it’s agnostic to file formats. FastFile mode can reach a throughput of more than one GB/s when reading large files sequentially using multiple workers. You can use FastFile to read small files or retrieve random byte ranges, but you should expect a lower throughput for such access patterns. You can optimize your read access pattern by serializing many small files into larger file containers, and read them sequentially."
+825,"FastFile currently supports S3 prefixes only (no support for manifest and augmented manifest), and FastFile mode is compatible with SageMaker local mode."
+826,Pipe mode is another streaming mode that is largely replaced by the newer and simpler-to-use FastFile mode.
+827,"With Pipe mode, data is pre-fetched from Amazon S3 at high concurrency and throughput, and streamed into Unix named FIFO pipes. Each pipe may only be read by a single process. A SageMaker-specific extension to TensorFlow conveniently integrates Pipe mode into the native TensorFlow data loader for streaming text, TFRecords, or RecordIO file formats. Pipe mode also supports managed sharding and shuffling of data."
+828,FSx for Lustre can scale to hundreds of GB/s of throughput and millions of IOPS with low-latency file retrieval.
+829,"When starting a training job, SageMaker mounts the FSx for Lustre file system to the training instance file system, then starts your training script. Mounting itself is a relatively fast operation that doesn’t depend on the size of the dataset stored in FSx for Lustre."
+830,"In many cases, you create an FSx for Lustre file system and link it to an S3 bucket and prefix. When linked to a S3 bucket as source, files are lazy-loaded into the file system as your training script reads them. This means that right after the first epoch of your first training run, the entire dataset is copied from Amazon S3 to the FSx for Lustre storage (assuming an epoch is defined as a single full sweep thought the training examples, and that the allocated FSx for Lustre storage is large enough). This enables low-latency file access for any subsequent epochs and training jobs with the same dataset."
+831,"You can also preload files into the file system before starting the training job, which alleviates the cold start due to lazy loading. It’s also possible to run multiple training jobs in parallel that are serviced by the same FSx for Lustre file system. To access FSx for Lustre, your training job must connect to a VPC (see VPCConfig settings), which requires DevOps setup and involvement. To avoid data transfer costs, the file system uses a single Availability Zone, and you need to specify a VPC Subnet which maps to this Availability Zone ID when running the training job. Because you’re using Amazon S3 as your long-term data storage, we recommend deploying your FSx for Lustre with Scratch 2 storage, as a cost-effective, short-term storage choice for high throughput, providing a baseline of 200 MB/s and a burst of up to 1300 MB/s per TB of provisioned storage."
+832,"With your FSx for Lustre file system constantly running, you can start new training jobs without waiting for a file system to be created, and don’t have to worry about the cold start during the very first epoch (because files could still be cached in the FSx for Lustre file system). The downside in this scenario is the extra cost associated with keeping the file system running. Alternatively, you could create and delete the file system before and after each training job (probably with scripted automation to help), but it takes time to initialize an FSx for Lustre file system, which is proportional to the number of files it holds (for example, it takes about an hour to index approximately 2 million objects from Amazon S3)."
+833,"We recommend using Amazon EFS if your training data already resides in Amazon EFS due to use cases besides ML training. To use Amazon EFS as a data source, the data must already reside in Amazon EFS prior to training. SageMaker mounts the specified Amazon EFS file system to the training instance, then starts your training script. When configuring the Amazon EFS file system, you need to choose between the default General Purpose performance mode, which is optimized for latency (good for small files), and Max I/O performance mode, which can scale to higher levels of aggregate throughput and operations per second (better for training jobs with many I/O workers). To learn more, refer to Using the right performance mode."
+834,"Additionally, you can choose between two metered throughput options: bursting throughput, and provisioned throughput. Bursting throughput for a 1 TB file system provides a baseline of 150 MB/s, while being able to burst to 300 MB/s for a time period of 12 hours a day. If you need higher baseline throughput, or find yourself running out of burst credits too many times, you could either increase the size of the file system or switch to provisioned throughput. In provisioned throughput, you pay for the desired baseline throughput up to a maximum of 3072 MB/s read."
+835,Your training job must connect to a VPC (see VPCConfig settings) to access Amazon EFS.
+836,Choosing the best data source
+837,"The best data source for your training job depends on workload characteristics like dataset size, file format, average file size, training duration, sequential or random data loader read pattern, and how fast your model can consume the training data."
+838,The following flowchart provides some guidelines to help you get started: 
+839,When to use Amazon EFS
+840,"If your dataset is primarily stored on Amazon EFS, you may have a preprocessing or annotations application that uses Amazon EFS for storage. You could easily run a training job configured with a data channel that points to the Amazon EFS file system (for more information, refer to Speed up training on Amazon SageMaker using Amazon FSx for Lustre and Amazon EFS file systems). If performance is not quite as good as you expected, check your optimization options with the Amazon EFS performance guide, or consider other input modes."
+841,Use File mode for small datasets
+842,"If the dataset is stored on Amazon S3 and its overall volume is relatively small (for example, less than 50–100 GB), try using File mode. The overhead of downloading a dataset of 50 GB can vary based on the total number of files (for example, about 5 minutes if chunked into 100 MB shards). Whether this startup overhead is acceptable primarily depends on the overall duration of your training job, because a longer training phase means a proportionally smaller download phase."
+843,Serializing many small files together
+844,"If your dataset size is small (less than 50–100 GB), but is made up of many small files (less than 50 MB), the File mode download overhead grows, because each file needs to be downloaded individually from Amazon S3 to the training instance volume. To reduce this overhead, and to speed up data traversal in general, consider serializing groups of smaller files into fewer larger file containers (such as 150 MB per file) by using file formats such as TFRecord for TensorFlow, WebDataset for PyTorch, or RecordIO for MXNet. These formats require your data loader to iterate through examples sequentially. You could still shuffle your data by randomly reordering the list of TFRecord files after each epoch, and by randomly sampling data from a local shuffle buffer (see the following TensorFlow example)."
+845,When to use FastFile mode
+846,"For larger datasets with larger files (more than 50 MB), the first option is to try FastFile mode, which is more straightforward to use than FSx for Lustre because it doesn’t require creating a file system, or connecting to a VPC. FastFile mode is ideal for large file containers (more than 150 MB), and might also do well with files more than 50 MB. Because FastFile mode provides a POSIX interface, it supports random reads (reading non-sequential byte-ranges). However, this isn’t the ideal use case, and your throughput would probably be lower than with the sequential reads. However, if you have a relatively large and computationally intensive ML model, FastFile mode may still be able to saturate the effective bandwidth of the training pipeline and not result in an I/O bottleneck. You’ll need to experiment and see. Luckily, switching from File mode to FastFile (and back) is as easy as adding (or removing) the input_mode='FastFile' parameter while defining your input channel using the SageMaker Python SDK:"
+847,"sagemaker.inputs.TrainingInput(S3_INPUT_FOLDER, input_mode='FastFile') "
+848,No other code or configuration needs to change.
+849,When to use FSx for Lustre
+850,"If your dataset is too large for File mode, or has many small files (which you can’t serialize easily), or you have a random read access pattern, FSx for Lustre is a good option to consider. Its file system scales to hundreds of GB/s of throughput and millions of IOPS, which is ideal when you have many small files. However, as already discussed earlier, be mindful of the cold start issues due to lazy loading, and the overhead of setting up and initializing the FSx for Lustre file system."
+851,"For the majority of ML training jobs, especially jobs utilizing GPUs or purpose-built ML chips, most of the cost to train is the ML training instance’s billable seconds. Storage GB per month, API requests, and provisioned throughput are additional costs that are directly associated with the data sources you use."
+852,"Storage GB per month can be significant for larger datasets, such as videos, LiDAR sensor data, and AdTech real-time bidding logs. For example, storing 1 TB in the Amazon S3 Intelligent-Tiering Frequent Access Tier costs $23 per month. Adding the FSx for Lustre file system on top of Amazon S3 results in additional costs. For example, creating a 1.2 TB file system of SSD-backed Scratch 2 type with data compression disabled costs an additional $168 per month ($140/TB/month)."
+853,"With Amazon S3 and Amazon EFS, you pay only for what you use, meaning that you’re charged according to the actual dataset size. With FSx for Lustre, you’re charged by the provisioned file system size (1.2 TB at minimum). When running ML instances with EBS volumes, Amazon EBS is charged independently of the ML instance. This is usually a much lower cost compared to the cost of running the instance. For example, running an ml.p3.2xlarge instance with a 100 GB EBS volume for 1 hour costs $3.825 for the instance and $0.02 for the EBS volume."
+854,API requests and provisioned throughput cost
+855,"While your training job is crunching through the dataset, it lists and fetches files by dispatching Amazon S3 API requests. For example, each million GET requests is priced at $0.4 (with the Intelligent-Tiering class). You should expect no data transfer cost for bandwidth in and out of Amazon S3, because training takes place in a single Availability Zone."
+856,"When using an FSx for Lustre that is linked to an S3 bucket, you incur Amazon S3 API request costs for reading data that isn’t yet cached in the file system, because FSx For Lustre proxies the request to Amazon S3 (and caches the result). There are no direct request costs for FSx for Lustre itself. When you use an FSx for Lustre file system, avoid costs for cross-Availability Zone data transfer by running your training job connected to the same Availability Zone that you provisioned the file system in. Amazon EFS with provisioned throughput adds an extra cost to consdier beyond GB per month."
+857,Performance case study
+858,"To demonstrate the training performance considerations mentioned earlier, we performed a series of benchmarks for a realistic use case in the computer vision domain. The benchmark (and takeaways) from this section might not be applicable to all scenarios, and are affected by various predetermined factors we used, such as DNN. We ran tests for 12 combinations of the following:"
+859,"Input modes – FSx for Lustre, File mode, FastFile mode"
+860,"Dataset size – Smaller dataset (1 GB), larger dataset (54 GB)"
+861,"File size – Smaller files (JPGs, approximately 39 KB), Larger files (TFRecord, approximately 110 MB)"
+862,"For this case study, we chose the most widely used input modes, and therefore omitted Amazon EFS and Pipe mode."
+863,"The case study benchmarks were designed as end-to-end SageMaker TensorFlow training jobs on an ml.p3.2xlarge single-GPU instance. We chose the renowned ResNet-50 as our backbone model for the classification task and Caltech-256 as the smaller training dataset (which we replicated 50 times to create its larger dataset version). We performed the training for one epoch, defined as a single full sweep through the training examples. The SageMaker Bencher config file to replicate this benchmark is available on GitHub."
+864,"The following graphs show the total billable time of the SageMaker training jobs for each benchmark scenario. The total job time itself is comprised of downloading, training, and other stages (such as container startup and uploading trained model artifacts to Amazon S3). Shorter billable times translate into faster and cheaper training jobs."
+865,"Let’s first discuss Scenario A and Scenario C, which conveniently demonstrate the performance difference between input modes when the dataset is comprised of many small files."
+866,"Scenario A (smaller files, smaller dataset) reveals that the training job with the FSx for Lustre file system has the smallest billable time. It has the shortest downloading phase, and its training stage is as fast as File mode, but faster than FastFile. FSx for Lustre is the winner in this single epoch test. Having said that, consider a similar workload but with multiple epochs—the relative overhead of File mode due to the downloading stage decreases as more epochs are added. In this case, we prefer File mode for its ease of use. Additionally, you might find that using File mode and paying for 100 extra billable seconds is a better choice than paying for and provisioning an FSx for Lustre file system."
+867,"Scenario C (smaller files, larger dataset) shows FSx for Lustre as the fastest mode, with only 5,000 seconds of total billable time. It also has the shortest downloading stage, because mounting the FSx for Lustre file system doesn’t depend on the number of files in the file system (1.5 million files in this case). The downloading overhead of FastFile is also small; it only fetches metadata of the files residing under the specified S3 bucket prefix, while the content of the files is read during the training stage. File mode is the slowest mode, spending 10,000 seconds to download the entire dataset upfront before starting training. When we look at the training stage, FSx for Lustre and File mode demonstrate similar excellent performance. As for FastFile mode, when streaming smaller files directly from Amazon S3, the overhead for dispatching a new GET request for each file becomes significant relative to the total duration of the file transfer (despite using a highly parallel data loader with prefetch buffer). This results in an overall lower throughput for FastFile mode, which creates an I/O bottleneck for the training job. FSx for Lustre is the clear winner in this scenario."
+868,Scenarios B and D show the performance difference across input modes when the dataset is comprised of fewer larger files. Reading sequentially using larger files typically results in better I/O performance because it allows effective buffering and reduces the number of I/O operations.
+869,"Scenario B (larger files, smaller dataset) shows similar training stage time for all modes (testifying that the training isn’t I/O-bound). In this scenario, we prefer FastFile mode over File mode due to shorter downloading stage, and prefer FastFile mode over FSx for Lustre due to the ease of use of the former."
+870,"Scenario D (larger files, larger dataset) shows relatively similar total billable times for all three modes. The downloading phase of File mode is longer than that of FSx for Lustre and FastFile. File mode downloads the entire dataset (54 GB) from Amazon S3 to the training instance before starting the training stage. All three modes spend similar time in the training phase, because all modes can fetch data fast enough and are GPU-bound. If we use ML instances with additional CPU or GPU resources, such as ml.p4d.24xlarge, the required data I/O throughput to saturate the compute resources grows. In these cases, we can expect FastFile and FSx for Lustre to successfully scale their throughput (however, FSx for Lustre throughput depends on provisioned file system size). The ability of File mode to scale its throughput depends on the throughput of the disk volume attached to the instance. For example, Amazon EBS-backed instances (like ml.p3.2xlarge, ml.p3.8xlarge, and ml.p3.16xlarge) are limited to a maximum throughput of 250MB/s, whereas local NVMe-backed instances (like ml.g5.* or ml.p4d.24xlarge) can accommodate a much larger throughput."
+871,"To summarize, we believe FastFile is the winner for this scenario because it’s faster than File mode, and just as fast as FSx for Lustre, yet more straightforward to use, costs less, and can easily scale up its throughput as needed."
+872,"Additionally, if we had a much larger dataset (several TBs in size), File mode would spend many hours downloading the dataset before training could start, whereas FastFile could start training significantly more quickly."
+873,Bring your own data ingestion
+874,"The native data source of SageMaker fits most but not all possible ML training scenarios. The situations when you might need to look for other data ingestion options could include reading data directly from a third-party storage product (assuming an easy and timely export to Amazon S3 isn’t possible), or having a strong requirement for the same training script to run unchanged on both SageMaker and Amazon Elastic Compute Cloud (Amazon EC2) or Amazon Elastic Kubernetes Service (Amazon EKS). You can address these cases by implementing your data ingestion mechanism into the training script. This mechanism is responsible for reading datasets from external data sources into the training instance. For example, the TFRecordDataset of the TensorFlow’s tf.data library can read directly from Amazon S3 storage."
+875,"If your data ingestion mechanism needs to call any AWS services, such as Amazon Relational Database Service (Amazon RDS), make sure that the AWS Identity and Access Management (IAM) role of your training job includes the relevant IAM policies. If the data source resides in Amazon Virtual Private Cloud (Amazon VPC), you need to run your training job connected to the same VPC."
+876,"When you’re managing dataset ingestion yourself, SageMaker lineage tracking can’t automatically log the datasets used during training. Therefore, consider alternative mechanisms, like training job tags or hyperparameters, to capture your relevant metadata."
+877,"Choosing the right SageMaker training data source could have a profound effect on the speed, ease of use, and cost of training ML models. Use the provided flowchart to get started quickly, observe the results, and experiment with additional configuration as needed. Keep in mind the pros, cons, and limitations of each data source, and how well they suit your training job’s individual requirements. Reach out to an AWS contact for further information and assistance."
+878,"SageMaker Bencher offers a collection of scripts to automatically prepare datasets and design, orchestrate, track, as well as analyze complex benchmarking experiments based on SageMaker Training Jobs. With SageMaker Bencher one can specify both rules for dataset preparation and benchmark execution procedure in form of a single YAML-file, which can be shared with anyone who wants to replicate or customize benchmarks by themselves."
+879," Gili Nachum is a senior AI/ML Specialist Solutions Architect who works as part of the EMEA Amazon Machine Learning team. Gili is passionate about the challenges of training deep learning models, and how machine learning is changing the world as we know it. In his spare time, Gili enjoy playing table tennis."
+880,"Dr. Alexander Arzhanov is an AI/ML Specialist Solutions Architect based in Frankfurt, Germany. He helps AWS customers to design and deploy their ML solutions across EMEA region. Prior to joining AWS, Alexander was researching origins of heavy elements in our universe and grew passionate about ML after using it in his large-scale scientific calculations."
+881,ドメインスペースのアクセス許可と実行ロールを理解する - Amazon SageMaker AIドメインスペースのアクセス許可と実行ロールを理解する - Amazon SageMaker AIドキュメントAmazon SageMakerデベロッパーガイドSageMaker AI 実行ロール実行ロールを使用した柔軟なアクセス許可の例翻訳は機械翻訳により提供されています。提供された翻訳内容と英語版の間で齟齬、不一致または矛盾がある場合、英語版が優先します。ドメインスペースのアクセス許可と実行ロールを理解する多くの SageMaker AI アプリケーションの場合、ドメイン内で SageMaker AI アプリケーションを起動すると、アプリケーション用のスペースが作成されます。ユーザープロファイルがスペースを作成すると、そのスペースは、そのスペースに付与されたアクセス許可を定義する AWS Identity and Access Management (IAM) ロールを引き受けます。次のページでは、スペースタイプと、スペースのアクセス許可を定義する実行ロールについて説明します。 IAM ロールは、特定の許可があり、アカウントで作成できるもう 1 つの IAM アイデンティティです。IAM ロールは、 AWS アイデンティティができることとできないことを決定するアクセス許可ポリシーを持つアイデンティティであるという点で、IAM ユーザーと似ています AWS。ただし、ユーザーは 1 人の特定の人に一意に関連付けられますが、ロールはそれを必要とする任意の人が引き受けるようになっています。また、ロールには標準の長期認証情報 (パスワードやアクセスキーなど) も関連付けられません。代わりに、ロールを引き受けると、ロールセッション用の一時的なセキュリティ認証情報が提供されます。注記Amazon SageMaker Canvas または RStudio を起動しても、IAM ロールを引き受けるスペースは作成されません。代わりに、ユーザープロファイルに関連付けられたロールを変更して、アプリケーションのアクセス許可を管理します。SageMaker AI ユーザープロファイルのロールを取得する方法については、「」を参照してくださいユーザーの実行ロールを取得する。SageMaker Canvas については、「Amazon SageMaker Canvas の設定と権限の管理 (IT 管理者向け)」を参照してください。RStudio については、「RStudio アプリで Amazon SageMaker AI ドメインを作成する」を参照してください。ユーザーは、共有スペースまたはプライベートスペース内で SageMaker AI アプリケーションにアクセスできます。共有スペース
+882,アプリケーションに関連付けられたスペースは 1 つのみです。共有スペースには、ドメイン内のすべてのユーザープロファイルからアクセスできます。これにより、ドメイン内のすべてのユーザープロファイルに、アプリケーションと同じ基盤となるファイルストレージシステムへのアクセスが付与されます。
+883,共有スペースには、スペースのデフォルトの実行ロールで定義されたアクセス許可が付与されます。共有スペースの実行ロールを変更する場合は、スペースのデフォルトの実行ロールを変更する必要があります。
+884,スペースのデフォルトの実行ロールを取得する方法については、「スペースの実行ロールを取得する」を参照してください。
+885,実行ロールを変更する方法については、「実行ロールのアクセス許可を変更する」を参照してください。
+886,共有スペースの詳細については、「共有スペースでコラボレーション」を参照してください。
+887,共有スペース作成するには、「共有スペースの作成」を参照してください。
+888,アプリケーションに関連付けられたスペースは 1 つのみです。プライベートスペースにアクセスできるのは、プライベートスペースを作成したユーザープロファイルのみです。このスペースを他のユーザーと共有することはできません。
+889,プライベートスペースは、スペースを作成したユーザープロファイルのユーザープロファイルの実行ロールを引き受けます。プライベートスペースの実行ロールを変更する場合は、ユーザープロファイルの実行ロールを変更する必要があります。
+890,ユーザープロファイルの実行ロールを取得する方法については、「ユーザーの実行ロールを取得する」を参照してください。
+891,実行ロールを変更する方法については、「実行ロールのアクセス許可を変更する」を参照してください。
+892,スペースをサポートするすべてのアプリケーションは、プライベートスペースもサポートします。
+893,Studio Classic 用のプライベートスペースは、デフォルトではユーザープロファイルごとに既に作成されています。
+894,トピックSageMaker AI 実行ロール実行ロールを使用した柔軟なアクセス許可の例
+895,SageMaker AI 実行ロールは、SageMaker AI で実行を実行している IAM ID に割り当てられた AWS Identity and Access Management (IAM) ロールです。IAM ID は、 AWS アカウントへのアクセスを提供し、ユーザーに代わって他の AWS リソースにアクセスするためのアクセス許可を SageMaker AI に付与する、認証され AWS、アクションを実行する権限を付与できる人間のユーザーまたはプログラムによるワークロードを表します。このロールにより、SageMaker AI はコンピューティングインスタンスの起動、Amazon S3 に保存されているデータやモデルアーティファクトへのアクセス、CloudWatch へのログの書き込みなどのアクションを実行できます。SageMaker AI は実行時に実行ロールを引き受け、ロールのポリシーで定義されたアクセス許可が一時的に付与されます。ロールには、該当するアイデンティティが実行できるアクションと、アイデンティティがアクセスできるリソースを定義する、必要となるアクセス許可が付与されている必要があります。さまざまなアイデンティティにロールを割り当てることで、ドメイン内のアクセス許可とアクセスを管理するための柔軟できめ細かなアプローチを提供できます。ドメインの詳細については、「Amazon SageMaker AI ドメインの概要」を参照してください。例えば、IAM ロールを以下に割り当てることができます。
+896,ドメイン内のすべてのユーザープロファイルに広範なアクセス許可を付与するドメインの実行ロール
+897,ドメイン内の共有スペースに広範なアクセス許可を付与するスペースの実行ロール。ドメイン内のすべてのユーザープロファイルは共有スペースにアクセスでき、共有スペース内ではスペースの実行ロールを使用します。
+898,特定のユーザープロファイルにきめ細かなアクセス許可を付与するユーザープロファイルの実行ロール。ユーザープロファイルが作成したプライベートスペースは、作成したユーザープロファイルの実行ロールを引き受けます。
+899,これにより、ユーザープロファイルへの最小特権アクセス許可の原則を維持しながら、「AWS IAM Identity Center ユーザーガイド」の「IAM でのセキュリティのベストプラクティス」に準拠して、ドメインに必要なアクセス許可を付与できます。
+900,実行ロールへの変更の伝播には数分かかる場合があります。詳細については、それぞれ「実行ロールを変更する」または「実行ロールのアクセス許可を変更する」を参照してください。
+901,実行ロールを使用した柔軟なアクセス許可の例
+902,IAM ロールを使用すると、広範かつきめ細かいレベルでアクセス許可を管理して付与できます。次の例では、スペースレベルとユーザーレベルのアクセス許可が付与されます。
+903,データサイエンティストチームのドメインを設定する管理者の場合、ドメイン内のユーザープロファイルに Amazon Simple Storage Service (Amazon S3) バケットへのフルアクセスを許可して、SageMaker トレーニングジョブを実行し、共有スペース 内のアプリケーションを使用してモデルをデプロイできるように設定できます。この例では、広範なアクセス許可が付与されている「DataScienceTeamRole」という名前の IAM ロールを作成できます。その後、「DataScienceTeamRole」をスペースのデフォルト実行ロールとして割り当て、チームに幅広いアクセス許可を付与できます。ユーザープロファイルが共有スペースを作成すると、そのスペースはスペースのデフォルトの実行ロールを引き受けます。既存のドメインに実行ロールを割り当てる方法については、「スペースの実行ロールを取得する」を参照してください。
+904,独自のプライベートスペースで作業する個別のユーザープロファイルに Amazon S3 バケットへのフルアクセスを許可する代わりに、ユーザープロファイルのアクセス許可を制限して、Amazon S3 バケットの変更を許可しないようにすることができます。この例では、Amazon S3 バケットへの読み取りアクセス権を付与して、データの取得、SageMaker トレーニングジョブの実行、プライベートスペースへのモデルのデプロイを実行できるようにすることができます。比較的限られたアクセス許可で、「DataScientistRole」というユーザーレベルの実行ロールを作成できます。その後「DataScientistRole」をユーザープロファイルの実行ロールに割り当て、定義された範囲内で特定のデータサイエンスタスクを実行するために必要なアクセス許可を付与できます。ユーザープロファイルが共有スペースを作成すると、そのスペースはユーザーの実行ロールを引き受けます。既存のユーザープロファイルに実行ロールを割り当てる方法については、「ユーザーの実行ロールを取得する」を参照してください。
+905,SageMaker AI 実行ロールとそのロールへの追加のアクセス許可の詳細については、「」を参照してくださいSageMaker AI 実行ロールの使用方法。
+906, ブラウザで JavaScript が無効になっているか、使用できません。AWS ドキュメントを使用するには、JavaScript を有効にする必要があります。手順については、使用するブラウザのヘルプページを参照してください。ドキュメントの表記規則グループの削除ドメイン内の SageMaker AI リソースを表示するこのページは役に立ちましたか? - はいページが役に立ったことをお知らせいただき、ありがとうございます。お時間がある場合は、何が良かったかお知らせください。今後の参考にさせていただきます。このページは役に立ちましたか? - いいえこのページは修正が必要なことをお知らせいただき、ありがとうございます。ご期待に沿うことができず申し訳ありません。お時間がある場合は、ドキュメントを改善する方法についてお知らせください。
+907,Amazon SageMaker Studio Classic ノートブックとノートブックインスタンスはどのように違いますか? - Amazon SageMaker AIAmazon SageMaker Studio Classic ノートブックとノートブックインスタンスはどのように違いますか? - Amazon SageMaker AIドキュメントAmazon SageMakerデベロッパーガイド翻訳は機械翻訳により提供されています。提供された翻訳内容と英語版の間で齟齬、不一致または矛盾がある場合、英語版が優先します。Amazon SageMaker Studio Classic ノートブックとノートブックインスタンスはどのように違いますか?重要2023 年 11 月 30 日以降、従来の Amazon SageMaker Studio のエクスペリエンスは Amazon SageMaker Studio Classic と名前が変更されました。以下のセクションは、Studio Classic アプリケーションの使用を前提とした内容です。更新後の Studio エクスペリエンスを使用する場合は、「Amazon SageMaker Studio」を参照してください。新しいノートブックを起動する場合は、Amazon SageMaker AI コンソールからノートブックインスタンスを起動する代わりに、Amazon SageMaker Studio Classic でノートブックを作成することをお勧めします。Studio Classic ノートブックには、次のような多くの利点があります。
+908,高速な起動: Studio Classic ノートブックは、インスタンスベースのノートブックよりも早く起動します。通常、インスタンスベースのノートブックと比べて、5～10 倍早く起動します。
+909,ノートブックを簡単に共有: ノートブックの共有機能は Studio Classic に組み込まれています。わずか数回のクリックで、ノートブックコードと、その実行に必要な SageMaker イメージを再現する共有可能なリンクを生成できます。
+910,最新の Python SDK: Studio Classic ノートブックには、最新の Amazon SageMaker Python SDK がプリインストールされています。
+911,Studio Classic のすべての機能へのアクセス: Studio Classic ノートブックには Studio Classic 内からアクセスできます。これにより、Studio Classic を終了することなく、モデルの構築、トレーニング、デバッグ、追跡、監視を行うことができます。
+912,永続的なユーザーディレクトリ: Studio チームの各メンバーには、ノートブックやその他のファイルを保存するための独自のホームディレクトリが割り当てられます。このディレクトリは、起動時にすべてのインスタンスとカーネルに自動的にマウントされるため、ノートブックやその他のファイルを常に利用することができます。ホームディレクトリは Amazon Elastic File System (Amazon EFS) に保存されているため、他のサービスからアクセスできます。
+913,直接アクセス: IAM アイデンティティセンターを使用する場合、固有の URL を通じて IAM アイデンティティセンターの認証情報を使用して Studio Classic に直接アクセスできます。ノートブック AWS Management Console を実行するために を操作する必要はありません。
+914,最適化されたイメージ: Studio Classic ノートブックには、あらかじめ定義された一連の SageMaker イメージ設定が用意されており、すぐに使用を開始することができます。
+915,注記Studio Classic ノートブックはローカルモードをサポートしていません。ただし、ノートブックインスタンスを使用してデータセットのサンプルをローカルでトレーニングし、Studio Classic ノートブックで同じコードを使用してデータセット全体をトレーニングすることはできます。SageMaker Studio Classic でノートブックを開くと、ビューは JupyterLab インターフェイスの拡張機能になります。主な機能が同じであるため、このビューには Jupyter Notebook と JupyterLab の一般的な機能が表示されます。Studio Classic インターフェイスの詳細については、「Amazon SageMaker Studio Classic の UI の概要」を参照してください。 ブラウザで JavaScript が無効になっているか、使用できません。AWS ドキュメントを使用するには、JavaScript を有効にする必要があります。手順については、使用するブラウザのヘルプページを参照してください。ドキュメントの表記規則Studio Classic ノートブックを使用する使用を開始するこのページは役に立ちましたか? - はいページが役に立ったことをお知らせいただき、ありがとうございます。お時間がある場合は、何が良かったかお知らせください。今後の参考にさせていただきます。このページは役に立ちましたか? - いいえこのページは修正が必要なことをお知らせいただき、ありがとうございます。ご期待に沿うことができず申し訳ありません。お時間がある場合は、ドキュメントを改善する方法についてお知らせください。
+916,基盤モデルを使用した生成 AI アプリケーションの構築 – Amazon Bedrock の料金 – AWS
+917,Amazon Web Services のホームページに戻るには、ここをクリック
+918,            プロファイルは、特定の AWS エクスペリエンスとのインタラクションの改善に役立ちます。 
+919,            プロファイルは、特定の AWS エクスペリエンスとのインタラクションの改善に役立ちます。 
+920,AWS Builder ID からサインアウト
+921,AWS Personal Health Dashboard
+922,アマゾン ウェブ サービスのホームページに戻るには、ここをクリック
+923,            プロファイルは、特定の AWS エクスペリエンスとのインタラクションの改善に役立ちます。 
+924,            プロファイルは、特定の AWS エクスペリエンスとのインタラクションの改善に役立ちます。 
+925,            プロファイルは、特定の AWS エクスペリエンスとのインタラクションの改善に役立ちます。 
+926,         Amazon は男女雇用機会均等法を順守しています。 
+927,        人種、出身国、性別、性的指向、障がい、年齢、その他の属性によって差別することなく、平等に採用選考の機会を提供しています。
+928,"© 2024, Amazon Web Services, Inc. or its affiliates.All rights reserved."
+929, Internet Explorer のサポートの終了
+930,       AWS support for Internet Explorer は 07/31/2022 に終了します。サポートされているブラウザは、Chrome、Firefox、Edge、Safari です。 
+931,Amazon Bedrock は、単一の API を通じて種々の高性能な基盤モデル (FM) を提供するフルマネージドサービスであり、セキュリティ、プライバシー、責任ある AI により生成 AI アプリケーションを構築するために必要な幅広い機能を備えています。
+932,Amazon Bedrock では、モデルの推論とカスタマイズに料金がかかります。推論については、2 つの料金プランからお選びいただけます: 1.オンデマンド: このモードでは、時間ベースの期間に関する確約をすることなく、従量制料金で FM を使用できます。2.プロビジョンドスループット: このモードでは、時間ベースの期間に関する確約をする代わりに、アプリケーションのパフォーマンス要件を満たす十分なスループットをプロビジョニングできます。
+933,オンデマンドモードでは、使用した分のみのお支払いとなり、時間ベースの契約はありません。テキスト生成モデルでは、入力トークンの処理および出力トークンの生成ごとに課金されます。埋め込みモデルでは、入力トークンの処理ごとに課金されます。トークンは数文字で構成されており、ユーザー入力と、結果を生成するためのプロンプトを理解するためにモデルが学習する基本単位です。画像生成モデルでは、生成されたすべての画像について課金されます。  クロスリージョン推論: オンデマンドモードは、一部のモデルのクロスリージョン推論もサポートしています。これにより、デベロッパーはさまざまな AWS リージョンでコンピューティングを活用してトラフィックバーストをシームレスに管理し、より高いスループット制限と強化された回復力を活用できます。クロスリージョン推論の使用には追加料金は発生せず、料金はリクエストを実行したリージョン (ソースリージョン) に基づいて計算されます。 バッチモードでは、一連のプロンプトを単一の入力ファイルとして提供し、応答を単一の出力ファイルとして受け取ることができるため、大規模な予測を同時に取得できます。レスポンスは処理され、Amazon S3 バケットに保存されるため、後でアクセスできます。Amazon Bedrock は、Anthropic、Meta、Mistral AI、Amazon などの主要な AI プロバイダーから提供される厳選した基盤モデル (FM) を、オンデマンド推論料金と比較して 50% 低い料金でバッチ推論のために提供しています。こちらのモデルリストをご覧ください。 
+934,レイテンシー最適化 (パブリックプレビュー)
+935,Amazon Bedrock の基盤モデルのレイテンシー最適化推論は、モデルの応答時間を短縮し、生成 AI アプリケーションの応答性を向上させるのに役立ちます。Amazon Nova Pro、Anthropic の Claude 3.5 Haiku モデル、Meta の Llama 3.1 405B および 70B モデルには、レイテンシー最適化推論を使用できます。Anthropic が検証したように、Amazon Bedrock でレイテンシーを最適化した推論により、Claude 3.5 Haiku は AWS 上で他のどこよりも高速に動作します。さらに、Bedrock のレイテンシー最適化推論により、Llama 3.1 405B と 70B は、他の主要なクラウドプロバイダーよりも AWS 上で高速に動作します。詳細はこちらをご覧ください。
+936,プロビジョンドスループットモードでは、特定のベースモデルまたはカスタムモデルのモデルユニットを購入できます。プロビジョンドスループットモードは、主に、スループットの保証を必要とする大規模で一貫性のある推論ワークロード向けに設計されています。カスタムモデルには、プロビジョンドスループットを使用してのみアクセスできます。モデルユニットは、1 分あたりに処理される入力トークンまたは出力トークンの最大数によって測定される特定のスループットを提供します。時間単位で課金されるこのプロビジョンドスループット料金設定では、1 か月または 6 か月の契約期間を柔軟に選択できます。
+937,カスタムモデルインポートにより、以前に設備投資してカスタマイズしたモデルを Amazon Bedrock 内で活用し、それらのモデルを Bedrock の既存のホストされた基盤モデルと同じフルマネージドで使用できます。サポートされているモデルアーキテクチャのカスタム重みをインポートし、オンデマンドモードを使用してカスタムモデルを提供できます。カスタムモデルの Bedrock へのインポートに料金はかかりません。モデルをインポートすると、コントロールプレーンアクションを実行する必要なく、オンデマンドでそのモデルにアクセスできるようになります。モデルの推論についてのみ課金されます。課金は推論ボリュームを処理するために必要なカスタムモデルのコピー数と、各モデルコピーがアクティブな期間に基づいて、5 分間のウィンドウごとに課金されます。モデルコピーは、推論リクエストを処理する準備が整っているインポートされたモデルの単一インスタンスです。モデルコピーごとの 1 分あたりの料金は、アーキテクチャ、コンテキストの長さ、AWS リージョン、コンピューティングユニットのバージョン (ハードウェア世代) などの要因によって異なり、モデルコピーのサイズによって階層化されます。
+938,Amazon Bedrock Marketplace を使用すると、Bedrock で 100 を超える人気の基盤モデル、新しい基盤モデル、および専門的な基盤モデルを見つけて、テストし、使用できます。Amazon Bedrock Marketplace モデルはエンドポイントにデプロイされ、そこで必要なインスタンス数とインスタンスタイプを選択できるほか、ワークロードの需要を満たすように自動スケーリングポリシーを設定できます。独自のモデルの場合、モデルプロバイダーによって設定されたソフトウェア料金 (時間単位、秒単位の増分での請求、またはリクエスト単位) と、選択したインスタンスに基づくインフラストラクチャ料金が課金されます。これらの料金は、プロバイダーモデルをサブスクライブする前に確認できるほか、AWS Marketplace のモデル一覧からも確認できます。公開モデルの場合、選択したインスタンスに基づくインフラストラクチャ料金のみが課金されます。こちらで詳細をご覧ください。
+939,Amazon Bedrock を使用すると、データを使用して FM をカスタマイズし、特定のタスクやビジネスコンテキストに合わせてカスタマイズされた応答を提供できます。ラベル付けされたデータを使用してモデルを微調整することも、ラベル付けされていないデータで継続的な事前トレーニングを行うこともできます。テキスト生成モデルのカスタマイズでは、モデルが処理したトークンの数 (トレーニングデータコーパス内のトークン数 x エポック数) に基づいてモデルトレーニング費用が課金されます。また、モデルのストレージはモデルごとに毎月課金されます。エポックとは、微調整プロセス中にトレーニングデータセットを 1 回完全に通過することを指します。カスタマイズされたモデルを使用した推論は、プロビジョニングされたスループットプランに基づいて課金され、プロビジョニングされたスループットを購入する必要があります。カスタマイズされたモデルでは、1 つのモデルユニットが契約期間なしで、推論に使用できます。この単一モデルユニットがカスタムモデルの推論に使用した時間数に対して課金されます。スループットを 1 つのモデルユニットを超えて増やしたい場合は、1 か月または 6 か月の契約期間を購入する必要があります。
+940,Amazon Bedrock モデル蒸留では、使用した分の料金のみをお支払いいただきます。合成データの生成は、選択した教師モデルのオンデマンド料金に基づいて課金されます。生徒モデルのファインチューニングは、モデルのカスタマイズ料金に基づいて課金されます。蒸留モデルはカスタマイズされたモデルであるため、カスタマイズされたモデルを使用した推論はプロビジョンドスループットプランに基づいて課金され、お客様はプロビジョンドスループットを購入する必要があります。
+941,Amazon Bedrock でのプロンプトキャッシュを使用すると、複数の API コールで繰り返されるコンテキストをキャッシュして、コストを削減し、応答のレイテンシーを低減できます。プロンプトには、長いマルチターンの会話、多ショットの例、モデルの動作を改善する詳細な手順など、共通のコンテキストまたはプレフィックスが含まれることがよくあります。既存の Amazon Bedrock API を使用して、AWS アカウント固有のキャッシュに 5 分間にわたってキャッシュするプロンプトプレフィックスを指定できます。その間、一致するプレフィックスを持つリクエストでは、キャッシュされたトークンで最大 90% の割引を受けることができるほか、レイテンシーが最大 85% 改善されます。料金とパフォーマンスにおける改善はモデルとプロンプトの長さによって異なりますが、キャッシュは常に AWS アカウントに分離されます。
+942,Amazon Bedrock のガードレールは、生成 AI アプリケーションのためにカスタマイズされたセーフガードと責任ある AI ポリシーを実装するのに役立ちます。FM が提供するネイティブ保護に加えて、カスタマイズ可能な追加の安全保護を提供します。これは大手クラウドプロバイダーによって提供される唯一の責任ある AI 機能であり、お客様が単一のソリューションで生成 AI アプリケーションの安全性、プライバシー、および真正性の保護を構築およびカスタマイズできるようにするのに役立ちます。Bedrock ガードレールは、Amazon Bedrock でサポートされている基盤モデル (FM)、ファインチューニングされたモデル、Amazon Bedrock 以外のセルフホストモデルなど、さまざまな FM で動作します。Bedrock のガードレールは、責任ある AI ポリシーに適合する生成 AI アプリケーションを構築するために、Amazon Bedrock のエージェントやナレッジベースと統合することも可能です。さらに、ガードレールはスタンドアロンの ApplyGuardrail API を提供します。これを使用することで、Amazon Bedrock 以外のモデル (AWS の競合他社が提供するモデルを含む) のユーザー入力とモデル応答を評価できます。基盤モデルを呼び出すことなく、ユーザー入力を評価できます。
+943,Amazon Bedrock のナレッジベースは、フルマネージド検索拡張生成 (RAG) ワークフローです。これにより、お客様は独自のデータソースから取得したコンテキスト情報を組み込むことで、高精度、低レイテンシー、安全なカスタム生成 AI アプリケーションを作成できます。プレビューでは、S3、Confluence、Salesforce、SharePoint などのさまざまなデータソースをサポートしています。ストリーミングデータのドキュメント取り込みも提供しています。Bedrock のナレッジベースは、非構造化データを埋め込みに変換し、ベクトルデータベースに保存して、さまざまなデータストアからの取得を可能にします。また、マネージド取得のために Kendra と統合し、自然言語から SQL への変換を使用して構造化データの取得をサポートします。 Amazon Bedrock のデータオートメーションは、インテリジェントドキュメント処理、動画分析、RAG などのユースケース向けに、非構造化マルチモーダルコンテンツを構造化データ形式に変換します。Bedrock のデータオートメーションは、動画のシーンごとの説明、音声文字起こし、自動ドキュメント分析など、モダリティ固有の事前定義済みのデフォルトを使用して、標準出力コンテンツを生成できます。お客様は、独自のデータスキーマに基づいてブループリントで出力要件を指定することでカスタム出力を追加で作成し、既存のデータベースまたはデータウェアハウスに簡単にロードできます。ナレッジベースとの統合により、Bedrock のデータオートメーションを使用して RAG アプリケーション用にコンテンツを解析することもできます。これにより、画像とテキストの両方に埋め込まれた情報を含めることで、結果の精度と関連性を高めることができます。 
+944,Amazon Bedrock のエージェントを使用すると、アプリケーション内で自律エージェントを構築および設定できます。これらのエージェントは、会社のデータソースに安全に接続するとともに、ユーザーリクエストを適切な情報で補足して、正確な応答を生成します。わずか数ステップで単一およびマルチエージェントのアプリケーションを作成できるため、生成 AI アプリケーションの構築にかかる時間を短縮できます。これらのエージェントは、コードを動的に生成して実行するコード解釈と Return of control をサポートしているため、アクションスキーマを定義して、エージェントがアクションを呼び出すたびにコントロールを取り戻すことができます。さらに、Amazon Bedrock のエージェントは、複数のやり取りにまたがって記憶を維持できるため、よりシームレスでパーソナライズされたユーザーエクスペリエンスを実現できます。
+945,Amazon Bedrock Flows は、生成 AI アプリケーション向けの Bedrock のワークフローオーサリングおよび実行機能です。直感的なビジュアルビルダーと一連の API により、ユーザー定義の生成 AI ワークフローの作成、テスト、デプロイを加速します。これにより、最新の基盤モデル、プロンプト、エージェント、ナレッジベース、ガードレール、AWS サービス (Amazon Lex、AWS Lambda、Amazon S3 など) をビジネスロジックとシームレスにリンクして、生成 AI ワークフローを構築できます。独自のインフラストラクチャを構築しなくても、ビジュアルインターフェイスや API を通じてワークフローを簡単にテストおよびバージョン管理し、安全なサーバーレス環境で実行できます。
+946,モデル評価: Amazon Bedrock のモデル評価では、お支払いいただくのは使用した分の料金であり、プロンプトやレスポンスの数に対する最小使用量の確約は不要です。自動評価 (プログラムによる) の場合は、評価で選択したモデルから推論した分のみお支払いいただきます。自動生成されたアルゴリズムスコアは追加料金なしで提供されます。自動 (モデル/LLM-as-a-judge) 評価でお支払いいただくのは、選択したジェネレーターモデルと評価者モデルからの推論についての料金のみです。LLM-as-a-judge モデル評価ジョブでは、組み込みのメトリクスは、各メトリクスに固有のシステム判断プロンプトテンプレートと、トークンの使用量の一部として課金される利用可能な判断モデルを使用します。判断プロンプトは、高い透明性を実現するために公開されている AWS ドキュメントでご覧いただけます。自分の作業チームを連れてくる人間ベースの評価では、評価におけるモデル推論の料金と、完了したヒューマンタスクごとに0.21ドルの料金がかかります。ヒューマンタスクとは、人間の作業者が単一のプロンプトとそれに関連する推論応答の評価をヒューマン評価ユーザーインターフェイスに送信したこととして定義されます。評価ジョブに含まれるモデルが 1 つでも 2 つでも、また、含める評価メトリクスや評価方法の数にかかわらず、タスクあたりの料金は同じです。ヒューマンタスクの料金は AWS 請求書の Amazon SageMaker セクションに表示され、すべての AWS リージョンで同じです。人件費はお客様負担となりますので、別途人件費はかかりません。評価ジョブ中に Bedrock モデルを呼び出す代わりに「独自の推論応答を持ち込む」機能を使用している場合は、評価者モデルの推論 (LLM-as-a-judge ジョブ)、または完了したヒューマンタスクあたり 0.21 USD (人間ベースの評価ジョブ) についてのみ課金されます。AWS が管理する専門家による評価では、AWS 専門家評価チームと連携しながら、プライベート契約でお客様の評価ニーズに合わせて価格をカスタマイズします。 RAG 評価: Amazon Bedrock の RAG 評価では、お支払いいただくのは使用した分の料金であり、プロンプトやレスポンスの数に対する最小使用量の確約は不要です。Amazon Bedrock ナレッジベースを評価する場合、お支払いいただくのは、選択したジェネレーターモデルと評価者モデル (評価ジョブでは LLM-as-a-judge を使用) からの推論についての料金と、Amazon Bedrock のナレッジベースの料金に従って評価ジョブでナレッジベースを使用したことから発生した料金のみです。「独自の推論応答を持ち込む」機能を使用している場合は、評価者モデルの推論についてのみ課金されます。RAG 評価ジョブでは、組み込みのメトリクスは、各メトリクスに固有のシステム判断プロンプトテンプレートと、トークンの使用量の一部として課金される利用可能な判断モデルを使用します。判断プロンプトは、高い透明性を実現するために公開されている AWS ドキュメントでご覧いただけます。メトリクスによっては、入力プロンプトに加えて、ナレッジベース/RAG システムから取得したコンテキストや Ground Truth の回答に基づいて判断モデルの推論を行う必要があるため、各メトリクスに関連するコストに影響が生じます。各メトリクスの詳細については、評価に関する AWS の公開ドキュメントをご覧ください。 
+947,料金は、モダリティ、プロバイダー、モデルによって異なります。詳細な料金を確認するには、モデルプロバイダーを選択してください。
+948,Amazon Bedrock は、Anthropic、Meta、Mistral AI、Amazon などの主要な AI プロバイダーから提供される厳選した基盤モデル (FM) を、オンデマンド推論料金と比較して 50% 低い料金でバッチ推論用に提供しています。モデルのリストについては、こちらをご覧ください。
+949,            ガードレールを設定 
+950,            データオートメーション 
+951,            インテリジェントプロンプトルーティング 
+952,            プロンプト最適化 
+953, Amazon Bedrock Flows
+954,アプリケーションを実行するために必要となるノード遷移の数に基づいて請求されます。Bedrock Flows は、ワークフロー内のノードが実行されるたびにノード遷移をカウントします。フロー全体のノード遷移の合計数に対して料金が発生します。
+955,すべての料金は毎日計測され、2025 年 2 月 1 日から毎月請求されます。 
+956,アプリケーションワークフローの実行で AWS の他のサービスを利用した場合やデータを転送した場合は、追加料金が発生する可能性があります。例えば、ワークフローで Amazon Bedrock Guardrail ポリシーを呼び出す場合、ポリシーによって処理されたテキストユニット数に対して請求されます。 
+957,構造化データの取得は、SQL クエリを生成するリクエストごとに課金されます。生成された SQL クエリは、構造化データストアからデータを取得するために使用されます。 
+958,Rerank モデルは検索拡張生成 (RAG) アプリケーションにおける応答の関連性と精度を向上させるように設計されています。クエリごとに課金されます。 
+959,**1 つのクエリに最大 100 個のドキュメントチャンクを含めることができるクエリの数に対して課金されます。クエリに 100 個を超えるドキュメントチャンクが含まれている場合は、複数のクエリとしてカウントされます。たとえば、リクエストに 350 のドキュメントが含まれている場合、4 つのクエリとして扱われます。各ドキュメントには最大 512 個のトークン (クエリとドキュメントの合計トークンを含む) しか含めることができず、トークンの長さが 512 トークンを超える場合は複数のドキュメントに分割されることに注意してください。クエリは検索ユニットと同等です。
+960,           ガードレールを設定 
+961, Amazon Bedrock のガードレール
+962,コンテンツフィルター (テキストコンテンツ)
+963,"1,000 テキストユニットあたり 0.15 USD"
+964,処理された画像あたり 0.00075 USD
+965,"1,000 テキストユニットあたり 0.15 USD"
+966,"1,000 テキストユニットあたり 0.10 USD"
+967,"1,000 テキストユニットあたり 0.10 USD"
+968,"* 各ガードレールポリシーはオプションであり、アプリケーションの要件に基づいて有効にできます。料金は、ガードレールで使用されているポリシーの種類に基づいて発生します。例えば、ガードレールにコンテンツフィルターと拒否トピックが設定されている場合、これらの 2 つのポリシーについては料金が発生しますが、機密情報フィルターに関連して発生する料金はありません。  注: テキスト単位には最大 1,000 文字まで含めることができます。テキスト入力が 1,000 文字を超える場合、それぞれ 1,000 文字以下を含む複数のテキスト単位として処理されます。例えば、テキスト入力に 5,600 文字が含まれている場合、6 テキスト単位について課金されます。"
+969,コンテキストグラウンディングチェックでは、参照ソースとクエリを使用して、モデルの回答がソースを根拠としており、クエリに関連しているかどうかを判断します。課金されるテキストユニットの合計数は、ソース、クエリ、およびモデル応答のすべての文字を組み合わせて計算されます。
+970,モデル評価では、選択したモデルからの推論について課金されます。自動生成されたアルゴリズムスコアは追加料金なしで提供されます。独自のワークストリームを持ち込むヒューマンベースの評価では、評価におけるモデル推論の料金と、完了したヒューマンタスクごとに 0.21 USD の料金がかかります。
+971,           データオートメーション 
+972,Amazon Bedrock ナレッジベースでは、マルチモーダルデータに対してより適切で正確な回答を提供するために、Bedrock データ自動化統合を提供しています。ナレッジベースを設定する場合、解析方法として Bedrock データオートメーションを選択して、図、グラフ、図などの画像やドキュメントから意味のある洞察を分析および抽出できます。処理中、Bedrock データオートメーションは、取り込まれたドキュメントや画像から意味のある情報を抽出し、それを以降のナレッジベースのステップでチャンク化、埋め込み、保存に使用します。ナレッジベースと統合された Bedrock データオートメーションは、標準化された出力を提供し、それについて課金します。
+973,           インテリジェントプロンプトルーティング 
+974,"1,000 件のリクエストあたり 1 USD"
+975,インテリジェントプロンプトルーティングを使用すると、質とコストを最適化するのに役立つよう、同じモデルファミリーの基盤モデル (FM) を組み合わせて使用できます。例えば、Anthropic の Claude モデルファミリーを使用すると、Amazon Bedrock はプロンプトの複雑さに応じて、Claude 3.5 Sonnet と Claude 3 Haiku の間でリクエストをインテリジェントにルーティングできます。同様に、Amazon Bedrock は Meta Llama 3.3 70B と 3.18B、Nova Pro と Nova Lite の間でリクエストをルーティングできます。プロンプトルーターは、応答の質とコストを最適化するのをサポートしながら、各リクエストについてどのモデルが最適なパフォーマンスを提供するかを予測します。これは、カスタマーサービスアシスタントなどのアプリケーションで特に役立ちます。このようなアプリケーションでは、単純なクエリはより小さく、より高速で、よりコスト効率の高いモデルで処理でき、複雑なクエリはより高性能なモデルにルーティングされます。インテリジェントプロンプトルーティングを使用すると、精度について妥協することなく、コストを最大 30% 削減できます。
+976, Amazon Bedrock のためのプロンプト最適化
+977,入力プロンプトと最適化されたプロンプトのトークン数に基づいて課金されます。
+978,すべての料金は、2025 年 4 月 23 日から毎月請求されます。 
+979,            AI21 Labs 
+980,            Anthropic 
+981,            DeepSeek 
+982,            Mistral AI 
+983,            Stability AI 
+984,            カスタムモデルインポート 
+985,           AI21 Labs 
+986,                Amazon Nova 
+987,                Amazon Titan 
+988,                その他の Amazon 
+989,               Amazon Nova 
+990, クリエイティブコンテンツ生成モデルの料金
+991, Speech to Speech 基盤モデルのオンデマンド料金
+992,注: *テキストトークンの入力および出力の料金は、音声からテキストへの文字起こし、タスクの完了や知識グラウンディングのためのツール呼び出し、セッションへの会話履歴の追加などの特定のユースケースに適用されます。 
+993,               Amazon Titan 
+994,               その他の Amazon 
+995,           Anthropic 
+996,** 1  つのクエリに最大 100 個のドキュメントチャンクを含めることができるクエリの数に対して課金されます。クエリに 100 個を超えるドキュメントチャンクが含まれている場合は、複数のクエリとしてカウントされます。たとえば、リクエストに 350 のドキュメントが含まれている場合、4 つのクエリとして扱われます。各ドキュメントには最大 500 個のトークン (クエリとドキュメントの合計トークンを含む) しか含めることができず、トークンの長さが 512 トークンを超える場合は複数のドキュメントに分割されることに注意してください。
+997,モデルのカスタマイズ (微調整) の料金:
+998,1000 個のトークンをトレーニングする場合の料金*
+999,各カスタムモデルの 1 か月あたりの保存料金
+1000,1 時間あたり 1 モデルユニットに対するカスタムモデルから推測する料金 (契約なしのプロビジョンドスループット料金)
+1001,*トレーニングされたトークンの総数 = トレーニングデータコーパス内のトークン数 x エポック数
+1002,モデルごとの 1 時間あたりの価格  コミットメントなしで 
+1003,1 か月契約の 1 モデルユニットあたり 1 時間あたりの料金
+1004,6 か月契約の 1 モデルあたりの時間料金
+1005,Cohere Command - Light
+1006,モデルユニットの詳細については、AWS アカウントまたは営業チームにお問い合わせください。   
+1007,リージョン: 米国東部 (バージニア北部)、米国東部 (オハイオ)、米国西部 (オレゴン)
+1008,モデルのカスタマイズ (ファインチューニング) の料金
+1009,リージョン: 米国東部 (バージニア北部) と米国西部 (オレゴン)
+1010,1000 個のトークンをトレーニングする場合の料金*
+1011,各カスタムモデルの 1 か月あたりの保存料金
+1012,1 時間あたり 1 モデルユニットに対するカスタムモデルから推測する料金 (契約なしのプロビジョンドスループット料金)
+1013,Llama 2 Pretrained (13B)
+1014,Llama 2 Pretrained (70B)
+1015,*カスタムモデルストレージ = 1.95 USD
+1016,1 か月契約の 1 モデルユニットあたり 1 時間あたりの料金
+1017,6 か月契約の 1 モデルあたりの時間料金
+1018,Llama 2 Pretrained と Chat (13B)
+1019,Llama 2 Pretrained (70B)
+1020,*Llama 2 Pretrained モデルは、カスタマイズ後にプロビジョニングされたスループットでのみ利用可能です。
+1021,モデルユニットの詳細については、AWS アカウントまたは営業チームにお問い合わせください。 
+1022,           Mistral AI 
+1023,           Stability AI 
+1024,Stable Diffusion 3.5 Large
+1025,Stable Diffusion 3 Large
+1026,Stability AI が提供する、前世代の画像モデルは、ステップ数と画像解像度に応じて、画像ごとに料金設定されています。
+1027,標準画質 (50ステップ以下) で生成された画像1枚あたりの価格
+1028,高品質で生成された画像あたりの料金 (50 ステップ超)
+1029,1 か月契約の 1 モデルユニットあたり 1 時間あたりの料金*
+1030,6 か月契約の 1 モデルあたりの時間料金*
+1031,*ベースモデルとカスタムモデルの推論を含みます。
+1032,モデルユニットの詳細については、AWS アカウントまたは営業チームにお問い合わせください。 
+1033,現在、モデルのカスタマイズ (ファインチューニング) は、Amazon Bedrock での Stability AI モデルではサポートされていません。 
+1034,           カスタムモデルインポート 
+1035,                  Llama 
+1036,                  マルチモーダル Llama 
+1037,                  Mistral 
+1038,                  Mixtral 
+1039,                  Flan 
+1040,                 Llama 
+1041,リージョン: 米国東部 (バージニア北部) と米国西部 (オレゴン)
+1042,カスタムモデルユニットあたりのストレージコスト/月
+1043,カスタムモデルユニットあたりのストレージコスト/月
+1044,注: モデルをホストするために必要なカスタムモデルユニットは、モデルアーキテクチャ、モデルパラメータ数、コンテキストの長さなど、さまざまな要因によって異なります。必要なカスタムモデルユニットの正確な数は、インポート時に決定されます。ご参考までに、Llama 3.1 8B 128K モデルには 2 カスタムモデルユニットが必要であり、Llama 3.1 70B 128k モデルには 8 カスタムモデルユニットが必要です。
+1045,                 マルチモーダル Llama 
+1046,リージョン: 米国東部 (バージニア北部) と米国西部 (オレゴン)
+1047,カスタムモデルユニットあたりのストレージコスト/月
+1048,カスタムモデルユニットあたりのストレージコスト/月
+1049,注: モデルをホストするために必要なカスタムモデルユニットは、モデルアーキテクチャ、モデルパラメータ数、コンテキストの長さなど、さまざまな要因によって異なります。必要なカスタムモデルユニットの正確な数は、インポート時に決定されます。ご参考までに、Llama 3.1 8B 128K モデルには 2 カスタムモデルユニットが必要であり、Llama 3.1 70B 128k モデルには 8 カスタムモデルユニットが必要です。
+1050,                 Mistral 
+1051,リージョン: 米国東部 (バージニア北部) と米国西部 (オレゴン)
+1052,カスタムモデルユニットあたりのストレージコスト/月
+1053,カスタムモデルユニットあたりのストレージコスト/月
+1054,注: モデルをホストするために必要なカスタムモデルユニットは、モデルアーキテクチャ、モデルパラメータ数、コンテキストの長さなど、さまざまな要因によって異なります。必要なカスタムモデルユニットの正確な数は、インポート時に決定されます。ご参考までに、Llama 3.1 8B 128K モデルには 2 カスタムモデルユニットが必要であり、Llama 3.1 70B 128k モデルには 8 カスタムモデルユニットが必要です。
+1055,                 Mixtral 
+1056,リージョン: 米国東部 (バージニア北部) と米国西部 (オレゴン)
+1057,カスタムモデルユニットあたりのストレージコスト/月
+1058,カスタムモデルユニットあたりのストレージコスト/月
+1059,注: モデルをホストするために必要なカスタムモデルユニットは、モデルアーキテクチャ、モデルパラメータ数、コンテキストの長さなど、さまざまな要因によって異なります。必要なカスタムモデルユニットの正確な数は、インポート時に決定されます。ご参考までに、Llama 3.1 8B 128K モデルには 2 カスタムモデルユニットが必要であり、Llama 3.1 70B 128k モデルには 8 カスタムモデルユニットが必要です。
+1060,                 Flan 
+1061,リージョン: 米国東部 (バージニア北部) と米国西部 (オレゴン)
+1062,カスタムモデルユニットあたりのストレージコスト/月
+1063,カスタムモデルユニットあたりのストレージコスト/月
+1064,注: モデルをホストするために必要なカスタムモデルユニットは、モデルアーキテクチャ、モデルパラメータ数、コンテキストの長さなど、さまざまな要因によって異なります。必要なカスタムモデルユニットの正確な数は、インポート時に決定されます。ご参考までに、Llama 3.1 8B 128K モデルには 2 カスタムモデルユニットが必要であり、Llama 3.1 70B 128k モデルには 8 カスタムモデルユニットが必要です。
+1065,オンデマンド推論の料金: 最初の呼び出しが成功した時点から、モデルコピーがアクティブである期間にわたって、5 分間のウィンドウごとに課金されます。モデルコピーごとの最大スループットと同時実行制限は、入力/出力トークンの組み合わせ、ハードウェアタイプ、モデルサイズ、アーキテクチャ、推論の最適化などの要因によって異なり、モデルのインポートワークフロー中に決定されます。
+1066,Bedrock は、使用パターンに応じてモデルコピーの数を自動的にスケールします。5 分間にわたって呼び出しがない場合、Bedrock はゼロにスケールダウンし、モデルを呼び出すとスケールアップして元に戻します。スケールアップして元に戻す際に、モデルのサイズによってはコールドスタート期間 (数十秒) が発生する場合があります。推論ボリュームが 1 つのモデルコピーの同時実行制限を継続的に超える場合、Bedrock はモデルコピーの数もスケールアップします。注: デフォルトの最大数はインポートされたモデルごとにアカウントあたり 3 個のモデルコピーですが、これは Service Quotas を通じて引き上げることができます。
+1067,"アプリケーション開発者は Amazon Bedrock に対して次の API 呼び出しを行います: AI21 の Jurrasic-2 Mid モデルに対して、入力テキストの 10,000 トークンの入力を 2,000 トークンの出力にまとめるリクエスト。 "
+1068,"発生した合計コスト = 10K トークン/1,000 * 0.0125 USD + 2K トークン/1,000 * 0.0125 USD = 0.15 USD "
+1069,アプリケーション開発者は、Amazon Bedrock に対して次の API コールを行います: Amazon Titan Text Lite モデルに対して、入力テキストの 1K トークンの入力を 2K トークンの出力にまとめるリクエスト。
+1070,発生した 1 時間あたりの総コストは = 2 K トークン/1000 * 0.0003 USD + 1 K トークン/1000 * 0.0004 USD = 0.001 USD です。
+1071,"アプリケーションデベロッパーが Amazon Bedrock に対して次の API コールを行います。Amazon Titan Image Generator　の基本モデルに、標準品質の 1,024 x 1,024 サイズのイメージを 1000 個生成するようにリクエストします。"
+1072,発生するコストの合計: 1000 画像 x 0.01 USD/画像 = 10 USD
+1073, カスタマイズ (微調整と継続的な事前トレーニング) の価格設定
+1074,アプリケーション開発者は、1000 組の画像とテキストを使用して Amazon Titan Image Generator モデルをカスタマイズします。トレーニング後、開発者はカスタムモデルでプロビジョニングされたスループットを 1 時間使用して、モデルのパフォーマンスを評価します。微調整されたモデルは 1 か月間保存されます。評価後、開発者はプロビジョニングされたスループット (1mo commit) を使用してカスタマイズされたモデルをホストします。
+1075,微調整にかかる月額費用は次のとおりです。微調整トレーニング (0.005 USD* 500* 64)。ここで、0.005 USD は表示される画像あたりの価格、500 USD はステップ数、64 はバッチサイズ + 1 か月あたりのカスタムモデルストレージ (1.95 USD) + 1 時間のカスタムモデル推論 (21 USD) = 160 USD + 1.95 USD + 21 = 182.95 USD 
+1076,アプリケーション開発者は、テキスト要約のユースケースとして、Titan Text Express の 2 つのモデルユニットを 1 か月契約で購入します。
+1077,"発生する月間コストの合計: 2 モデルユニット x 18.40 USD/時間 x 24 時間 x 31 日間 = 27,379.20 USD"
+1078,アプリケーションデベロッパーは、Amazon Titan Image Generator の基本モデルのモデルユニットを 1 か月契約で 1 ユニット購入します。
+1079,"発生した合計コスト = 1 モデルユニット* 16.20 USD * 24 時間 * 31 日間 = 12,052.80 USD"
+1080,  Amazon Bedrock のガードレール
+1081,"例 1: カスタマーサポートチャットボット  アプリケーション開発者は、カスタマーサポートチャットボットを作成し、コンテンツフィルターを使用して有害なコンテンツや拒否されたトピックをブロックし、望ましくないクエリや応答をフィルタリングします。  チャットボットは 1 時間あたり 1000 件のユーザークエリを処理します。各ユーザークエリの平均入力長は 200 文字で、1500 文字の FM 応答を受け取ります。  200 文字の各ユーザークエリは 1 つのテキスト単位に対応します。  1,500 文字の FM 応答は、それぞれ 2 つのテキスト単位に対応します。  1 時間あたりに処理されるテキスト単位 = (1 + 2) * 1000 クエリ = 3000 テキスト単位  コンテンツフィルタと拒否トピックの 1 時間あたりに発生する合計コスト = 3000 * (USD 0.15 + USD 0.15)/1000 = USD 0.90 "
+1082,"例 2: コールセンターのトランスクリプトの要約  アプリケーション開発者は、ユーザーとサポートエージェント間のチャット記録を要約するアプリケーションを作成します。機密情報フィルターを使用して、生成された10,000件の会話の要約に含まれる個人を特定できる情報（PII）を編集します。  生成された各要約は、4 つのテキスト単位に相当する平均3,500文字です。  10,000 件の会話を要約するために発生した合計コスト = 10,000 * 4 * (0.1 USD/1,000) = 4 USD"
+1083,  Amazon Bedrock のナレッジベース
+1084,料金例 1 (Amazon Rerank 1.0 モデルを使用したリランク) 
+1085,特定の月に、Amazon Rerank 1.0 モデルを使用して Rerank API に対して 200 万回のリクエストを行います。100 万件のリクエストに含まれるドキュメント数はそれぞれ 100 件未満であるため、1 回のリクエストに対して請求されます。 残りの 100 万件のリクエストには 120～150 件のドキュメントが含まれているため、1 回のリクエストにつき 2 件分の請求が発生します。
+1086,"1 回のリクエストの料金 = 0.001 USD 合計料金 = 1,000,000* 0.001 USD + 1,000,000*2*0.001 USD = 3000 USD "
+1087,アプリケーション開発者が、Amazon Redshift に保存されている構造化データをクエリするサポートチャットボットを作成します。開発者は Bedrock ナレッジベースを作成し、Amazon Redshift に接続します。チャットボットは 1 時間あたり 10000 件のユーザークエリを処理します。ユーザークエリから SQL を生成する場合、ユーザークエリごとに GenerateQuery API あたり 0.002 USD の費用がかかります。
+1088,"1 時間あたり SQL を生成するために発生する合計コストは、0.002 USD*10000 = 20 USD です。 その月に発生した合計コスト = 20*24*30 USD = 1,440 USD"
+1089,アプリケーション開発者は、米国西部 (オレゴン) リージョンの Amazon Bedrock に対して次の API コールを行います: Anthropic の Claude モデルに対して、入力テキストの 11K トークンの入力を 4K トークンの出力にまとめるリクエスト。
+1090,"発生するコストの合計: 11,000 トークン/1000 x 0.008 USD + 4,000 トークン/1000 x 0.024 USD = 0.088 USD + 0.096 USD = 0.184 USD "
+1091,あるアプリケーション開発者が米国西部 (オレゴン) リージョンで Anthropic Claude Instant のモデルユニットを1つ購入しました。 
+1092,"1 か月あたりの発生した合計コスト = 1 モデルユニット * 39.60 USD * 24 時間 * 31 日間 = 29,462.40 USD"
+1093,アプリケーション開発者は、Amazon Bedrock に対して次の API コールを行います: Cohere の Command モデルに対して、入力テキストの 6K トークンの入力を 2K トークンの出力にまとめるリクエスト。
+1094,"発生するコストの合計: 6,000 トークン/1000 * 0.0015 USD + 2,000 トークン/1000 *0.002 USD = 0.013 USD"
+1095,アプリケーション開発者は、Amazon Bedrock に対して次の API コールを行います: Cohere の Command-Light モデルに対して、入力テキストの 6K トークンの入力を 2K トークンの出力にまとめるリクエスト。
+1096,発生するコストの合計 = 6K トークン/1000 * 0.0003 USD + 2K トークン/1000 * 0.0006 USD = 0.003 USD
+1097,アプリケーション開発者は、Amazon Bedrock に次の API 呼び出しを行います: Cohere の Embed English モデルまたは多言語モデルに、10K トークンの入力に対して埋め込みを生成するようリクエストします。
+1098,発生するコストの合計 = 10K トークン/1000 * 0.0001 USD = 0.001 USD
+1099,アプリケーション開発者は、1000 トークンのデータを使用して Cohere コマンドモデルをカスタマイズします。トレーニング後、カスタムモデルでプロビジョニングされたスループットを 1 時間使用して、モデルのパフォーマンスを評価します。微調整されたモデルは 1 か月間保存されます。評価後、開発者はプロビジョニングされたスループット (1mo commit) を使用してカスタマイズされたモデルをホストします。
+1100,微調整にかかる月額費用は、微調整トレーニング (0.004 USD x 1000) + 1 か月あたりのカスタムモデルストレージ (1.95 USD) + 1 時間のカスタムモデル推論 (49.50 USD) = 55.45 USD 
+1101,カスタムモデルのプロビジョニングされたスループット (1 か月間のコミット) で発生する月額コスト = 39.60 USD
+1102,アプリケーションデベロッパーは、テキスト要約のユースケースとして、Cohere Command の 1 モデルユニットを 1 か月の契約で購入します。
+1103,"1 か月あたりの発生した合計コスト = 1 モデルユニット * 39.60 USD * 24 時間 * 31 日間 = 29,462.40 USD"
+1104,料金の例: アプリケーションデベロッパーは、サイズが 8B パラメータ、シーケンス長が 128K である、カスタマイズされた Llama 3.1 タイプのモデルを us-east-1 リージョンにインポートし、1 か月後にそのモデルを削除します。これには 2 つのカスタムモデルユニットが必要です。つまり、2 カスタムモデルユニットが必要であるため、1 分あたりの料金は 0.1570 USD となります。その月の 2 カスタムモデルユニットのモデルストレージコストは 3.90 USD となります。
+1105,モデルのインポートには料金はかかりません。最初の呼び出しが成功したのは午前 8 時 3 分で、その時点で計測が開始されます。5 分間の計測ウィンドウは、午前 8 時 3 分～午前 8 時 7 分、午前 8 時 7 分～午前 8 時 11 分などです。ある 5 分間に少なくとも 1 回の呼び出しがあった場合、そのウィンドウはアクティブであるものとみなされ、課金されます。午前 8 時 3 分に呼び出しが実行され、午前 8 時 7 分を過ぎた後に呼び出しがない場合、メータリングは午前 8 時 7 分に停止します。この場合、請求額は次のように計算されます: 0.1570 USD * 5 分間 * 1 つの 5 分間のウィンドウ = 0.785 USD。 
+1106,"料金の例 1 BDA カスタム出力を使用して 1,000 ページのドキュメントを処理するとします。1,000 ページすべてが 15 個のフィールドがあるブループリント 1 を使用して処理されます。フィールド数が 30 以下のブループリントの 1 ページあたりの料金は 0.040 USD です。合計コストは 40 USD となります。  処理する総ページ = 1,000 フィールド数が 30 未満のブループリントの 1 ページあたりの料金 = 0.040 USD 合計料金 = 1,000 * 0.040 USD = 40 USD"
+1107,料金の例 2 BDA カスタムアウトプットを使用して 2 つのドキュメントを処理するとします。ドキュメント 1 は 40 ページあり、20 個のフィールドがあるブループリント 1 を使用して処理されます。ドキュメント 2 は 10 ページあり、40 個のフィールドがあるブループリント 2 を使用して処理されます。ブループリント 1 の 1 ページあたりの料金は 0.040 USD です。これは、ブループリント 1 に含まれるフィールド数が 30 個以下であるためです。ブループリント 2 の 1 ページあたりの料金は 0.045 USD です。ブループリント 1 を使用したドキュメント 1 の処理コストは 1.60 USD です。ブループリント 2 を使用したドキュメント 2 の処理コストは 0.45 USD です。両方のドキュメントを処理するための合計コストは 2.05 USD になります。  処理する総ページ = 50 フィールド数が 30 未満のブループリント 1 の 1 ページあたりの料金 = 0.040 USD 40 個のフィールドがあるブループリント 2 の 1 ページあたりの料金 = 0.040 USD + (30 を超える追加フィールドの数* 1 フィールドあたり 0.0005 USD) 30 を超える追加フィールドの数 = 40 - 30 = 10 フィールドが 40 個あるブループリント 2 の 1 ページあたりの料金 = 0.040 USD + (1 フィールドあたり 10 *0.0005 USD) = 0.045 USD ブループリント 1 を使用したドキュメント 1 の料金 = 40 ページ x 1 ページあたり 0.040 USD = 1.6 USD ブループリント 2 を使用したドキュメント 2 の料金 = 10 ページ x 1 ページあたり 0.045 USD = 0.45 USD 合計料金 = ドキュメント 1 の料金 + ドキュメント 2 の料金 = 1.6 USD + 0.45 USD = 2.05 USD 
+1108,"料金の例 3: Bedrock データオートメーションをパーサーとして使用するように Bedrock ナレッジベースを設定し、1,000 ページのドキュメントを取り込むとします。コスト構造はナレッジベースの解析オプションによって異なることに注意してください。BDA はページ単位の料金を使用しますが、基盤モデルパーサーは入力トークンと出力トークンに基づいて課金します。コンテキストとして、1,000 ページ (30% が表、30% が図) を処理する場合、通常 2,900 個の入力トークンと 750 個の出力トークンが必要です。トークンの消費量はコンテンツの種類によって異なるため、より正確な見積もりを得るには、お客様独自のデータを使用してテストすることをお勧めします。Bedrock ナレッジベースと Bedrock データオートメーションの統合では、1 ページあたりの料金が 0.010 USD である標準出力が使用されることに注意してください。合計コストは 10 USD となります。"
+1109,"処理する総ページ = 1,000 標準出力の 1 ページあたりの料金 = 0.010 10 合計料金 = 1,000 × 0.010 USD = 10 USD"
+1110,料金の例 4: BDA 標準出力を使用して 60 分の動画を処理するとします。ビデオ標準出力の 1 分あたりの料金は 0.050 USD です。合計コストは 3.00 USD となります。  合計処理時間 = 60 ビデオ標準出力の 1 分あたりの料金 = 0.050 USD 合計料金 = 60 × 0.050 USD = 3.00 USD 
+1111,"料金の例 5: BDA カスタム出力を使用して 2,000 枚の画像を処理するとします。最初の 1,000 枚の画像は、10 個のフィールドがあるブループリント 1 を使用して処理されます。最後の 1,000 ページは、40 個のフィールドがあるブループリント 2 を使用して処理されます。ブループリント 1 の画像あたりの料金は 0.005 USD です。これは、ブループリント 1 に含まれるフィールドが 30 個以下であるためです。ブループリント 2 のイメージあたりの料金は 0.01 USD です。ブループリント 1 を使用した最初の 1,000 枚の画像の処理コストは 5.00 USD です。ブループリント 2 を使用した 2 番目の 1,000 枚の画像の処理コストは 10.00 USD です。2,000 枚の画像すべてを処理する場合の合計コストは 15.00 USD です。  最初の 1000 枚の画像のコスト = 1,000 枚の画像 x 1 画像あたり 0.005 USD = 5.00 USD 2 つ目の 1,000 枚の画像のコスト = 1,000 枚の画像* (0.005 USD + (30 を超える追加フィールドの数* 1 フィールドあたり 0.0005 USD)) = 1,000* (0.005 USD + ((40-30) *0.0005 USD)) = 1,000* (0.005 USD + (10*0.0005 USD)) = 10.00USD 合計コスト = 5.00 USD + 10.00 USD = 15.00 USD "
+1112,"料金の例 6: Bedrock データオートメーション標準出力を使用して、組織内の 15,000 分間の会議の音声録音を処理するとします。15,000 分すべての音声処理にかかる合計コストは 90 USD です。  合計処理時間 = 15,000 分 合計料金 = 15,000 分 × 0.006 USD = 90 USD"
+1113,アプリケーションデベロッパーは、時間単位で、Amazon Bedrock に対して次の API コールを実行します: 入力テキストの 2K トークンの入力を 1K トークン (推論トークンを含む) の出力に要約する、DeepSeek-R1 モデルに対するリクエスト: 
+1114,"1 時間あたりの発生した合計コスト = 2K トークン/1,000 * 0.00135 USD + 1K トークン/1,000 * 0.0054 USD = 0.0081 USD"
+1115,例: ニュースの要約 アプリケーションデベロッパーが、トレーダー向けのニュースの要約を自動化するフローを作成するとします。このフローには、S3 ロケーションを取得する Input ノードと、S3 内の 10 の主要通信社からの記事を含む 10 個のファイルを取得する S3 取得ノードが含まれます (2 ノード遷移)。次に、イテレータノードを使用してモデルを呼び出し、プロンプトノードで各ファイル (+ 10 ファイル x 2 ノード遷移) を要約します。次に、コレクターノードを使用してすべての結果を収集し、S3 ストレージノードを使用して結果を S3 に書き込み、出力ノードで完了します (+ 3 ノード遷移)。このフローは毎平日 30 分おきに実行されます。
+1116,フロー実行ごとのノード遷移の数: 2+1+10*2 + 3 = 25 ノード遷移/フロー実行
+1117,1 か月あたりのフロー実行回数: 24 時間 * 2 * 5 日 * 4 週間 = 960 フロー実行/月。
+1118,毎月の請求額合計: 25 * 960 * 0.035 USD/1000 = 0.84 USD
+1119,追加料金 この請求には、検索ノードとストレージノードでの Amazon S3 の使用量や、プロンプトノードでの Amazon Bedrock 基盤モデルの使用など、ワークフローの実行で利用される AWS サービスの追加料金も含まれます。 
+1120,アプリケーションデベロッパーは、Amazon Bedrock に対して次の API コールを行います: Meta の Llama 2 Chat (13 B) モデルに対して、入力テキストの 2K トークンの入力を 500 トークンの出力にまとめるリクエスト。
+1121,"発生するコストの合計 = 2K トークン / 1,000 * 0.00075 USD + 500 トークン / 1,000 * 0.001 USD = 0.002 USD"
+1122,アプリケーションデベロッパーは、1000 トークンのデータを使用して Llama 2 Pretrained (70B) モデルをカスタマイズします。トレーニング後、カスタムモデルでプロビジョニングされたスループットを 1 時間使用して、モデルのパフォーマンスを評価します。微調整されたモデルは 1 か月間保存されます。評価後、開発者はプロビジョニングされたスループット (1mo commit) を使用してカスタマイズされたモデルをホストします。
+1123,微調整にかかる月額費用は、微調整トレーニング (0.00799 USD x 1000) + 1 か月あたりのカスタムモデルストレージ (1.95 USD) + 1 時間のカスタムモデル推論 (23.50 USD) = 33.44 USD
+1124,カスタムモデルのプロビジョニングされたスループット (1 か月間のコミット) で発生する月額コスト = 21.18 USD
+1125,アプリケーションデベロッパーは、テキスト要約のユースケースとして、Meta Llama 2 の 1 モデルユニットを 1 か月の契約で購入します。
+1126,"1 か月あたりの発生した合計コスト = 1 モデルユニット * 21.18 USD * 24 時間 * 31 日間 = 15,757.92 USD"
+1127,アプリケーションデベロッパーは、時間単位で、Amazon Bedrock に対して次の API コールを実行します: 入力テキストの 2K トークンの入力を 1K トークンの出力に要約する、Mistral 7B モデルに対するリクエスト。
+1128,"発生する時間単位の合計コスト = 2K トークン/1,000 * 0.00015 USD + 1K トークン/1,000 * 0.0002 USD = 0.0005 USD"
+1129,アプリケーションデベロッパーは、時間単位で、Amazon Bedrock に対して次の API コールを実行します: 入力テキストの 2K トークンの入力を 1K トークンの出力に要約する、Mixtral 8x7B モデルに対するリクエスト。
+1130,"発生する時間単位の合計コスト = 2K トークン/1,000 * 0.00045 USD + 1K トークン/1,000 * 0.0007 USD = 0.0016 USD"
+1131,アプリケーションデベロッパーは、時間単位で、Amazon Bedrock に対して次の API コールを実行します: 入力テキストの 2K トークンの入力を 1K トークンの出力に要約する、Mistral Large モデルに対するリクエスト。 
+1132,"1 時間あたりの発生した合計コスト = 2K トークン/1,000 * 0.008 USD + 1K トークン/1,000 * 0.024 USD = 0.04 USD  "
+1133,オンデマンド料金 あるアプリケーション開発者が、米国東部 (バージニア北部) の AWS リージョンで Anthropic Claude 2.1 と Anthropic Claude Instant を使用して、人間ベースのモデル評価用のデータセットを提出します。
+1134,"データセットには50のプロンプトが含まれており、開発者は各プロンプト-レスポンスセットの評価に1人のワーカーを必要とする（評価ジョブの作成時に「プロンプトごとのワーカー」パラメータとして設定可能）。  この評価ジョブには 50 個のタスクが含まれます (各ワーカーごとにプロンプト/レスポンスのペアごとに 1 つのタスク)。50 個のプロンプトが組み合わされて 5000 個の入力トークンになり、関連する応答が Anthropic Claude Instant の場合は 15000 トークン、Anthropic Claude 2.1 の場合は 20,000 トークンになります。  このモデル評価ジョブには次の料金が発生します："
+1135,"オンデマンド料金 あるアプリケーション開発者が、米国東部 (バージニア北部) の AWS リージョンで Anthropic Claude 2.1 と Anthropic Claude Instant を使用して、人間ベースのモデル評価用のデータセットを提出します。  データセットには 50 個のプロンプトが含まれており、開発者は各プロンプト/応答セットを評価するために 2 人のワーカーを必要とします (評価ジョブの作成で「プロンプトあたりのワーカー数」パラメーターとして設定可能)。この評価ジョブには 100 個のタスクが含まれます (各ワーカーごとにプロンプト/レスポンスのペアごとに 1 つのタスク:2 人の作業者 x 50 個のプロンプト応答セット = 100 個のヒューマンタスク)。  50 個のプロンプトが組み合わされて 5000 個の入力トークンになり、関連する応答が Anthropic Claude Instant の場合は 15000 トークン、Anthropic Claude 2.1 の場合は 20,000 トークンになります。  このモデル評価ジョブには次の料金が発生します： "
+1136,例: ニュースの要約 アプリケーションデベロッパーは、Claude 3.5 を使用してトレーダーのためにニュースを要約するプロンプトを作成します。元のプロンプトは 429 トークンです。最適化されたプロンプトは 511 トークンで、FM がより簡潔な回答を生成できるようにより具体的な指示と例が含まれています。このデベロッパーは、511 トークンの最適化されたプロンプトをプロンプトオプティマイザーの入力として使用し、Claude 3.7 と Nova Pro 向けに 582 トークンと 579 トークンの 2 つの新しいバリアントを作成します。
+1137,"プロンプト最適化の入力トークンと出力トークンの合計数: 429 + 511 + 511 + 582 + 511 + 579 = 3,123"
+1138,"1 か月あたりの合計請求額: 3,123 / 1,000 * 0.03 USD = 0.09 USD "
+1139,アプリケーション開発者は Amazon Bedrock に対して次の API 呼び出しを行います: SDXL モデルに対して、ステップサイズ 70 (高画質) の 512 x 512 の画像を生成するリクエスト。
+1140,発生するコストの合計: 1 画像 x 0.036 USD/画像 = 0.036 USD
+1141,アプリケーション開発者は Amazon Bedrock に対して次の API コールを行います: SDXL 1.0 モデルに対して、ステップサイズ 70 (高画質) の 1024 x 1024 の画像を生成するリクエスト。
+1142,発生するコストの合計: 1 画像 x 0.08 USD/画像 = 0.08 USD
+1143,アプリケーション開発者は、SDXL1.0の 1 つのモデルユニットを 1 か月契約で購入します。
+1144,"発生した合計コスト = 1 * 49.86 USD * 24 時間 * 31 日間 = 37,095.84 USD"
+1145,"アプリケーションデベロッパーは Amazon Bedrock に対して次の API コールを実行します: Writer の Palmyra X5 モデルに対して、入力テキストの 10,000 トークンの入力を 2,000 トークンの出力にまとめるリクエスト。"
+1146,"発生した合計コスト = 10K トークン/1,000 * 0.003 USD + 2K トークン/1,000 * 0.015 USD = 0.06 USD"
+1147,"1,000 入力トークンあたりの料金 (バッチ)"
+1148,"1,000 出力トークンあたりの料金 (バッチ)"
+1149,"1,000 入力トークンあたりの料金 (キャッシュ書き込み) "
+1150,"1,000 入力トークンあたりの料金 (キャッシュ読み取り)"
+1151, Claude 3.7 Sonnet***  
+1152, Claude 3.5 Sonnet**  
+1153,*Claude 3 Opus は現在、米国西部 (オレゴン) リージョンでご利用いただけます
+1154,**Claude 3.5 Sonnet の料金は、Claude 3.5 Sonnet の各バージョン (v1 および v2) に適用されます – Claude 3.5 Sonnet v2 は現在、米国西部 (オレゴン) リージョンでご利用いただけます
+1155,***Claude 3.7 Sonnet は、米国東部 (オハイオ) リージョンでもご利用いただけます
+1156,"1,000 入力トークンあたりの料金 (バッチ)"
+1157,"1,000 出力トークンあたりの料金 (バッチ)"
+1158,"1,000 入力トークンあたりの料金 (キャッシュ書き込み) "
+1159,"1,000 入力トークンあたりの料金 (キャッシュ読み取り)"
+1160,*Claude 3 Opus は現在、米国西部 (オレゴン) リージョンでご利用いただけます
+1161,**Claude 3.5 Sonnet の料金は、Claude 3.5 Sonnet の各バージョン (v1 および v2) に適用されます - Claude 3.5 Sonnet v2 は現在、米国西部 (オレゴン) リージョンでご利用いただけます
+1162,"1,000 入力トークンあたりの料金 (バッチ)"
+1163,"1,000 出力トークンあたりの料金 (バッチ)"
+1164,"1,000 入力トークンあたりの料金 (バッチ)"
+1165,"1,000 出力トークンあたりの料金 (バッチ)"
+1166,"1,000 入力トークンあたりの料金 (バッチ)"
+1167,"1,000 出力トークンあたりの料金 (バッチ)"
+1168,"1,000 入力トークンあたりの料金 (バッチ)"
+1169,"1,000 出力トークンあたりの料金 (バッチ)"
+1170,リージョン: アジアパシフィック (ムンバイ) 
+1171,"1,000 入力トークンあたりの料金 (バッチ)"
+1172,"1,000 出力トークンあたりの料金 (バッチ)"
+1173,リージョン: アジアパシフィック (シドニー) 
+1174,"1,000 入力トークンあたりの料金 (バッチ)"
+1175,"1,000 出力トークンあたりの料金 (バッチ)"
+1176,リージョン: アジアパシフィック (東京) 
+1177,"1,000 入力トークンあたりの料金 (バッチ)"
+1178,"1,000 出力トークンあたりの料金 (バッチ)"
+1179,リージョン: アジアパシフィック (シンガポール) 
+1180,"1,000 入力トークンあたりの料金 (バッチ)"
+1181,"1,000 出力トークンあたりの料金 (バッチ)"
+1182,"1,000 入力トークンあたりの料金 (バッチ)"
+1183,"1,000 出力トークンあたりの料金 (バッチ)"
+1184,"1,000 入力トークンあたりの料金 (バッチ)"
+1185,"1,000 出力トークンあたりの料金 (バッチ)"
+1186,"1,000 入力トークンあたりの料金 (バッチ)"
+1187,"1,000 出力トークンあたりの料金 (バッチ)"
+1188,リージョン: アジアパシフィック (ソウル) 
+1189,"1,000 入力トークンあたりの料金 (バッチ)"
+1190,"1,000 出力トークンあたりの料金 (バッチ)"
+1191,"1,000 入力トークンあたりの料金 (バッチ)"
+1192,"1,000 出力トークンあたりの料金 (バッチ)"
+1193,リージョン: AWS GovCloud (米国西部) および AWS GovCloud (米国東部) 
+1194,リージョン: 米国東部 (バージニア北部) 
+1195,米国東部 (バージニア北部) と米国西部 (オレゴン) 
+1196,モデルごとの1時間あたりの価格と  コミットメントなし 
+1197,1 か月契約の 1 モデルユニットあたり 1 時間あたりの料金
+1198,6 か月契約の 1 モデルあたりの時間料金
+1199,モデルごとの1時間あたりの価格と  コミットメントなし 
+1200,1 か月契約の 1 モデルユニットあたり 1 時間あたりの料金
+1201,6 か月契約の 1 モデルあたりの時間料金
+1202,親リージョン: アジアパシフィック (東京) 
+1203,1 か月契約の 1 モデルユニットあたり 1 時間あたりの料金
+1204,6 か月契約の 1 モデルあたりの時間料金
+1205,AWS リージョン: 欧州 (フランクフルト) 
+1206,1 か月契約の 1 モデルユニットあたり 1 時間あたりの料金
+1207,6 か月契約の 1 モデルあたりの時間料金
+1208,モデルユニットの詳細については、AWS アカウントチームにお問い合わせください。 
+1209,基盤モデルを使用した生成系 AI アプリケーションの構築 – Amazon Bedrock に関するよくある質問 – AWS
+1210,Amazon Web Services のホームページに戻るには、ここをクリック
+1211,            プロファイルは、特定の AWS エクスペリエンスとのインタラクションの改善に役立ちます。 
+1212,            プロファイルは、特定の AWS エクスペリエンスとのインタラクションの改善に役立ちます。 
+1213,AWS Builder ID からサインアウト
+1214,AWS Personal Health Dashboard
+1215,アマゾン ウェブ サービスのホームページに戻るには、ここをクリック
+1216,            プロファイルは、特定の AWS エクスペリエンスとのインタラクションの改善に役立ちます。 
+1217,            プロファイルは、特定の AWS エクスペリエンスとのインタラクションの改善に役立ちます。 
+1218,            プロファイルは、特定の AWS エクスペリエンスとのインタラクションの改善に役立ちます。 
+1219,         Amazon は男女雇用機会均等法を順守しています。 
+1220,        人種、出身国、性別、性的指向、障がい、年齢、その他の属性によって差別することなく、平等に採用選考の機会を提供しています。
+1221,"© 2024, Amazon Web Services, Inc. or its affiliates.All rights reserved."
+1222, Internet Explorer のサポートの終了
+1223,       AWS support for Internet Explorer は 07/31/2022 に終了します。サポートされているブラウザは、Chrome、Firefox、Edge、Safari です。 
+1224,Amazon Bedrock のよくある質問
+1225,Amazon Bedrock Workshop で一般的な生成 AI のユースケースを詳しく見る
+1226,ステップバイステップのチュートリアルで開始する
+1227,Amazon Bedrock ガードレールを使用した責任ある AI 
+1228,SageMaker Unified Studio での Amazon Bedrock 
+1229,Amazon Bedrock とは何ですか?
+1230,Amazon Bedrock は、業界をリードする種々の基盤モデル (FM) を提供し、生成 AI アプリケーションの構築に必要な幅広い機能を備えたフルマネージドサービスです。セキュリティ、プライバシー、責任ある AI により開発を簡素化します。Amazon Bedrock の包括的な機能を使用すると、さまざまな人気の FM を実験すること、微調整や検索拡張生成 (RAG) などの手法を用いて、データを利用してそれらの FM をプライベートにカスタマイズすること、旅行の予約や保険金請求の処理から広告キャンペーンの作成や在庫管理まで、複雑なビジネスタスクを実行するマネージドエージェントを作成することができます。これらを実行するためにコードを記述する必要はありません。Amazon Bedrock はサーバーレスであるため、インフラストラクチャを管理する必要がありません。また、使い慣れた AWS サービスを使用して、生成 AI 機能をアプリケーションに安全に統合してデプロイできます。
+1231,Amazon Bedrock を使用する利点は何ですか?
+1232,生成 AI アプリケーションの構築に Amazon Bedrock を使用する理由は 5 つあります。
+1233,幅広い主要な FM: Amazon Bedrock は、Amazon や、AI21 Labs、Anthropic、Cohere、Meta、Mistral AI、Stability AI などの大手 AI 企業のさまざまな高性能 FM と連携できる、使いやすいデベロッパーエクスペリエンスを提供します。プレイグラウンドでさまざまな FM をすばやく試し、どのモデルを選択しても単一の API を使用して推論できます。そのため、さまざまなプロバイダーの FM を柔軟に使用でき、コードの変更を最小限に抑えながら最新のモデルバージョンを把握できます。
+1234,データを使用してモデルを簡単にカスタマイズ: コードを記述しなくても、ビジュアルインターフェイスを通じて独自のデータを使用して FM をプライベートにカスタマイズできます。Amazon Simple Storage Service (Amazon S3) に保存されているトレーニングデータセットと検証データセットを選択し、必要に応じてハイパーパラメータを調整するだけで、モデルパフォーマンスを最大限に高めます。
+1235,API を動的に呼び出してタスクを実行できるフルマネージド型エージェント: 会社のシステムと API を動的に呼び出すことで、旅行の予約や保険金請求の処理から、広告キャンペーンの作成、税務申告の準備、在庫管理まで、複雑なビジネスタスクを実行するエージェントを構築できます。Amazon Bedrock のフルマネージド型エージェントは、FM の推論機能を拡張して、タスクを細分化し、オーケストレーション計画を作成して実行します。
+1236,RAG のネイティブサポートにより、独自のデータで FM の力を拡張: Amazon Bedrock Knowledge Bases を使用すると、検索拡張のために、マネージドサービス内から FM をデータソースに安全に接続できます。これにより、FM の既存の強力な機能を拡張し、特定のドメインや組織に関する知識を深めることができます。
+1237,データセキュリティとコンプライアンス認証:Amazon Bedrockには、セキュリティとプライバシーの要件をサポートするいくつかの機能があります。Amazon Bedrock は、Service and Organization Control (SOC)、International Organization for Standardization (ISO)、Health Insurance Portability and Accountability Act (HIPAA) 適格であることなど、一般的なコンプライアンス基準を満たすことができます。また、お客様は General Data Protection Regulation (GDPR) に準拠して Amazon Bedrock を利用できます。Amazon BedrockはCSAセキュリティトラストアシュアランスアンドリスク (STAR) レベル2の認定を受けており、AWSクラウドサービスのベストプラクティスの使用とセキュリティ体制を検証しています。Amazon Bedrockでは、お客様のコンテンツが基本モデルの改善に使用されることはなく、モデルプロバイダーと共有されることもありません。Amazon Bedrock 内のデータは、転送中も保管中も常に暗号化されます。必要に応じて、独自のキーを使用してデータを暗号化することもできます。AWS PrivateLink と Amazon Bedrock を併用すると、トラフィックをインターネットに公開することなく、FM と Amazon Virtual Private Cloud (Amazon VPC) 間のプライベート接続を確立できます。
+1238,Amazon Bedrock の使用を開始するにはどうすればよいですか?
+1239,Amazon Bedrock のサーバーレスエクスペリエンスにより、すぐに使い始めることができます。AWS マネジメントコンソールで Amazon Bedrock に移動し、プレイグラウンドで FM をお試しください。エージェントを作成し、コンソールでテストすることもできます。ユースケースを特定したら、インフラストラクチャを管理することなく、AWS ツールを使用して FM をアプリケーションに簡単に統合できます。 Amazon Bedrock の使用開始コースへのリンク Amazon Bedrock ユーザーガイドへのリンク
+1240,Amazon Bedrock は他のサービスとどのように連携しますか?
+1241,Amazon Bedrock は、アクションの呼び出しで AWS Lambda と、データのトレーニングと検証で Amazon S3 と、メトリクスの追跡で Amazon CloudWatch と、それぞれ連携します。
+1242,Amazon Bedrock の最も一般的なユースケースは何ですか?
+1243,次のようなユースケースで迅速に使用を開始できます:
+1244,ショートストーリー、エッセイ、ソーシャルメディアへの投稿、ウェブページのコピーなど、新しいオリジナルコンテンツを作成できます。
+1245,膨大な量のデータから情報を検索し、見つけて、合成して、質問に回答できます。
+1246,言語プロンプトから、さまざまな対象物、環境、場面の、リアルかつ芸術的な画像を作成します。
+1247,単語のマッチングよりも関連性が高くコンテクストに即した商品のレコメンデーションにより、顧客が探しているものをより容易に見つけることができるようになります。
+1248,記事、ブログ記事、書籍、文書などのテキストコンテンツの要約を取得できるため、コンテンツをすべて読まなくても要点を把握できます。
+1249,買い物客の好みや過去の購入履歴に合った商品を提案する
+1250, 他の生成 AI のユースケースを詳しくご覧ください。 
+1251,Amazon Bedrock Playground とは何ですか?
+1252,Amazon Bedrock には、会話型チャットインターフェイスを使用してさまざまな FM を試すことができるプレイグラウンドがあります。プロンプトを入力したり、コンソール内のウェブインターフェイスを使用してプロンプトを提供したりでき、事前トレーニング済みのモデルを使用して、テキストや画像を生成し、あるいはユースケースに合わせて微調整されたモデルを使用できます。
+1253,Amazon Bedrock はどの AWS リージョンで利用できますか?
+1254,Amazon Bedrock を利用できる AWS リージョンのリストについては、Amazon Bedrock リファレンスガイドの「Amazon Bedrock エンドポイントとクォータ」を参照してください。
+1255,Amazon Bedrock でモデルをカスタマイズするにはどうすればよいですか?
+1256,Amazon Bedrock では、タグ付きデータを使用するか、継続的な事前トレーニング機能を使用してタグなしデータでモデルをカスタマイズすることで、FM を簡単に微調整できます。開始するには、トレーニングと検証のデータセットを提供し、ハイパーパラメータ (エポック、バッチサイズ、学習率、ウォームアップステップ) を設定し、ジョブを送信します。数時間以内に、微調整したモデルに同じ API (InvokeModel) でアクセスできます。
+1257,モデルをトレーニングして Amazon Bedrock にデプロイすることはできますか?
+1258,はい。カスタムモデルインポート機能を使用して、公開されている一部のモデルをトレーニングし、Amazon Bedrock にインポートできます。現在、この機能は Llama 2/3、Mistral、および Flan アーキテクチャのみをサポートしています。詳細については、こちらのドキュメントをご覧ください。
+1259,Amazon Bedrock のレイテンシー最適化推論とは何ですか?
+1260,パブリックプレビューで使用可能な Amazon Bedrock のレイテンシー最適化推論では、精度を損なうことなくレイテンシーを短縮できます。Anthropic が検証したように、Amazon Bedrock でレイテンシーを最適化した推論により、Claude 3.5 Haiku は AWS 上で他のどこよりも高速に動作します。さらに、Bedrock でレイテンシー最適化推論を使用した場合、Llama 3.1 70B および 405B は、AWS 上で他の主要なクラウドプロバイダーよりも高速に動作します。AWS Trainium2 などの専用の AI チップと Amazon Bedrock での高度なソフトウェア最適化を併用すると、特定のユースケースに合わせて推論を最適化するためのより多くのオプションを利用できます。 主な特徴:
+1261,基盤モデルのインタラクションの応答時間を短縮します
+1262,追加のセットアップやモデルのファインチューニングは不要です
+1263, サポートされているモデル: Anthropic の Claude 3.5 Haiku ならびに Meta の Llama 3.1 モデル 405B および 70B 利用可能なリージョン: 米国東部 (オハイオ) リージョン (クロスリージョン推論経由) 使用を開始するには、Amazon Bedrock コンソールにアクセスしてください。詳細については、Amazon Bedrock のドキュメントにアクセスしてください。 
+1264,Amazon Bedrock でレイテンシー最適化推論を開始するにはどうすればよいですか?
+1265,Amazon Bedrock でレイテンシー最適化推論にアクセスする際に、追加のセットアップやモデルのファインチューニングは不要であるため、既存の生成 AI アプリケーションをすぐに強化し、応答時間を短縮できます。Bedrock 推論 API を呼び出す際に、[レイテンシー最適化] パラメータをオンに切り替えることができます。 使用を開始するには、Amazon Bedrock コンソールにアクセスしてください。詳細については、Amazon Bedrock のドキュメントにアクセスしてください。 
+1266,Amazon Bedrock のエージェントとは何ですか?
+1267,Amazon Bedrock のエージェントは、生成 AI ベースのアプリケーションをデベロッパーが簡単に作成できるようにするフルマネージド機能です。このアプリケーションでは、さまざまなユースケースのために複雑なタスクを実行したり、独自のナレッジソースに基づいて最新の回答を提供したりできます。Amazon Bedrock のエージェントは、いくつかの短いステップでタスクを自動的に分類してオーケストレーションプランを作成します。手動のコーディングは不要です。エージェントは、API を介して会社のデータに安全に接続し、データを機械可読形式に自動的に変換し、リクエストに関連情報を追加して最も正確な応答を生成します。その後、エージェントは自動的に API を呼び出してユーザーのリクエストに応じることが可能です。例えば、メーカーは、在庫レベル、販売データ、サプライチェーン情報の追跡を自動化し、効率を最大化するために最適な再注文ポイントと数量を推奨できる生成 AI アプリケーションを開発したいと考える可能性があります。Amazon Bedrock のエージェントは、フルマネージド型の機能であるため、システム統合とインフラストラクチャのプロビジョニングの管理という差別化されていない作業が不要になり、開発者は組織全体で生成 AI を最大限に活用できるようになります。
+1268,FM を会社のデータソースに接続する方法を教えてください。
+1269,Amazon Bedrock のエージェントを使用して、FM を会社のデータソースに安全に接続できます。ナレッジベースがあれば、エージェントを使用して Amazon Bedrock の FM に追加データへのアクセスを許可できます。これにより、FM を継続的に再トレーニングしなくても、モデルがより関連性が高く、コンテキスト固有の正確な応答を生成できます。ユーザーの入力に基づいて、エージェントは適切なナレッジベースを特定し、関連情報を取得して、その情報を入力プロンプトに追加します。これにより、モデルに追加のコンテキスト情報が与えられ、補完が生成されます。
+1270,Amazon Bedrock のエージェントにはどのようなユースケースがありますか?
+1271,Amazon Bedrock のエージェントは、生産性の向上、カスタマーサービスエクスペリエンスの向上、ワークフロー (保険請求の処理など) の自動化を支援します。
+1272,Amazon Bedrock のエージェントはどのように開発者の生産性向上に役立ちますか?
+1273,エージェントを使用すると、デベロッパーはカスタムコードを記述しなくても、モニタリング、暗号化、ユーザーのアクセス許可、バージョニング、API 呼び出し管理をシームレスにサポートできます。Amazon Bedrock のエージェントは、ユーザーが要求したタスクの迅速なエンジニアリングとオーケストレーションを自動化します。デベロッパーは、エージェントが作成したプロンプトテンプレートをベースラインとして使用して、ユーザーエクスペリエンスを改善するためにさらに調整できます。ユーザー入力、オーケストレーションプラン、FM レスポンスを更新できます。プロンプトテンプレートにアクセスできるので、開発者はエージェントオーケストレーションをより適切に制御できます。 フルマネージド型エージェントを使用すると、インフラストラクチャのプロビジョニングや管理について心配する必要がなくなり、アプリケーションをより迅速に本番環境に移行できます。 
+1274,Amazon Bedrock で処理されたコンテンツが、Amazon Bedrock を使用している AWS リージョンの外に移動することはありますか?
+1275,Amazon Bedrock で処理されたすべてのカスタマーコンテンツは暗号化され、お客様が Amazon Bedrock を使用している AWS リージョンから移動することなく保管されます。
+1276,ユーザー入力とモデル出力はサードパーティのモデルプロバイダーが利用できるようになっていますか?
+1277,いいえ。ユーザーの入力とモデル出力は、どのモデルプロバイダーとも共有されません。
+1278,Amazon Bedrock はどのセキュリティおよびコンプライアンス標準をサポートしていますか?
+1279,Amazon Bedrockには、セキュリティとプライバシーの要件をサポートするいくつかの機能があります。Amazon Bedrock は、Fedramp Moderate、Service and Organization Control (SOC)、International Organization for Standardization (ISO)、Health Insurance Portability and Accountability Act (HIPAA) 適格であることなど、一般的なコンプライアンス基準を満たすことができます。また、お客様は General Data Protection Regulation (GDPR) に準拠して Bedrock を利用できます。Amazon BedrockはSOC 1、2、3レポートの対象範囲に含まれているため、お客様は当社のセキュリティ統制に関する洞察を得ることができます。当社では、AWS 統制に関する広範囲にわたる第三者監査を通じてコンプライアンスを実証しています。Amazon Bedrockは、ISO 9001、ISO 27001、ISO 27017、ISO 27018、ISO 27701、ISO 22301、およびISO 20000規格のISOコンプライアンス下にあるAWSサービスの1つです。Amazon BedrockはCSAセキュリティトラストアシュアランスアンドリスク (STAR) レベル2の認定を受けており、AWSクラウドサービスのベストプラクティスの使用とセキュリティ体制を検証しています。Amazon Bedrockでは、お客様のコンテンツが基本モデルの改善に使用されることはなく、モデルプロバイダーと共有されることもありません。AWS PrivateLink を使用すると、インターネットトラフィックにデータを公開することなく、Amazon VPC から Amazon Bedrock へのプライベート接続を確立できます。
+1280,AWS とサードパーティーのモデルプロバイダーは、Amazon Bedrock への顧客の入力または Amazon Bedrock からの出力を使用して、Amazon Nova、Amazon Titan またはサードパーティーのモデルをトレーニングすることはありますか?
+1281,いいえ。AWS およびサードパーティーのモデルプロバイダーは、Amazon Bedrock への入力または Amazon Bedrock からの出力を使用して、Amazon Nova、Amazon Titan またはサードパーティーのモデルをトレーニングすることはありません。
+1282,Amazon Bedrock ではどのような SDK がサポートされていますか?
+1283,Amazon Bedrock はランタイムサービス用の SDK をサポートしています。iOS と Android SDK のほか、Java、JS、Python、CLI、.NET、Ruby、PHP、Go、C++ は、テキスト入力と音声入力の両方をサポートしています。
+1284,ストリーミング機能をサポートしているのはどの SDK ですか?
+1285,ストリーミングはすべての SDK でサポートされています。
+1286,Amazon Bedrock のコストはどれくらいですか?
+1287,最新の料金情報については、Amazon Bedrock の料金ページを参照してください。
+1288,Amazon Bedrock ではどのようなサポートが利用できますか?
+1289,お客様の AWS サポート契約に応じて、Amazon Bedrock は、デベロッパーサポート、ビジネスサポート、エンタープライズサポートの各プランでサポートされます。
+1290,入力トークンと出力トークンを追跡する方法を教えてください。
+1291,CloudWatch メトリックスを使用して、入力トークンと出力トークンを追跡できます。
+1292,AWS Bedrock の使用に関する AWS Marketplace の請求項目が表示されるのはなぜですか?
+1293,お客様には、特定の Bedrock サーバーレスモデルと Bedrock Marketplace モデルの AWS Marketplace 請求書が表示されます。この理由は、「AWS のサービス条件」セクション 50.12 で説明されているように、これらのモデルがサードパーティプロバイダーによって「サードパーティコンテンツ」として販売されているためです。
+1294,Amazon Bedrock は継続的な事前トレーニングをサポートしていますか?
+1295,Amazon Bedrock での Amazon Titan Text Express および Amazon Titan モデルのための継続的な事前トレーニングをリリースしました。継続的な事前トレーニングにより、大量のラベルなしデータを使用して Amazon Titan ベースモデルで事前トレーニングを継続できます。このタイプのトレーニングは、Amazon Titan ベースモデルのほとんどの機能を維持したまま、一般的なドメインコーパスからのモデルを、医療、法律、金融などのより特定的なドメインコーパスに適応させます。 
+1296,Amazon Bedrock で継続的な事前トレーニングを使用すべきなのはなぜですか?
+1297,企業は特定のドメインのタスクのためにモデルを構築したいと考えるかもしれません。基本モデルは、その特定の分野で使用されている専門用語でトレーニングされていない場合があります。そのため、ベースモデルを直接微調整するには、正確な結果を得るために、大量のラベル付けされたトレーニングレコードと長時間のトレーニングが必要になります。この負担を軽減することを目的として、お客様は代わりに、継続的な事前トレーニングジョブのために、ラベルなしの大量のデータを提供できます。このジョブは、Amazon Titan ベースモデルを新しいドメインに適合させます。その後、お客様は、大幅に少ないラベル付けされたトレーニングレコードを使用して、かつ、より短いトレーニング時間で、新しく事前トレーニングされたカスタムモデルをダウンストリームのタスクに合わせて微調整できます。 
+1298,継続的な事前トレーニングの機能は他の AWS サービスとどのように関連していますか?
+1299,Amazon Bedrock の継続的な事前トレーニングと微調整の要件は非常によく似ています。このため、当社は継続的な事前トレーニングと微調整の両方をサポートする統合 API を作成する予定です。API の統合は、学習曲線を緩やかにするとともに、お客様が Amazon EventBridge などの標準機能を使用して、長時間実行されるジョブ、トレーニングデータを取得するための Amazon S3 統合、リソースタグ、モデル暗号化を追跡するのに役立ちます。 
+1300,継続的な事前トレーニングを利用するにはどうすればいいですか?
+1301,継続的な事前トレーニングは、Amazon Titan モデルの基本機能を維持したまま、Amazon Titan モデルをドメイン固有のデータに適応させるのに役立ちます。継続的な事前トレーニングジョブを作成するには、Amazon Bedrock コンソールに移動し、[カスタムモデル] をクリックします。 [モデル] と [トレーニングジョブ] の 2 つのタブがあるカスタムモデルページに移動します。どちらのタブにも、右側に [モデルをカスタマイズ] ドロップダウンメニューが表示されます。ドロップダウンメニューから [継続的な事前トレーニング] を選択して、[継続的な事前トレーニングジョブを作成] に移動します。 ソースモデル、名前、モデル暗号化、入力データ、ハイパーパラメーター、出力データを提供します。さらに、ジョブの AWS Identity and Access Management (IAM) ロールとリソースポリシーに関する詳細とともにタグを指定できます。
+1302,Amazon Bedrock でのみ使用できる Amazon Titan モデルファミリーには、ビジネス全体で AI と機械学習のイノベーションに取り組んできた 25 年間に及ぶ Amazon の経験が組み込まれています。Amazon Titan FM は、フルマネージド API を通じて、高性能な画像、マルチモーダル、テキストモデルの幅広い選択肢をお客様に提供します。Amazon Titan モデルは AWS によって作成され、大規模なデータセットで事前にトレーニングされているため、さまざまなユースケースをサポートすると同時に、AI の責任ある使用をサポートするように構築された強力な汎用モデルとなっています。そのまま使用することも、独自のデータを使用して個人的にカスタマイズすることもできます。Amazon Titan の詳細をご覧ください。
+1303,Amazon Titan FM の開発とトレーニングのために処理されるデータについて、どこで詳しく知ることができますか?
+1304,Amazon Titan FM の開発とトレーニングのために処理されるデータの詳細については、Amazon Titan モデルトレーニングとプライバシーのページにアクセスしてください。
+1305,Amazon Bedrock のナレッジベースに接続できるデータソースはどれですか?
+1306,ウェブ、Amazon Simple Storage Service (Amazon S3)、Confluence (プレビュー)、Salesforce (プレビュー)、SharePoint (プレビュー) など、さまざまなソースからコンテンツを取り込むことができます。ストリーミングデータやサポートされていないソースからのデータをプログラムで取り込むこともできます。Redshift データウェアハウスや AWS Glue データカタログなどの構造化データソースに接続することもできます。
+1307,Amazon Bedrock のナレッジベースは、構造化データソースからデータをどのように取得しますか?
+1308,Amazon Bedrock のナレッジベースは、自然言語を実用的な SQL クエリに変換してデータを取得するために、マネージド自然言語から SQL への変換を提供します。これにより、これらのソースのデータを使用してアプリケーションを構築できます。
+1309,Amazon Bedrock のナレッジベースは、マルチターンの会話をサポートしていますか?
+1310,はい。セッションコンテキスト管理が組み込まれているため、アプリケーションは複数のインタラクションにわたってコンテキストを維持できます。これは、マルチターンの会話をサポートするために不可欠です。
+1311,Amazon Bedrock のナレッジベースは、取得した情報のソース属性を提供しますか?
+1312,はい。取得したすべての情報には引用が含まれています。これにより、透明性が高まり、生成された応答におけるハルシネーションのリスクが最小限に抑えられます。
+1313,Amazon Bedrock のナレッジベースはどのようなマルチモーダル機能を提供しますか?
+1314,Amazon Bedrock のナレッジベースはマルチモーダルデータ処理をサポートしているため、デベロッパーは、画像、グラフ、図、表など、テキストデータとビジュアルデータの両方を分析する生成 AI アプリケーションを構築できます。モデルの応答では、テキストに加えてビジュアル要素からのインサイトを活用できるため、より正確でコンテキストを踏まえた関連性の高い回答を得ることができます。さらに、応答のソース属性にはビジュアル要素が含まれるため、応答における透明性と信頼性が高まります。
+1315,Amazon Bedrock のナレッジベースはどのようなマルチモーダルデータ形式をサポートしていますか?
+1316,Amazon Bedrock のナレッジベースは、画像、表、グラフ、図などを含む場合がある、視覚的にリッチな PDF 形式のドキュメントを処理できます。画像のみのデータの場合、Bedrock のナレッジベースは JPEG や PNG などの標準画像形式をサポートし、ユーザーがテキストベースのクエリに基づいて関連する画像を取得できる検索機能を実現にします。
+1317,Amazon Bedrock のナレッジベースで使用できるさまざまな解析オプションにはどのようなものがありますか?
+1318,お客様は、Bedrock のナレッジベースで 3 つの解析オプションを使用できます。テキストのみの処理の場合、組み込みのデフォルトの Bedrock パーサーを追加料金なしでご利用いただけます。これは、マルチモーダルデータ処理が不要な場合に最適です。Amazon Bedrock のデータオートメーション (BDA) または基盤モデルを使用して、マルチモーダルデータを解析できます。詳細については、製品ドキュメントをご覧ください。 
+1319,Amazon Bedrock のナレッジベースは、どのようにしてデータセキュリティを確保し、ワークフローの複雑さを管理しますか?
+1320,Amazon Bedrock のナレッジベースは、コンテンツの比較、障害処理、スループットコントロール、暗号化など、さまざまなワークフローの複雑さを処理し、AWS の厳格なセキュリティ標準に従ってデータが安全に処理および管理されるようにします。
+1321,Amazon Bedrock でのモデル評価とは何ですか?
+1322,Amazon Bedrock でのモデル評価では、いくつかの短いステップだけで、ユースケースに最適な FM を評価、比較、選択できます。Amazon Bedrock では、自動評価と人間による評価を選択できます。精度、堅牢性、毒性などの事前定義されたメトリクスを使用して自動評価を使用できます。人間による評価ワークフローは、親しみやすさ、スタイル、ブランドボイスとの整合性など、主観的な指標やカスタム指標に使用できます。人間による評価では、社内の従業員や AWS が管理するチームにレビュー担当になってもらうことができます。Amazon Bedrock でのモデル評価には、厳選されたデータセットが組み込まれていますが、独自のデータセットを持ち込むこともできます。
+1323,自動評価を使用して、精度、堅牢性、毒性など、事前に定義されたさまざまなメトリックを評価できます。人間による評価ワークフローは、親しみやすさ、関連性、スタイル、ブランドボイスとの整合性など、主観的な指標やカスタム指標にも使用できます。
+1324,自動評価により、標準基準（精度、毒性、堅牢性など）に照らして、使用可能なFMのリストをすばやく絞り込むことができます。人間ベースの評価は、人間の判断を必要とし、自動評価が存在しない可能性がある (ブランドボイス、クリエイティブな意図、親しみやすさなど)、より微妙な、または主観的な基準を評価するためによく使用されます。
+1325,厳選された組み込みデータセットや、独自のプロンプトデータセットを利用することで、正確性、堅牢性、毒性などのメトリクスについて、Amazon Bedrock モデルを迅速に評価できます。プロンプトデータセットが Amazon Bedrock モデルに送信されて推論された後、モデル応答は各ディメンションの評価アルゴリズムで採点されます。バックエンドエンジンは、個々のプロンプトレスポンススコアを要約スコアに集約し、わかりやすいビジュアルレポートで表示します。
+1326,Amazon Bedrock を利用すると、いくつかの短いステップで人間によるレビューのワークフローを設定し、社内の従業員や AWS が管理するエキスパートチームにモデルを評価させることができます。Amazon Bedrock の直感的なインターフェイスを通じて、人間のユーザーは、クリックして親指を上げ下げしたり、1～5 段階で評価したりするほか、複数の回答の中から最適なものを選択したり、プロンプトをランク付けしたりすることで、モデルの応答を確認してフィードバックを提供できます。たとえば、チームメンバーに、同じプロンプトに対して 2 つのモデルがどのように反応するかを示し、より正確で関連性の高い、または文体的なアウトプットを示すモデルを選択するように指示することができます。チーム向けの評価 UI で表示される指示とボタンをカスタマイズすることによって、自らにとって重要な評価基準を指定できます。また、モデル評価の例や全体的な目標を含む詳細な指示を提供して、ユーザーがそれに合わせて自らの作業を整合できるようにすることもできます。この方法は、自動評価では簡単に判断できない、人間の判断や、対象分野に関するより詳細な専門知識を必要とする主観的な基準を評価するのに役立ちます。
+1327,Amazon Bedrock ガードレールを使用した責任ある AI
+1328,Amazon Bedrock のガードレールとは何ですか?
+1329,Amazon Bedrock ガードレールは、ユースケースと責任ある AI ポリシーに基づいて、お客様が生成 AI アプリケーションの保護を実装するのに役立ちます。さまざまなユースケースに合わせて複数のガードレールを作成し、複数の基盤モデル (FM) で適用することで、一貫したユーザーエクスペリエンスを提供し、生成 AI アプリケーション全体で安全性とプライバシーコントロールを標準化できます。
+1330,Amazon Bedrock のガードレールにはどのような安全対策がありますか?
+1331,ガードレールは、お客様による生成 AI アプリケーションの保護に資する一連の 6 個のポリシーを定義するのに役立ちます。Amazon Bedrock ガードレールでは次のポリシーを設定できます:
+1332,マルチモーダルコンテンツフィルター – 憎悪、侮辱、性的、暴力、不正行為、プロンプト攻撃などのカテゴリ全体で有害なテキストや画像コンテンツを検出およびフィルタリングするためのしきい値を設定します。
+1333,拒否されたトピック – アプリケーションのコンテキストでは望ましくないトピックのセットを定義します。フィルターは、ユーザークエリまたはモデル応答で検出されたこれらのトピックをブロックするのに役立ちます。
+1334,単語フィルター – 望ましくない語句や卑猥な表現 (完全一致) をブロックするのに役立つフィルターを設定します。このような単語には、不快な用語、競合他社の名称などを含めることができます。
+1335,機密情報フィルター – 個人を特定できる情報 (PII) や、ユーザー入力およびモデル応答のカスタム正規表現などの機密情報をブロックまたはマスキングするのに役立つフィルターを設定します。ブロックまたはマスキングは、エンティティの標準形式の機密情報 (SSN 番号、生年月日、住所など) の確率的検出に基づいて行われます。これにより、識別子のパターンの正規表現ベースの検出を設定することもできます。
+1336,コンテキストを踏まえたグラウンディングチェック – 応答がソース情報を根拠としておらず (事実上不正確である、または新しい情報である、など)、ユーザーのクエリや指示と関連性がない場合に、ハルシネーションを検出してフィルタリングするのに役立ちます。
+1337,自動推論チェック – 自動推論ポリシーと呼ばれる構造化された数学的知識表現に照らしてチェックすることで、生成されたコンテンツ内の事実の不正確さを検出し、修正を提案するとともに、応答が正確である理由を説明するのに役立ちます。
+1338,Bedrock ガードレールではどのようなモダリティがサポートされていますか?
+1339,Bedrock ガードレールは、テキストと画像の両方のコンテンツをサポートしており、お客様が安全な生成 AI アプリケーションを大規模に構築できるようにします。
+1340,Amazon Bedrock で入手可能なすべての FM とツールでガードレールを使用できますか?
+1341,Amazon Bedrock ガードレールは、Amazon Bedrock でサポートされる FM、ファインチューニングされたモデル、Amazon Bedrock の外部でセルフホストされるモデルなど、幅広いモデルで機能します。ユーザー入力とモデル出力は、ApplyGuardrail API を使用して、サードパーティーモデルとセルフホストされるモデルに関して個別に評価できます。Amazon Bedrock のガードレールは、責任ある AI ポリシーに整合的な、安全かつセキュアな生成 AI アプリケーションを構築するために、Amazon Bedrock のエージェントやナレッジベースと統合することも可能です
+1342,Bedrock ガードレールではどの言語がサポートされていますか?
+1343,現在、Amazon Bedrock ガードレールは、自然言語で英語、フランス語、スペイン語をサポートしています。他の言語を使用すると、質の低い結果が得られます。
+1344,既製の (ビルトイン) ガードレールのリストはありますか? また、カスタマイズできるものは何ですか?
+1345,5 つのガードレールポリシーがあり、それぞれ異なる、すぐに使用できる保護機能を備えています
+1346,コンテンツフィルター – これには 6 つの既製のカテゴリ (憎悪、侮辱、性的、暴力、不正行為 (犯罪行為を含む)、およびプロンプト攻撃 (ジェイルブレイクやプロンプトインジェクション)) があります。各カテゴリには、フィルタリングの強度の観点からさらにカスタマイズされたしきい値 (テキストと画像コンテンツの両方について、低/中/高) を設定できます。
+1347,拒否されたトピック – これらは、お客様がシンプルな自然言語による説明を使用して定義できる、カスタマイズされたトピックです
+1348,機密情報フィルター – これらは 30 以上のすぐに使用できる PII を備えています。機密性の高いお客様の機密情報を追加することで、さらにカスタマイズできます。
+1349,単語フィルター – 既製の冒涜的なフィルタリングが付属しており、カスタム単語でさらにカスタマイズできます。
+1350,コンテキストを踏まえたグラウンディングチェック – RAG、要約、会話型アプリケーションのハルシネーションを検出するのに役立ちます。この場合、ソース情報はモデル応答を検証するための参照として使用できます。
+1351,既製の (ビルトイン) ガードレールのリストはありますか? また、カスタマイズできるものは何ですか?
+1352,5 つのガードレールポリシーがあり、それぞれ異なる、すぐに使用できる保護機能を備えています
+1353,コンテンツフィルター – これには 6 つの既製のカテゴリ (憎悪、侮辱、性的、暴力、不正行為 (犯罪行為を含む)、およびプロンプト攻撃 (ジェイルブレイクやプロンプトインジェクション)) があります。各カテゴリには、フィルタリングの強度の観点からさらにカスタマイズされたしきい値 (低/中/高) を設定できます。
+1354,拒否されたトピック – これらは、お客様がシンプルな自然言語による説明を使用して定義できる、カスタマイズされたトピックです
+1355,機密情報フィルター – これらは 30 以上のすぐに使用できる PII を備えています。機密性の高いお客様の機密情報を追加することで、さらにカスタマイズできます。
+1356,単語フィルター – 既製の冒涜的なフィルタリングが付属しており、カスタム単語でさらにカスタマイズできます。
+1357,コンテキストを踏まえたグラウンディングチェック – RAG、要約、会話型アプリケーションのハルシネーションを検出するのに役立ちます。この場合、ソース情報はモデル応答を検証するための参照として使用できます。
+1358,組織全体でガードレールを強制適用するにはどうすればよいですか?
+1359,Amazon Bedrock ガードレールは、IAM ポリシーベースの強制適用機能を使用して、あらゆる推論呼び出しのために必須のガードレールを確立できるようにします。詳細については、こちらをご覧ください。 
+1360,AWS は生成 AI サービスの著作権侵害を対象とする知的財産補償を提供していますか?
+1361,AWS は、次の一般提供されている Amazon の生成 AI サービスの生成出力から生じる著作権侵害の申立てについて、上限なしの知的財産 (IP) 補償を提供します: Amazon のモデル、および「サービス条件」のセクション 50.10 に記載されている他のサービス (以下「補償付き生成 AI サービス」という)。つまり、補償付き生成 AI サービスは、顧客から提供された入力やその他のデータに応じて生成される出力によって、著作権侵害を主張する第三者の請求から保護されるということです。また、お客様は、権利を侵害するデータを入力しない、サービスのフィルタリング機能を無効にしないなど、責任をもってサービスを利用する必要があります。
+1362,お客様がカスタムの Amazon Bedrock ガードレールを構築するには別途費用がかかりますか? また、その費用は入力と出力の両方にかかりますか?
+1363,Amazon Bedrock ガードレールの使用には別途費用がかかります。その費用は入力と出力の両方にかかります。料金はこちらのページの下部にあります。
+1364,デフォルトのガードレールは社会保障番号や電話番号を自動的に検出しますか?
+1365,Amazon Bedrock ガードレールは、社会保障番号や電話番号を含む 31 種類の PII をサポートする機密情報フィルターを提供しています。詳細なリストについては、こちらをご覧ください。
+1366,Amazon Bedrock ガードレールの使用の料金モデルはどのようになっていますか?
+1367,Amazon Bedrock ガードレールは、テキストと画像コンテンツの両方について、使用量モデルで料金設定されています。料金の詳細については、ガードレールの料金ページをご覧ください。
+1368,お客様は、設定したガードレールの有効性について自動テストを実行できますか? 継続的な監視のための「テストケースビルダー」(ジャーナリストの用語) はありますか?
+1369,はい。Amazon Bedrock Guardrail API は、お客様が自動テストを実行するのに役立ちます。「テストケースビルダー」は、ガードレールを本番でデプロイする前に使用することもできます。ネイティブのテストケースビルダーはまだありません。本番トラフィックを継続的にモニタリングするために、ガードレールは入力と出力ごとにすべての違反の詳細なログを提供するのに役立ちます。これにより、お客様は生成 AI アプリケーションに出入りするすべての入力をきめ細かくモニタリングできます。これらのログは CloudWatch または S3 に保存でき、お客様の要件に基づいてカスタムダッシュボードを作成するために使用できます。
+1370,自動推論チェックを使用した検証は、コンテキストグラウンディングチェックとどのように異なりますか?
+1371,自動推論ポリシーを使用すると、自動推論チェックは、コンテンツ内の正確な主張と事実の不正確さの両方を指摘できます。自動推論チェックは、正確な記述と不正確な記述の両方で、出力について検証可能で論理的な説明を提供します。自動推論チェックでは、ポリシーを作成するためにドメインエキスパートの事前の関与が必要であり、ルールを定義するコンテンツのみがサポートされます。一方、Bedrock のガードレールにおけるコンテキストグラウンディングチェックでは、機械学習の手法を用いて、生成されたコンテンツがナレッジベースからの入力として提供されたドキュメントに厳密に従うようにします。追加の事前作業は不要です。自動推論チェックとコンテキストグラウンディングはいずれも、Guardrail API 出力でフィードバックを提供します。お客様はそのフィードバックを使用して、生成されたコンテンツを更新できます。
+1372,マルチモーダルコンテンツのために、どのような画像形式がサポートされていますか?
+1373,Bedrock ガードレールでは、PNG および JPEG の画像形式がサポートされています。
+1374,Amazon Bedrock Marketplace とは何ですか?
+1375,Amazon Bedrock Marketplace は、お客様が生成 AI アプリケーションを簡単に構築および最適化できるよう、Amazon Bedrock のサーバーレス FM に加えて、100 を超える人気のモデル、新興モデル、専門的なモデルをお客様に提供します。お客様は Amazon Bedrock コンソール内で、さまざまなプロバイダーが提供する FM の幅広いカタログを見つけることができます。その後、これらのモデルをフルマネージドエンドポイントにデプロイして、必要なインスタンス数とインスタンスタイプを選択できます。モデルがデプロイされると、Amazon Bedrock の Invoke API を通じてモデルにアクセスできます。チャット向けにチューニングされた Text-to-Text モデルの場合、お客様は新しい Converse API を使用できます。これは、FM の違いを抽象化し、単一のパラメータ変更でモデルを切り替えることができるようにする統合 API です。該当する場合、モデルは Amazon Bedrock のプレイグラウンド、エージェント、ナレッジベース、プロンプト管理、プロンプトフロー、ガードレール、およびモデル評価で使用できます。
+1376,Amazon Bedrock Marketplace はどのような場合に使用すべきですか?
+1377,生成 AI 業界でイノベーションが起こり続ける中、急速に出現している強力なモデルの恩恵を享受するには、Amazon Bedrock Marketplace を使用すべきです。独自の要件に合わせてカスタマイズされた、人気のモデル、新興モデル、専門的なモデルに迅速にアクセスしてデプロイできるため、市場投入までの時間を短縮し、精度を高め、生成 AI ワークフローのコストを削減できます。モデルには Bedrock の統合 API を通じてアクセスでき、Bedrock の Converse API と互換性がある場合は、エージェント、ナレッジベース、ガードレールなどの Bedrock ツールでネイティブに使用できます。Amazon Bedrock Marketplace を Amazon Bedrock のサーバーレスモデルに簡単に接続できます。すべて 1 か所から行えます。  
+1378,Amazon Bedrock Marketplace の使用を開始するにはどうすればよいですか?
+1379,必要なのは、Bedrock コンソールの Amazon Bedrock モデルカタログページに移動することだけです。ここで、Amazon Bedrock Marketplace モデルのリストと Amazon Bedrock のサーバーレスモデルを検索できます。使用する Amazon Bedrock Marketplace モデルを選択したら、[モデルの詳細] ページを通じてモデルをサブスクライブし、プロバイダーが設定した EULA と料金を承諾します。サブスクリプションが完了すると (通常は数分かかります)、[モデルの詳細] ページで [デプロイ] をクリックするか、または API を使用して、フルマネージド SageMaker エンドポイントにモデルをデプロイできます。デプロイステップでは、ワークロードに合わせて必要なインスタンス数とインスタンスタイプを選択できます。エンドポイントのセットアップが完了すると (通常は 10～15 分かかります)、エンドポイントに対する推論呼び出しを開始して、Bedrock の高度なツールでモデルを使用できます (モデルが Bedrock の Converse API と互換性がある場合)。
+1380,Amazon Bedrock Marketplace モデルをファインチューニングできますか?
+1381,カスタムモデルインポートによってサポートされているアーキテクチャのモデル (Mistral、Mixtral、Flan、および Llama2/3/3.1/3.2) は、SageMaker でファインチューニングし、カスタムモデルインポートを介して Amazon Bedrock で使用可能にすることができます。カスタムモデルインポートによってサポートされていないモデルも、SageMaker でファインチューニングできます。ただし、これらのモデルのファインチューニングバージョンは Amazon Bedrock では使用できません。
+1382,Bedrock のデータオートメーションとは何ですか? 
+1383,Bedrock のデータオートメーションとは何ですか? Amazon Bedrock のデータオートメーションは、生成 AI アプリケーションの開発を効率化し、ドキュメント、画像、音声、動画を含むワークフローを自動化する、生成 AI を利用した Bedrock の機能です。Bedrock のデータオートメーションを活用することで、デベロッパーは開発時間と労力を削減し、インテリジェントドキュメント処理、メディア分析、他のマルチモーダルデータ中心のオートメーションソリューションをより容易に構築できるようになります。Bedrock のデータオートメーションは、業界をリードする精度を代替ソリューションよりも低コストで提供し、高い説明可能性を実現するための信頼スコアを提供するビジュアルグラウンディングや組み込みのハルシネーション緩和などの機能も備えています。これにより、非構造化マルチモーダルデータソースから信頼性が高く正確なインサイトを得ることができます。お客様は、Bedrock のデータオートメーションの出力を簡単にカスタマイズして、システムやアプリケーションに必要な一貫した形式で特定のインサイトを生成できます。デベロッパーは Amazon Bedrock コンソールで Bedrock のデータオートメーションの使用を開始し、そこでサンプルデータを使用して出力を設定およびカスタマイズできます。その後、Bedrock のデータオートメーションの統合マルチモーダル推論 API をアプリケーションに統合して、非構造化コンテンツを高い精度と一貫性をもって本番スケールで処理できます。また、Bedrock のデータオートメーションは Bedrock のナレッジベースとも統合されるため、デベロッパーは非構造化マルチモーダルコンテンツから有意義な情報をより簡単に生成でき、検索拡張生成 (RAG) でより関連性の高い応答を提供できます。
+1384,Bedrock のデータオートメーションを使用すべきなのはなぜですか? 
+1385,Bedrock のデータオートメーションを使用すると、非構造化企業データを、生成 AI アプリケーションや ETL ワークフローで利用できるアプリケーション固有の出力形式に簡単に変換できます。お客様は、複数のモデルの管理とオーケストレーション、プロンプトエンジニアリング、安全ガードレールの実装、または下流のシステム要件に合わせて出力をまとめることに時間と労力を費やす必要がなくなりました。Bedrock のデータオートメーションは、非構造化データの一貫性があり、コスト効率の高い高精度の処理を実現します。 Bedrock のデータオートメーションは、責任ある AI を念頭に置いて構築されており、ビジュアルグラウンディングや信頼スコアなどの主要な機能をお客様に提供し、エンタープライズワークフロー内で Bedrock のデータオートメーションを簡単に統合できるようにします。
+1386,Amazon Bedrock のデータオートメーションは私に代わって何を管理してくれますか? 
+1387,Bedrock のデータオートメーションの機能は、お客様がアプリケーションに簡単に統合できるフルマネージド API を介してご使用いただけます。お客様は、基盤となるコンピューティングリソースのスケーリング、モデルの選択とオーケストレーション、FM のプロンプトの管理について心配する必要はありません。
+1388,ブループリントは、お客様が自然言語またはスキーマエディタを使用して出力要件を指定するために使用する機能です。ブループリントには、抽出するフィールドのリスト、各フィールドのデータ形式、および各フィールドの自然言語による指示が含まれます。例えば、デベロッパーは「次のフィールドを含む請求書のブループリントを作成してください: tax、dueDate、ReceiptDate」または「請求書の合計が明細の合計と一致することを確認してください」と入力できます。 システムがブループリントで説明されている形式で情報を返すように、推論 API コールの一部としてブループリントを参照します。
+1389,Amazon Bedrock のデータオートメーションでは、モダリティごとにどのような機能とファイル形式がサポートされていますか?
+1390,ドキュメント Bedrock のデータオートメーションは、ドキュメントの標準出力とカスタム出力の両方をサポートしています。
+1391,標準出力は、ドキュメントからのテキストの抽出と、ドキュメントの概要や図表のキャプションなどの生成出力を提供します。出力は読み取り順に返され、オプションでレイアウト要素別にグループ化できます。レイアウト要素には、ヘッダー/フッター/タイトル/図表が含まれます。標準出力は、Bedrock のナレッジベースとの BDA 統合に使用されます。
+1392,カスタム出力は、自然言語またはスキーマエディタを使用して出力要件を指定するブループリントを活用します。ブループリントには、抽出するフィールドのリストと各フィールドのデータ形式が含まれています。
+1393, Bedrock Data Automation は、PDF、PNG、JPG、TIFF、最大 1500 ページ、API リクエストあたり最大 500 MB のファイルサイズをサポートします。デフォルトでは、BDA は顧客あたり 50 件の同時ジョブと 1 秒あたり 10 件のトランザクションをサポートします。 イメージ Bedrock のデータオートメーションは、画像の標準出力とカスタム出力の両方をサポートしています。
+1394,標準出力では、画像の要約、検出された明示的なコンテンツ、検出されたテキスト、ロゴ検出、広告分類法 (IAB) を提供します。標準出力は、Bedrock のナレッジベースとの BDA 統合に使用されます。
+1395,カスタム出力は、自然言語またはスキーマエディタを使用して出力要件を指定するブループリントを活用します。ブループリントには、抽出するフィールドのリストと各フィールドのデータ形式が含まれています。
+1396, Bedrock Data Automation は、JPG、PNG、最大 4K の解像度、API リクエストあたり最大 5 MB のファイルサイズをサポートします。デフォルトでは、BDA は顧客あたり 1 秒あたり 10 件のトランザクション (TPS) で最大 20 枚の画像の同時実行をサポートします。 動画 Bedrock のデータオートメーションは、動画の両方の標準出力をサポートしています。
+1397,標準出力は、動画の完全な概要、チャプターのセグメンテーション、チャプターの概要、完全な音声文字起こし、話者識別、露骨なコンテンツの検出、テキストの検出、ロゴ検出、動画の Interactive Advertising Bureau (IAB) 分類法を提供します。動画の完全な概要は、製品の概要、トレーニング、ニュースキャスト、ドキュメンタリーなどの説明的な会話を含むコンテンツ向けに最適化されます。
+1398,Bedrock Data Automation は、H.264、VP8、VP9 の MOV および MKV、最大 4 時間の動画時間、API リクエストあたり最大 2 GB のファイルサイズをサポートします。デフォルトでは、BDA は顧客あたり 1 秒あたり 10 件のトランザクション (TPS) で最大 20 個の動画の同時実行をサポートします。 音声 Bedrock のデータオートメーションは、音声の両方の標準出力をサポートしています。
+1399,標準出力は、音声ファイルのチャプターの要約、完全な文字起こし、および露骨なコンテンツの検出を含む要約を提供します。
+1400,Bedrock Data Automation は、FLAC、M4A、MP3、MP4、Ogg、WebM、WAV、最大 4 時間の音声時間、API リクエストあたり最大 2 GB のファイルサイズをサポートします。 
+1401,Amazon Bedrock のデータオートメーションはどの AWS リージョンで利用できますか?
+1402,Amazon Bedrock Data Automation は米国西部 (オレゴン) および米国東部 (バージニア北部) の AWS リージョンで一般提供されています。
+1403,Amazon Bedrock Data Automation はどの言語をサポートしていますか?
+1404,Amazon Bedrock Data Automation は現在英語をサポートしています。2025 年には、他の言語サポートも間もなく開始される予定です。
+1405,SageMaker Unified Studio での Amazon Bedrock
+1406,SageMaker Unified Studio での Amazon Bedrock とは何ですか?
+1407,Amazon Bedrock には、AWS マネジメントコンソール、API、または Amazon SageMaker Unified Studio を通じてアクセスできます。Amazon SageMaker Unified Studio 内では、ユーザーは高性能な基盤モデル (FM) を使用して、生成 AI アプリケーションを迅速に構築し、イテレーションできます。直感的なインターフェイスを通じて、生成 AI アプリケーションを迅速に構築するために、モデルを実験したり、プロジェクトでコラボレーションしたり、さまざまな Bedrock ツールやリソースに対する合理化されたアクセスを取得したりできます。
+1408,Amazon SageMaker Unified Studio での Amazon Bedrock の機能にアクセスするにはどうすればよいですか?
+1409,Amazon SageMaker Unified Studio 内で Amazon Bedrock の機能にアクセスするには、デベロッパーとその管理者は次のステップに従う必要があります:
+1410,Amazon SageMaker Unified Studio で新しいドメインを作成します。
+1411,生成 AI アプリケーション開発プロジェクトプロファイルを有効にします。
+1412,Amazon SageMaker Unified Studio 内の自社のシングルサインオン (SSO) 認証情報を使用して、生成 AI プレイグラウンド (発見) および生成 AI アプリ開発 (構築) セクションから Amazon Bedrock にアクセスできます。
+1413,Amazon SageMaker Unified Studio の Amazon Bedrock の主な特徴や機能にはどのようなものがありますか? Amazon Bedrock Studio や Amazon Bedrock IDE とはどう違うのですか?
+1414,Amazon Bedrock には AWS マネジメントコンソール、API や Amazon SageMaker Unified Studio からアクセスできますが、SageMaker Unified Studio 内の機能は、元の Amazon Bedrock Studio (現在は利用不可) をベースに構築されており、いくつかの重要な改良が加えられています。Amazon SageMaker Unified Studio からアクセスすると、大手企業の高度な AI モデルや AI プロンプトを作成およびテストするためのツールにアクセスでき、Amazon Bedrock ナレッジベース、Amazon Bedrock ガードレール、Amazon Bedrock Flows、Amazon Bedrock エージェントとのシームレスな統合が可能になります。チームは共有ワークスペースで共同作業を行い、ニーズに合ったカスタム AI アプリケーションを構築できます。  新機能には、AI モデルを並べて比較するためのモデルハブ、チャット、画像、動画インタラクションをサポートする拡張プレイグラウンド、ウェブクローリングによるナレッジベースの作成の改善が含まれます。より複雑なチャットアプリケーション用のエージェント作成が導入され、組織内での AI アプリケーションとプロンプトの共有が簡素化されます。また、基盤となるアプリケーションコードへのアクセスや、チャットアプリケーションを CloudFormation テンプレートとしてエクスポートする機能も提供します。AWS インフラストラクチャの詳細を管理することで、さまざまなスキルレベルのユーザーが AI アプリケーションをより効率的に作成できるようになります。これにより、それらのアプリケーションは、以前のバージョンよりも汎用性が高く強力なツールとなります。  Amazon Bedrock IDE は、Amazon SageMaker Unified Studio の管理された環境を通じてアクセスする Amazon Bedrock のコア機能をよりよく表すように名前が変更されました。
+1415,Amazon Bedrock in SageMaker Unified Studio は、組織内のチーム間のコラボレーションをどのように可能にしますか?
+1416,Amazon SageMaker Unified Studio から Amazon Bedrock のインターフェイスにアクセスすると、チームはコラボレーションを可能にする管理された環境の恩恵を受けることができます。チームはプロジェクトを作成し、同僚を招待して、共同で生成 AI アプリケーションを構築できます。プロトタイプに関する迅速なフィードバックを受け取り、SageMaker Unified Studio 内の誰とでも、またはドメイン内の特定のユーザーとアプリケーションを共有できます。堅牢なアクセスコントロールとガバナンス機能により、データや生成 AI アプリケーションなどのプロジェクトリソースにアクセスできるのは認可されたメンバーのみとすることができます。これにより、データのプライバシーとコンプライアンスがサポートされ、部門間の安全なコラボレーションと共有が促進されます。さらに、生成 AI アプリケーションは、ビルダーから、SageMaker Unified Studio ドメイン内の特定のユーザー、または特定の個人と共有できるため、このようなアセットの適切なアクセス権、コントロール、ガバナンスが可能になります。
+1417,Amazon Bedrock が Amazon SageMaker Unified Studio に統合されるのはなぜですか?
+1418,Amazon Bedrock には AWS マネジメントコンソール、API、または Amazon SageMaker Unified Studio を通じてアクセスできる一方で、この統合は、生成 AI 開発プロセスにおけるデータ、ツール、デベロッパー間の障壁をなくします。チームは、Amazon Bedrock の強力な生成 AI 機能をシームレスに組み込み、使い慣れた JupyterLab 環境と分析ツールにアクセスすることで、統合開発エクスペリエンスを利用できます。これらはすべて、同じワークスペース内で行われます。  この統合環境は、データ準備から、モデル開発、生成 AI アプリケーションの構築まで、開発ライフサイクル全体を通じて、さまざまなスキルレベルのデベロッパーがシームレスにコラボレーションできるようにします。チームは、ナレッジベースの作成、ガードレールの設定、高性能な生成 AI アプリケーション開発のための統合ツールにアクセスできます。これらはすべて、安全で管理されたフレームワーク内で行われます。  Amazon SageMaker Unified Studio では、デベロッパーはニーズに応じてさまざまなツールを簡単に切り替えることができ、分析、機械学習、生成 AI の機能を 1 つのワークスペースに統合できます。この統合アプローチにより、開発の複雑さが軽減され、生成 AI プロジェクトの価値実現までの時間が短縮されます。Amazon Bedrock を Amazon SageMaker Unified Studio で利用できるようにすることで、AWS はエンタープライズグレードのセキュリティとガバナンスを維持しながら、生成 AI 開発への参入障壁を低くし、最終的には組織が生成 AI を使用してより迅速かつ効果的にイノベーションを起こせるようにします。
+1419,Amazon SageMaker Unified Studio での Amazon Bedrock の機能はいつ使用すればよいですか?
+1420,Amazon SageMaker Unified Studio での Amazon Bedrock の機能は、生成 AI アプリケーションを共同で構築およびデプロイするための統制された環境を必要とするエンタープライズチームに最適です。Amazon SageMaker Unified Studio を通じて、チームは以下にアクセスできます。  
+1421,「発見」セクションの「生成 AI プレイグラウンド」では、チームが基盤モデル (FM) を試したり、さまざまなモデルや設定をテストしたり、モデルの出力を比較したり、プロンプトやアプリケーションを共同で作成したりできます。この環境により、チームはアプリケーションに実装する前に、さまざまなモデルの機能をシームレスに評価して理解することができます。  
+1422,「構築」セクションの「生成 AI アプリケーション開発」では、本番環境ですぐに使える生成 AI アプリケーションの作成に必要なツールをチームに提供します。チームはガバナンスとコンプライアンス統制を維持しながら、ナレッジベースの作成と管理、責任ある AI のためのガードレールの実装、エージェントとフローの開発、安全なコラボレーションを行うことができます。この環境は、企業のセキュリティとコンプライアンス基準を維持しながら、安全なコラボレーションと Amazon Bedrock の全機能へのシームレスなアクセスを必要とする組織にとって特に価値があります。
+1423,Amazon Bedrock は、Amazon SageMaker Unified Studio 内の他の AWS サービスとどのように統合して、生成 AI アプリケーションを作成しますか?
+1424,Amazon Bedrock の機能の一般提供が Amazon SageMaker Unified Studio 内で開始されました。これにより、デベロッパーが生成 AI アプリケーションを迅速に作成およびカスタマイズするのに役立つ、管理された共同作業環境が提供されます。この直感的なインターフェイスは、あらゆるスキルレベルのデベロッパーに対応します。カスタマイズされた生成 AI アプリケーションを共同で開発できるようにするため、Amazon Bedrock の高性能な基盤モデル (FM) と高度なカスタマイズツールへのシームレスなアクセスを提供します。  Amazon SageMaker Unified Studio 内で、Amazon Bedrock は Amazon SageMaker の分析、機械学習 (ML)、および生成 AI 機能とシームレスに統合します。組織は、Amazon Bedrock で基盤モデルのプロトタイプを作成して実験し、その後 JupyterLab Notebook またはコードエディタに簡単に移行して、これらのリソースをより広範なアプリケーションやワークフローに統合することで、コンセプトから本番への移行を迅速化できます。この統合ワークスペースは、複雑さを合理化し、特定のビジネス要件に整合的な、本番対応の責任ある生成 AI アプリケーションのプロトタイプ作成、イテレーション、デプロイを迅速化します。
+1425,SageMaker Unified Studio での Amazon Bedrock の使用に制限やクォータはありますか?
+1426,SageMaker Unified Studio での Amazon Bedrock は、プラットフォームと、基盤モデル (FM)、ナレッジベース、エージェント、フロー、ガードレールなどの基盤となる Amazon Bedrock リソースについて定義されたアカウント制限とクォータによって拘束されます。
+1427,SageMaker Unified Studio での Amazon Bedrock を使用する場合の料金と請求モデルはどのようになっていますか?
+1428,Amazon Bedrock は SageMaker Unified Studio を通じて追加コストなしでアクセスでき、ユーザーは構築する生成 AI アプリケーションに必要な基盤となるリソースの使用についての料金のみを支払います。例えば、お客様は、生成 AI アプリケーションで使用した、関連付けられたモデル、ガードレール、ナレッジベースの料金のみを支払います。詳細については、Amazon Bedrock の料金ページにアクセスしてください。
+1429,SageMaker Unified Studio での Amazon Bedrock のサービスレベルアグリーメント (SLA) の内容はどのようなものですか?
+1430,SageMaker Unified Studio 内の Amazon Bedrock は、Amazon Bedrock と同じ SLA に拘束されます。詳細については、「Amazon Bedrock サービスレベルアグリーメント」のページにアクセスしてください。
+1431,SageMaker Unified Studio での Amazon Bedrock ではどのようなドキュメントとサポートリソースを使用できますか?
+1432,SageMaker Unified Studio での Amazon Bedrock のスムーズなオンボーディングエクスペリエンスを促進するために、「ユーザーガイド」で詳細なドキュメントをご覧いただけます。追加の質問がある場合やさらにサポートが必要な場合は、担当の AWS アカウントチームに遠慮なくお問い合わせください。
+1433,Amazon SageMaker AI でのマネージドスポットトレーニング - Amazon SageMaker AIAmazon SageMaker AI でのマネージドスポットトレーニング - Amazon SageMaker AIドキュメントAmazon SageMakerデベロッパーガイド翻訳は機械翻訳により提供されています。提供された翻訳内容と英語版の間で齟齬、不一致または矛盾がある場合、英語版が優先します。Amazon SageMaker AI でのマネージドスポットトレーニングAmazon SageMaker AI を使用すると、マネージド Amazon EC2 スポットインスタンスを使用して機械学習モデルを簡単にトレーニングできます。マネージド型のスポットトレーニングでは、オンデマンドインスタンスと比較して、トレーニングモデルのコストを最大 90% 抑えることができます。SageMaker AI は、ユーザーに代わってスポットの中断を管理します。マネージドスポットトレーニングでは、オンデマンドインスタンスではなく Amazon EC2 スポットインスタンスを使用してトレーニングジョブを実行します。スポットインスタンスを使用するトレーニングジョブと、SageMaker AI が Amazon EC2 スポットインスタンスを使用してジョブの実行を待機する時間を指定する停止条件を指定できます。トレーニングの実行中に生成されたメトリクスとログは、CloudWatch にあります。Amazon SageMaker AI 自動モデル調整は、ハイパーパラメータ調整とも呼ばれ、マネージドスポットトレーニングを使用できます。自動モデルチューニングの詳細については、「SageMaker AI による自動モデル調整」を参照してください。スポットインスタンスは中断されることがあります。その場合、ジョブの開始または終了に時間がかかる場合があります。チェックポイントを使用するように、マネージドスポットトレーニングジョブを設定できます。SageMaker AI はチェックポイントデータをローカルパスから Amazon S3 にコピーします。ジョブが再起動されると、SageMaker AI は Amazon S3 からローカルパスにデータをコピーします。その結果、トレーニングジョブは最初からではなく、最後のチェックポイントから再開できます。チェックポイントの詳細については、Amazon SageMaker AI のチェックポイントを参照してください。注記トレーニングジョブがすぐに完了しない限り、マネージド型のスポットトレーニングでチェックポイントを使用することをお勧めします。チェックポイントを使用しない SageMaker AI 組み込みアルゴリズムとマーケットプレイスアルゴリズムは現在、3600 秒 (60 分) MaxWaitTimeInSecondsの に制限されています。マネージド型スポットトレーニングを使用するには、トレーニングジョブを作成します。EnableManagedSpotTraining を True に設定し、MaxWaitTimeInSeconds を指定します。MaxWaitTimeInSeconds は、MaxRuntimeInSeconds より大きい値にする必要があります。トレーニングジョブの作成の詳細については、「DescribeTrainingJob」を参照してください。削減率を計算するには、式 (1 -
+1434,    (BillableTimeInSeconds / TrainingTimeInSeconds)) * 100 を使用して、マネージド型スポットトレーニングを使用します。例えば、BillableTimeInSeconds が 100 で TrainingTimeInSeconds が 500 の場合、トレーニングジョブは 500 秒間実行されたが、請求されたのは 100 秒だけであることを意味します。節約できたのは、(1 - (100/500)) * 100 = 80% です。Amazon SageMaker AI スポットインスタンスでトレーニングジョブを実行する方法と、マネージドスポットトレーニングの仕組みと請求対象時間を短縮する方法については、次のサンプルノートブックを参照してください。
+1435,TensorFlow を使ったマネージドスポットトレーニング
+1436,PyTorch を使ったマネージドスポットトレーニング
+1437,XGBoost を使ったマネージドスポットトレーニング
+1438,MXNet を使ったマネージドスポットトレーニング
+1439,Amazon SageMaker AI マネージドスポットトレーニングの例 GitHub リポジトリ
+1440, ブラウザで JavaScript が無効になっているか、使用できません。AWS ドキュメントを使用するには、JavaScript を有効にする必要があります。手順については、使用するブラウザのヘルプページを参照してください。ドキュメントの表記規則段階的トレーニングを使用するマネージド型スポットトレーニングのライフサイクルこのページは役に立ちましたか? - はいページが役に立ったことをお知らせいただき、ありがとうございます。お時間がある場合は、何が良かったかお知らせください。今後の参考にさせていただきます。このページは役に立ちましたか? - いいえこのページは修正が必要なことをお知らせいただき、ありがとうございます。ご期待に沿うことができず申し訳ありません。お時間がある場合は、ドキュメントを改善する方法についてお知らせください。
