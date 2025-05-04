@@ -1,0 +1,11 @@
+services:
+  streamlit_ui:
+    build:
+      context: ./01_streamlit_UI
+      dockerfile: ../Dockerfile  # ← これを追加
+    ports:
+      - "8501:8501"
+    volumes:
+      - ./01_streamlit_UI:/app
+    environment:
+      - PYTHONUNBUFFERED=1
