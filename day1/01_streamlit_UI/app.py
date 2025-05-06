@@ -187,6 +187,7 @@ for i, todo in enumerate(st.session_state.todos):
                 st.experimental_rerun()
                 break
 
+st.experimental_rerun()
 
 # プログレスバー
 # st.subheader("プログレスバー")
