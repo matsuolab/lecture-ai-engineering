@@ -46,9 +46,9 @@ st.write(f"こんにちは、{name}さん！")
 #     st.info("これは隠れたコンテンツです！")
 
 # スライダー
-# st.subheader("スライダー")
-# age = st.slider("年齢", 0, 100, 25)
-# st.write(f"あなたの年齢: {age}")
+st.subheader("スライダー")
+age = st.slider("年齢", 0, 100, 25)
+st.write(f"あなたの年齢: {age}")
 
 # セレクトボックス
 # st.subheader("セレクトボックス")
@@ -138,6 +138,55 @@ st.write(f"こんにちは、{name}さん！")
 # インタラクティブ機能
 # ============================================
 # st.header("インタラクティブ機能")
+
+#電卓
+st.subheader("電卓")
+a = st.number_input("数字Aを入力", value=0)
+b = st.number_input("数字Bを入力", value=0)
+operation = st.selectbox("演算子を選んでください", ["＋", "−", "×", "÷"])
+
+if st.button("計算する"):
+    if operation == "＋":
+        st.write(f"結果: {a + b}")
+    elif operation == "−":
+        st.write(f"結果: {a - b}")
+    elif operation == "×":
+        st.write(f"結果: {a * b}")
+    elif operation == "÷":
+        st.write("結果: {:.2f}".format(a / b) if b != 0 else "error: 0で割れません")
+
+st.subheader("ToDoリスト（シンプル版）")
+
+
+# ToDoリスト作成
+if "todos" not in st.session_state:
+    st.session_state.todos = []
+
+# タスク追加
+task = st.text_input("やることを入力", key="new_task")
+if st.button("追加"):
+    if task:
+        st.session_state.todos.append({"text": task, "done": False})
+        st.session_state.new_task = ""  # 入力欄を空にする
+        st.experimental_rerun()
+
+# タスク一覧表示と操作
+for i, todo in enumerate(st.session_state.todos):
+    col1, col2 = st.columns([6, 2])
+    label = f"[完了] {todo['text']}" if todo["done"] else todo["text"]
+    with col1:
+        st.write(label)
+    with col2:
+        if not todo["done"]:
+            if st.button("完了", key=f"done_{i}"):
+                st.session_state.todos[i]["done"] = True
+                st.experimental_rerun()
+        else:
+            if st.button("削除", key=f"del_{i}"):
+                st.session_state.todos.pop(i)
+                st.experimental_rerun()
+                break
+
 
 # プログレスバー
 # st.subheader("プログレスバー")
