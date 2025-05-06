@@ -2,3 +2,6 @@ streamlit
 pandas
 numpy
 pyngrok
+matplotlib
+scikit-learn
+openai
