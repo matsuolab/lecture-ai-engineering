@@ -167,7 +167,7 @@ task = st.text_input("やることを入力", key="new_task")
 if st.button("追加"):
     if task:
         st.session_state.todos.append({"text": task, "done": False})
-        st.session_state.new_task = ""  # 入力欄を空にする
+        st.session_state.new_task = ""  
         st.experimental_rerun()
 
 # タスク一覧表示と操作
