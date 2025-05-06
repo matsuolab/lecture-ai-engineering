@@ -63,6 +63,7 @@ page = st.sidebar.radio(
     index=["チャット", "履歴閲覧", "サンプルデータ管理"].index(st.session_state.page), # 現在のページを選択状態にする
     on_change=lambda: setattr(st.session_state, 'page', st.session_state.page_selector) # 選択変更時に状態を更新
 )
+st.sidebar.markdown(f"現在のページ: **{st.session_state.page}**")
 
 
 # --- メインコンテンツ ---
