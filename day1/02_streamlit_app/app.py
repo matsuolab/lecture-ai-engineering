@@ -37,7 +37,7 @@ def load_model():
             model_kwargs={"torch_dtype": torch.bfloat16},
             device=device
         )
-        st.success(f"モデル '{MODEL_NAME}' の読み込みに成功しました。")
+        st.success(f"モデル '{MODEL_NAME}' を正常にロードしました！(v2)")
         return pipe
     except Exception as e:
         st.error(f"モデル '{MODEL_NAME}' の読み込みに失敗しました: {e}")
