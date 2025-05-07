@@ -1,0 +1,17 @@
+# CDKビルド出力
+cdk.out/
+
+# 依存関係
+node_modules/
+frontend/node_modules/
+
+# ロックファイル
+package-lock.json
+frontend/package-lock.json
+
+# フロントエンドビルド
+frontend/build/
+
+# その他一般的な無視ファイル
+.DS_Store
+*.log
