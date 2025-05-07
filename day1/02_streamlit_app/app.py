@@ -9,6 +9,8 @@ import torch
 from transformers import pipeline
 from config import MODEL_NAME
 from huggingface_hub import HfFolder
+import streamlit as st
+print(st.secrets)
 
 # --- アプリケーション設定 ---
 st.set_page_config(page_title="Qwen Chatbot", layout="wide")
