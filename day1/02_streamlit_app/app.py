@@ -36,7 +36,7 @@ def load_model():
         pipe = pipeline(
             "text-generation",
             model=MODEL_NAME,
-            model_kwargs={"torch_dtype": torch.bfloat16},
+            # model_kwargs={"torch_dtype": torch.bfloat16},
             device=device
         )
         st.success(f"モデル '{MODEL_NAME}' の読み込みに成功しました。")

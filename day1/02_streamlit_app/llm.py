@@ -21,7 +21,7 @@ def load_model():
         pipe = pipeline(
             "text-generation",
             model=MODEL_NAME,
-            model_kwargs={"torch_dtype": torch.bfloat16},
+            # model_kwargs={"torch_dtype": torch.bfloat16},
             # Qwen models might benefit from trust_remote_code=True depending on implementation
             # trust_remote_code=True, 
             device=device
