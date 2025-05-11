@@ -85,3 +85,40 @@ def generate_response(pipe, user_question):
         import traceback
         traceback.print_exc()
         return f"エラーが発生しました: {str(e)}", 0
+    
+def generate_response_batch(pipe, user_questions):
+    """
+    複数の質問に対してLLMからの応答をバッチで生成する
+    :param pipe: transformers pipeline object
+    :param user_questions: list of strings (prompts)
+    :return: list of (response, generation_time) tuples
+    """
+    if pipe is None:
+        return [("モデルがロードされていないため、回答を生成できません。", 0)] * len(user_questions)
+
+    try:
+        start_time = time.time()
+        outputs = pipe(user_questions, max_new_tokens=512, do_sample=True, temperature=0.7, top_p=0.9)
+
+        results = []
+        for question, output in zip(user_questions, outputs):
+            response = ""
+            if isinstance(output.get("generated_text"), str):
+                full_text = output["generated_text"]
+                response_start = full_text.find(question) + len(question)
+                possible_response = full_text[response_start:].strip()
+                if "<start_of_turn>model" in possible_response:
+                    response = possible_response.split("<start_of_turn>model\n")[-1].strip()
+                else:
+                    response = possible_response
+            else:
+                response = "出力形式が不明なため、応答の抽出に失敗しました。"
+
+            results.append((response, time.time() - start_time))
+
+        return results
+
+    except Exception as e:
+        import traceback
+        traceback.print_exc()
+        return [("エラーが発生しました: " + str(e), 0)] * len(user_questions)
