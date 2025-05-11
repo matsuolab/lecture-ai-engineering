@@ -6,7 +6,7 @@
 （ほぼGemini　2.5Flash（preview）版と対話しながら進めた。このHOMEWORK.mdも書いてもらったものを微修正。）
 
 作成コード：
-day3/day3_homework_250511_06_submission.ipynb
+[day3/day3_homework_250511_06_submission.ipynb](https://github.com/kjboost/lecture-ai-engineering/blob/master/day3/day3_homework_250511_06_submission.ipynb)
 
 ## 質問設計の観点と意図
 
