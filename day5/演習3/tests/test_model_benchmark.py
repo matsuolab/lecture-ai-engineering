@@ -11,13 +11,16 @@ import sys
 sys.path.insert(0, os.path.abspath(os.path.join(os.path.dirname(__file__), "..")))
 from sklearn.model_selection import train_test_split
 from tests.test_model import MODEL_PATH, DATA_PATH
+
 # MODEL_PATH, DATA_PATH は test_model.py からインポートしています
+
 
 @pytest.fixture(scope="session")
 def model():
     # 既存の pickle モデルをロード
     with open(MODEL_PATH, "rb") as f:
         return pickle.load(f)
+
 
 @pytest.fixture(scope="session")
 def X_test():
@@ -28,6 +31,7 @@ def X_test():
     # 固定シードで分割
     _, X_test, _, _ = train_test_split(X, y, test_size=0.2, random_state=42)
     return X_test
+
 
 def test_inference_performance(benchmark, model, X_test):
     # ベンチマーク実行
