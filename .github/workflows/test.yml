@@ -16,7 +16,7 @@ jobs:
     - name: Restore benchmark cache
       uses: actions/cache@v3
       with:
-        path: .benchmarks
+        path: day5/演習3/.benchmarks
         key: benchmark-${{ runner.os }}-${{ hashFiles('requirements.txt') }}
     
     - name: Set up Python
@@ -27,12 +27,8 @@ jobs:
     - name: Install dependencies
       run: |
         python -m pip install --upgrade pip
-        pip install pytest great_expectations pandas scikit-learn flake8 black mypy pytest-cov 
+        pip install pytest great_expectations pandas scikit-learn flake8 black mypy pytest-cov pytest-benchmark
         if [ -f requirements.txt ]; then pip install -r requirements.txt; fi
-    - name: Install all dependencies
-      run: |
-        python -m pip install --upgrade pip
-        pip install -r requirements.txt
         
     - name: Lint with flake8
       run: |
@@ -54,7 +50,7 @@ jobs:
           # ── ベンチマークの実行 ＆ 比較 ──
     - name: Run & compare benchmarks
       run: |
-        pytest tests/test_model_benchmark.py \
+        pytest day5/演習3/tests/test_model_benchmark.py \
           --benchmark-only \
           --benchmark-save=ci \
           --benchmark-compare=baseline \
@@ -65,5 +61,5 @@ jobs:
       if: always()
       uses: actions/cache@v3
       with:
-        path: .benchmarks
+        path: day5/演習3/.benchmarks
         key: benchmark-${{ runner.os }}-${{ hashFiles('requirements.txt') }}
