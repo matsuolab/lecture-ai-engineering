@@ -11,6 +11,13 @@ jobs:
     runs-on: ubuntu-latest
     steps:
     - uses: actions/checkout@v3
+
+    # ── ベースラインキャッシュの復元 ──
+    - name: Restore benchmark cache
+      uses: actions/cache@v3
+      with:
+        path: .benchmarks
+        key: benchmark-${{ runner.os }}-${{ hashFiles('requirements.txt') }}
     
     - name: Set up Python
       uses: actions/setup-python@v4
@@ -39,3 +46,20 @@ jobs:
     - name: Run model tests
       run: |
         pytest day5/演習3/tests/test_model.py -v
+
+          # ── ベンチマークの実行 ＆ 比較 ──
+    - name: Run & compare benchmarks
+      run: |
+        pytest tests/test_model_benchmark.py \
+          --benchmark-only \
+          --benchmark-save=ci \
+          --benchmark-compare=baseline \
+          --benchmark-compare-fail-under=0.95
+
+      # ── 新しいベンチ結果をキャッシュ ──
+    - name: Save benchmark cache
+      if: always()
+      uses: actions/cache@v3
+      with:
+        path: .benchmarks
+        key: benchmark-${{ runner.os }}-${{ hashFiles('requirements.txt') }}
