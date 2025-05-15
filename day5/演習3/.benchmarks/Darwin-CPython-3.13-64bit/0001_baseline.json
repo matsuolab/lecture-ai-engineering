@@ -1,0 +1,78 @@
+{
+    "machine_info": {
+        "node": "MacBook-Pro-3.local",
+        "processor": "arm",
+        "machine": "arm64",
+        "python_compiler": "Clang 16.0.0 (clang-1600.0.26.4)",
+        "python_implementation": "CPython",
+        "python_implementation_version": "3.13.0",
+        "python_version": "3.13.0",
+        "python_build": [
+            "main",
+            "Nov 10 2024 00:24:21"
+        ],
+        "release": "24.4.0",
+        "system": "Darwin",
+        "cpu": {
+            "python_version": "3.13.0.final.0 (64 bit)",
+            "cpuinfo_version": [
+                9,
+                0,
+                0
+            ],
+            "cpuinfo_version_string": "9.0.0",
+            "arch": "ARM_8",
+            "bits": 64,
+            "count": 10,
+            "arch_string_raw": "arm64",
+            "brand_raw": "Apple M4"
+        }
+    },
+    "commit_info": {
+        "id": "7950e32c72612d06c80521fc2bbdf5f6df9c9db2",
+        "time": "2025-05-14T18:49:32+09:00",
+        "author_time": "2025-05-14T18:49:32+09:00",
+        "dirty": true,
+        "project": "lecture-ai-engineering-Konan",
+        "branch": "dev"
+    },
+    "benchmarks": [
+        {
+            "group": null,
+            "name": "test_inference_performance",
+            "fullname": "tests/test_model_benchmark.py::test_inference_performance",
+            "params": null,
+            "param": null,
+            "extra_info": {},
+            "options": {
+                "disable_gc": false,
+                "timer": "perf_counter",
+                "min_rounds": 5,
+                "max_time": 1.0,
+                "min_time": 5e-06,
+                "warmup": false
+            },
+            "stats": {
+                "min": 0.0032379580079577863,
+                "max": 0.019933292001951486,
+                "mean": 0.003560938223210328,
+                "stddev": 0.0012775578182714518,
+                "rounds": 170,
+                "median": 0.0033898540132213384,
+                "iqr": 0.0001143749977927655,
+                "q1": 0.003368375007994473,
+                "q3": 0.0034827500057872385,
+                "iqr_outliers": 25,
+                "stddev_outliers": 1,
+                "outliers": "1;25",
+                "ld15iqr": 0.0032379580079577863,
+                "hd15iqr": 0.0036548750067595392,
+                "ops": 280.82486617767273,
+                "total": 0.6053594979457557,
+                "iterations": 1
+            }
+        }
+    ],
+    "datetime": "2025-05-15T13:34:26.527395+00:00",
+    "version": "5.1.0"
+}
