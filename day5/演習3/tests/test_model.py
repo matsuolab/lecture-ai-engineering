@@ -171,3 +171,37 @@ def test_model_reproducibility(sample_data, preprocessor):
     assert np.array_equal(
         predictions1, predictions2
     ), "モデルの予測結果に再現性がありません"
+
+import json
+import csv
+from datetime import datetime
+
+BASELINE_PATH = os.path.join(os.path.dirname(__file__), "../baseline.json")
+LOG_PATH = os.path.join(os.path.dirname(__file__), "../accuracy_log.csv")
+
+def test_model_against_baseline(train_model):
+    """ベースライン精度と比較し、精度劣化がないかを確認 & 精度ログを保存"""
+
+    model, X_test, y_test = train_model
+    y_pred = model.predict(X_test)
+    accuracy = accuracy_score(y_test, y_pred)
+
+    # ベースライン読み込み
+    if not os.path.exists(BASELINE_PATH):
+        pytest.skip("baseline.json が存在しないためスキップします")
+
+    with open(BASELINE_PATH, "r") as f:
+        baseline_data = json.load(f)
+
+    baseline_accuracy = baseline_data.get("accuracy", 0.0)
+
+    assert accuracy >= baseline_accuracy, (
+        f"モデル精度がベースライン ({baseline_accuracy}) を下回っています: {accuracy}"
+    )
+
+    # 精度ログに追記（CSV形式）
+    with open(LOG_PATH, "a", newline="") as csvfile:
+        writer = csv.writer(csvfile)
+        if os.stat(LOG_PATH).st_size == 0:
+            writer.writerow(["timestamp", "accuracy"])  # ヘッダーがなければ書く
+        writer.writerow([datetime.now().isoformat(), accuracy])
