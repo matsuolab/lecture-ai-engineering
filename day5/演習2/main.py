@@ -50,6 +50,7 @@ class DataLoader:
             return data, None
 
 
+
 class DataValidator:
     """データバリデーションを行うクラス"""
 
