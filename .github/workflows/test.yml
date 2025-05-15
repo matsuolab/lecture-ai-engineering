@@ -52,7 +52,6 @@ jobs:
       run: |
         pytest day5/演習3/tests/test_model.py -v
 
-          # ── ベンチマークの実行 ＆ 比較 ──
     - name: Run & compare benchmarks
       run: |
         pytest day5/演習3/tests/test_model_benchmark.py \
