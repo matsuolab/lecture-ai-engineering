@@ -172,12 +172,14 @@ def test_model_reproducibility(sample_data, preprocessor):
         predictions1, predictions2
     ), "モデルの予測結果に再現性がありません"
 
+
 import json
 import csv
 from datetime import datetime
 
 BASELINE_PATH = os.path.join(os.path.dirname(__file__), "../baseline.json")
 LOG_PATH = os.path.join(os.path.dirname(__file__), "../accuracy_log.csv")
+
 
 def test_model_against_baseline(train_model):
     """ベースライン精度と比較し、精度劣化がないかを確認 & 精度ログを保存"""
@@ -195,9 +197,9 @@ def test_model_against_baseline(train_model):
 
     baseline_accuracy = baseline_data.get("accuracy", 0.0)
 
-    assert accuracy >= baseline_accuracy, (
-        f"モデル精度がベースライン ({baseline_accuracy}) を下回っています: {accuracy}"
-    )
+    assert (
+        accuracy >= baseline_accuracy
+    ), f"モデル精度がベースライン ({baseline_accuracy}) を下回っています: {accuracy}"
 
     # 精度ログに追記（CSV形式）
     with open(LOG_PATH, "a", newline="") as csvfile:
