@@ -1,0 +1,7 @@
+kedro
+scikit-learn
+mlflow
+pandas
+pytest
+great_expectations
+black
