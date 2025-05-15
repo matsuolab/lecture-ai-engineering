@@ -4,6 +4,7 @@ import pandas as pd
 import time
 from database import save_to_db, get_chat_history, get_db_count, clear_db
 from llm import generate_response
+from llm import generate_response_batch
 from data import create_sample_evaluation_data
 from metrics import get_metrics_descriptions
 
@@ -57,37 +58,69 @@ def display_chat_page(pipe):
                   st.rerun() # 画面をクリア
 
 
-def display_feedback_form():
-    """フィードバック入力フォームを表示する"""
-    with st.form("feedback_form"):
-        st.subheader("フィードバック")
-        feedback_options = ["正確", "部分的に正確", "不正確"]
-        # label_visibility='collapsed' でラベルを隠す
-        feedback = st.radio("回答の評価", feedback_options, key="feedback_radio", label_visibility='collapsed', horizontal=True)
-        correct_answer = st.text_area("より正確な回答（任意）", key="correct_answer_input", height=100)
-        feedback_comment = st.text_area("コメント（任意）", key="feedback_comment_input", height=100)
-        submitted = st.form_submit_button("フィードバックを送信")
-        if submitted:
-            # フィードバックをデータベースに保存
-            is_correct = 1.0 if feedback == "正確" else (0.5 if feedback == "部分的に正確" else 0.0)
-            # コメントがない場合でも '正確' などの評価はfeedbackに含まれるようにする
-            combined_feedback = f"{feedback}"
-            if feedback_comment:
-                combined_feedback += f": {feedback_comment}"
+def display_chat_page(pipe):
+    """チャットページのUIを表示する"""
+    st.subheader("Gemma 2 Chatbot")
 
-            save_to_db(
-                st.session_state.current_question,
-                st.session_state.current_answer,
-                combined_feedback,
-                correct_answer,
-                is_correct,
-                st.session_state.response_time
-            )
-            st.session_state.feedback_given = True
-            st.success("フィードバックが保存されました！")
-            # フォーム送信後に状態をリセットしない方が、ユーザーは結果を確認しやすいかも
-            # 必要ならここでリセットして st.rerun()
-            st.rerun() # フィードバックフォームを消すために再実行
+    # モード選択（単一 or バッチ）
+    mode = st.radio("入力モード", ["1つの質問", "複数の質問（バッチ処理）"], horizontal=True)
+
+    if mode == "1つの質問":
+        user_question = st.text_area("質問を入力", key="question_input", height=100, value=st.session_state.get("current_question", ""))
+        submit_button = st.button("質問を送信")
+
+        if "current_question" not in st.session_state:
+            st.session_state.current_question = ""
+        if "current_answer" not in st.session_state:
+            st.session_state.current_answer = ""
+        if "response_time" not in st.session_state:
+            st.session_state.response_time = 0.0
+        if "feedback_given" not in st.session_state:
+            st.session_state.feedback_given = False
+
+        if submit_button and user_question:
+            st.session_state.current_question = user_question
+            st.session_state.current_answer = ""
+            st.session_state.feedback_given = False
+
+            with st.spinner("モデルが回答を生成中..."):
+                answer, response_time = generate_response(pipe, user_question)
+                st.session_state.current_answer = answer
+                st.session_state.response_time = response_time
+                st.rerun()
+
+        if st.session_state.current_question and st.session_state.current_answer:
+            st.subheader("回答:")
+            st.markdown(st.session_state.current_answer)
+            st.info(f"応答時間: {st.session_state.response_time:.2f}秒")
+
+            if not st.session_state.feedback_given:
+                display_feedback_form()
+            else:
+                if st.button("次の質問へ"):
+                    st.session_state.current_question = ""
+                    st.session_state.current_answer = ""
+                    st.session_state.response_time = 0.0
+                    st.session_state.feedback_given = False
+                    st.rerun()
+
+    else:  # バッチモード
+        from llm import generate_response_batch  # ← インポートを関数内に限定
+
+        st.info("複数の質問を1行ずつ入力してください。")
+        batch_input = st.text_area("質問（複数行）", height=200, key="batch_input")
+        if st.button("バッチ送信"):
+            questions = [q.strip() for q in batch_input.strip().split("\n") if q.strip()]
+            if not questions:
+                st.warning("1つ以上の質問を入力してください。")
+            else:
+                with st.spinner(f"{len(questions)}件の質問を処理中..."):
+                    results = generate_response_batch(pipe, questions)
+                    for i, (response, rt) in enumerate(results):
+                        st.markdown(f"#### 質問 {i+1}: {questions[i]}")
+                        st.success(response)
+                        st.caption(f"⏱ 応答時間: {rt:.2f} 秒")
+
 
 # --- 履歴閲覧ページのUI ---
 def display_history_page():
