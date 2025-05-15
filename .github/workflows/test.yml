@@ -53,12 +53,7 @@ jobs:
         pytest day5/演習3/tests/test_model.py -v
 
     - name: Run & compare benchmarks
-      run: |
-        pytest day5/演習3/tests/test_model_benchmark.py \
-          --benchmark-only \
-          --benchmark-save=ci \
-          --benchmark-compare=baseline \
-          --benchmark-compare-fail-under=0.95
+      run: pytest day5/演習3/tests/test_model_benchmark.py --benchmark-only --benchmark-save=ci --benchmark-compare=baseline --benchmark-compare-fail-under=0.95
 
       # ── 新しいベンチ結果をキャッシュ ──
     - name: Save benchmark cache
