@@ -30,7 +30,6 @@ def X_test():
     return X_test
 
 def test_inference_performance(benchmark, model, X_test):
-    import time; time.sleep(0.1)
     # ベンチマーク実行
     result = benchmark(model.predict, X_test)
     # 返り値チェック
