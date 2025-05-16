@@ -11,6 +11,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
     - uses: actions/checkout@v3
+
     
     - name: Set up Python
       uses: actions/setup-python@v4
@@ -22,6 +23,7 @@ jobs:
         python -m pip install --upgrade pip
         pip install pytest great_expectations pandas scikit-learn flake8 black mypy pytest-cov
         if [ -f requirements.txt ]; then pip install -r requirements.txt; fi
+        
         
     - name: Lint with flake8
       run: |
@@ -39,3 +41,8 @@ jobs:
     - name: Run model tests
       run: |
         pytest day5/演習3/tests/test_model.py -v
+
+    - name: Run regression tests (no model performance regression)
+      run: |
+        pytest day5/演習3/tests/test_model_regression.py -v
+     
