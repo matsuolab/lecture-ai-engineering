@@ -173,37 +173,39 @@ def test_model_reproducibility(sample_data, preprocessor):
     ), "モデルの予測結果に再現性がありません"
 
 
-import json
-import csv
-from datetime import datetime
+import sys
+import os
 
-BASELINE_PATH = os.path.join(os.path.dirname(__file__), "../baseline.json")
-LOG_PATH = os.path.join(os.path.dirname(__file__), "../accuracy_log.csv")
+# このスクリプト（test_model.py）から見て2階層上の day5 ディレクトリに移動
+base_path = os.path.abspath(os.path.join(os.path.dirname(__file__), "..", ".."))
+# そこから 演習2 ディレクトリを指定
+enshu2_path = os.path.join(base_path, "演習2")
+
+sys.path.append(enshu2_path)
+
+from main import DataLoader, ModelTester
 
 
-def test_model_against_baseline(train_model):
-    """ベースライン精度と比較し、精度劣化がないかを確認 & 精度ログを保存"""
+# @pytest.fixture(scope="module")
+def trained_model_and_data():
+    data = DataLoader.load_titanic_data()
+    X, y = DataLoader.preprocess_titanic_data(data)
+    model = ModelTester.train_model(X, y)
+    return model, X, y
 
-    model, X_test, y_test = train_model
-    y_pred = model.predict(X_test)
-    accuracy = accuracy_score(y_test, y_pred)
 
-    # ベースライン読み込み
-    if not os.path.exists(BASELINE_PATH):
-        pytest.skip("baseline.json が存在しないためスキップします")
-
-    with open(BASELINE_PATH, "r") as f:
-        baseline_data = json.load(f)
-
-    baseline_accuracy = baseline_data.get("accuracy", 0.0)
-
+def test_model_accuracy_and_inference_time(trained_model_and_data):
+    model, X, y = trained_model_and_data
+    metrics = ModelTester.evaluate_model(model, X, y)
+    assert metrics["accuracy"] >= 0.75, f"精度が低すぎます: {metrics['accuracy']}"
     assert (
-        accuracy >= baseline_accuracy
-    ), f"モデル精度がベースライン ({baseline_accuracy}) を下回っています: {accuracy}"
+        metrics["inference_time"] < 1.0
+    ), f"推論時間が長すぎます: {metrics['inference_time']:.3f}秒"
 
-    # 精度ログに追記（CSV形式）
-    with open(LOG_PATH, "a", newline="") as csvfile:
-        writer = csv.writer(csvfile)
-        if os.stat(LOG_PATH).st_size == 0:
-            writer.writerow(["timestamp", "accuracy"])  # ヘッダーがなければ書く
-        writer.writerow([datetime.now().isoformat(), accuracy])
+
+def test_model_accuracy_above_baseline(trained_model_and_data):
+    model, X, y = trained_model_and_data
+    metrics = ModelTester.evaluate_model(model, X, y)
+    assert ModelTester.compare_with_baseline(
+        metrics
+    ), "ベースラインより精度が劣化しています"
