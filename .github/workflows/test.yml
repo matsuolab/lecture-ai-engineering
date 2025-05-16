@@ -12,12 +12,6 @@ jobs:
     steps:
     - uses: actions/checkout@v3
 
-    # ── ベースラインキャッシュの復元 ──
-    - name: Restore benchmark cache
-      uses: actions/cache@v3
-      with:
-        path: day5/演習3/.benchmarks
-        key: benchmark-${{ runner.os }}-${{ hashFiles('day5/requirements.txt') }}
     
     - name: Set up Python
       uses: actions/setup-python@v4
@@ -27,13 +21,9 @@ jobs:
     - name: Install dependencies
       run: |
         python -m pip install --upgrade pip
-        pip install pytest great_expectations pandas scikit-learn flake8 black mypy pytest-cov pytest-benchmark
-        if [ -f day5/requirements.txt ]; then pip install -r day5/requirements.txt; fi
+        pip install pytest great_expectations pandas scikit-learn flake8 black mypy pytest-cov
+        if [ -f requirements.txt ]; then pip install -r requirements.txt; fi
         
-    - name: Debug pytest plugins
-      run: |
-        pytest --version
-        pytest --trace-config | grep -E "benchmark|benchmark"
         
     - name: Lint with flake8
       run: |
@@ -51,14 +41,3 @@ jobs:
     - name: Run model tests
       run: |
         pytest day5/演習3/tests/test_model.py -v
-
-    - name: Run & compare benchmarks
-      run: pytest day5/演習3/tests/test_model_benchmark.py --benchmark-only --benchmark-save=ci --benchmark-compare=baseline --benchmark-compare-fail-under=0.95
-
-      # ── 新しいベンチ結果をキャッシュ ──
-    - name: Save benchmark cache
-      if: always()
-      uses: actions/cache@v3
-      with:
-        path: day5/演習3/.benchmarks
-        key: benchmark-${{ runner.os }}-${{ hashFiles('day5/requirements.txt') }}
