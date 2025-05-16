@@ -186,7 +186,7 @@ sys.path.append(enshu2_path)
 from main import DataLoader, ModelTester
 
 
-# @pytest.fixture(scope="module")
+@pytest.fixture(scope="module")
 def trained_model_and_data():
     data = DataLoader.load_titanic_data()
     X, y = DataLoader.preprocess_titanic_data(data)
