@@ -7,9 +7,18 @@ import random
 import pickle
 from sklearn.model_selection import train_test_split
 from sklearn.ensemble import RandomForestClassifier
-from sklearn.metrics import accuracy_score
+
 from sklearn.preprocessing import LabelEncoder
 from mlflow.models.signature import infer_signature
+
+from sklearn.metrics import accuracy_score, f1_score, classification_report
+from sklearn.pipeline import Pipeline
+from sklearn.impute import SimpleImputer
+from sklearn.preprocessing import StandardScaler
+from sklearn.compose import ColumnTransformer
+from sklearn.model_selection import GridSearchCV
+from sklearn.preprocessing import OneHotEncoder
+
 
 
 # データ準備
@@ -40,7 +49,7 @@ def prepare_data(test_size=0.2, random_state=42):
 
 
 # 学習と評価
-def train_and_evaluate(
+"""def train_and_evaluate(
     X_train, X_test, y_train, y_test, n_estimators=100, max_depth=None, random_state=42
 ):
     model = RandomForestClassifier(
@@ -49,7 +58,59 @@ def train_and_evaluate(
     model.fit(X_train, y_train)
     predictions = model.predict(X_test)
     accuracy = accuracy_score(y_test, predictions)
-    return model, accuracy
+    return model, accuracy"""
+
+def train_and_evaluate(
+    X_train, X_test, y_train, y_test, n_estimators=100, max_depth=None, random_state=42
+):
+    # 前処理用の数値／カテゴリ特徴量リスト取得
+    numeric_features = X_train.select_dtypes(include=[np.number]).columns.tolist()
+    categorical_features = X_train.select_dtypes(exclude=[np.number]).columns.tolist()
+
+    # 前処理パイプライン
+    numeric_transformer = Pipeline([
+        ("imputer", SimpleImputer(strategy="median")),
+        ("scaler", StandardScaler())
+    ])
+    categorical_transformer = Pipeline([
+        ("imputer", SimpleImputer(strategy="most_frequent")),
+        ("onehot", OneHotEncoder(handle_unknown="ignore"))
+    ])
+    preprocessor = ColumnTransformer([
+        ("num", numeric_transformer, numeric_features),
+        ("cat", categorical_transformer, categorical_features)
+    ])
+
+    # モデル＆パイプライン作成
+    base_clf = RandomForestClassifier(
+        n_estimators=n_estimators,
+        max_depth=max_depth,
+        random_state=random_state
+    )
+    pipeline = Pipeline([
+        ("preprocessor", preprocessor),
+        ("classifier", base_clf)
+    ])
+
+    # ハイパーパラメータチューニング（簡易的にn_estimatorsとmax_depthを周辺探索）
+    param_grid = {
+        "classifier__n_estimators": [n_estimators, n_estimators * 2],
+        "classifier__max_depth": [max_depth, 5, 10]
+    }
+    grid = GridSearchCV(
+        pipeline, param_grid, cv=5, scoring="accuracy", n_jobs=-1
+    )
+    grid.fit(X_train, y_train)
+    best_model = grid.best_estimator_
+
+    # 評価
+    preds = best_model.predict(X_test)
+    accuracy = accuracy_score(y_test, preds)
+    # （必要ならF1なども出力ログに残せます）
+    # f1 = f1_score(y_test, preds, average='binary')
+    # print(classification_report(y_test, preds))
+
+    return best_model, accuracy
 
 
 # モデル保存
