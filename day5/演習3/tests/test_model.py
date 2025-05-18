@@ -95,7 +95,7 @@ def train_model(sample_data, preprocessor):
                     random_state=42,
                     min_data_in_leaf=1,
                     num_leaves=31,
-                    verbosity=-1  # warning を suppress したい場合
+                    verbosity=-1,  # warning を suppress したい場合
                 ),
             ),
         ]
