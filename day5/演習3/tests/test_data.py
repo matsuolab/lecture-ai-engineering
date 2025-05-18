@@ -19,6 +19,13 @@ def sample_data():
     return pd.read_csv(DATA_PATH)
 
 
+def test_datafile_exists():
+    """データファイルが存在するか確認"""
+    if not os.path.exists(DATA_PATH):
+        pytest.skip("データファイルが存在しないためスキップします")
+    assert os.path.exists(DATA_PATH), "データファイルが存在しません"
+
+
 def test_data_exists(sample_data):
     """データが存在することを確認"""
     assert not sample_data.empty, "データセットが空です"

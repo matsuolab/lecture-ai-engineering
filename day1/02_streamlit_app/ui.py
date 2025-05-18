@@ -30,7 +30,7 @@ def display_chat_page(pipe):
         st.session_state.current_answer = "" # 回答をリセット
         st.session_state.feedback_given = False # フィードバック状態もリセット
 
-        with st.spinner("モデルが回答を生成中..."):
+        with st.spinner("ちょっと待ってね、いま考えてるよ..."):
             answer, response_time = generate_response(pipe, user_question)
             st.session_state.current_answer = answer
             st.session_state.response_time = response_time
@@ -39,7 +39,7 @@ def display_chat_page(pipe):
 
     # 回答が表示されるべきか判断 (質問があり、回答が生成済みで、まだフィードバックされていない)
     if st.session_state.current_question and st.session_state.current_answer:
-        st.subheader("回答:")
+        st.subheader("こんな感じ？")
         st.markdown(st.session_state.current_answer) # Markdownで表示
         st.info(f"応答時間: {st.session_state.response_time:.2f}秒")
 
