@@ -6,15 +6,15 @@ import joblib
 import pandas as pd
 
 # 設定
-MODEL_PATH = Path("day5/演習3/model.pkl")
+MODEL_PATH = Path("day5/演習3/models/titanic_model.pkl")
 TEST_DATA_PATH = Path("day5/演習3/data/Titanic.csv")
 OUTPUT = Path("current_metrics.json")
 REPEATS = 100
 
 # 1) データロード
 df = pd.read_csv(TEST_DATA_PATH)
-X = df.drop("label", axis=1)
-y = df["label"]
+X = df.drop("Survived", axis=1)
+y = df["Survived"]
 
 # 2) モデルロード
 model = joblib.load(MODEL_PATH)
