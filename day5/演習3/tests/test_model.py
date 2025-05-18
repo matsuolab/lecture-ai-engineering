@@ -115,7 +115,7 @@ def test_model_accuracy(train_model):
     y_pred = model.predict(X_test)
     accuracy = accuracy_score(y_test, y_pred)
 
-    print(f"Model accuracy: {accuracy:.4f}")
+    #print(f"Model accuracy: {accuracy:.4f}")
 
     assert accuracy >= 0.75, f"モデルの精度が低すぎます: {accuracy}"
     model, X_test, y_test = train_model
@@ -135,7 +135,7 @@ def test_model_inference_time(train_model):
 
     inference_time = end_time - start_time
 
-    print(f"Model inference time: {inference_time:.4f} seconds")
+    #print(f"Model inference time: {inference_time:.4f} seconds")
 
     assert inference_time < 1.0, f"推論時間が長すぎます: {inference_time}秒"
 
@@ -175,3 +175,26 @@ def test_model_reproducibility(sample_data, preprocessor):
     assert np.array_equal(
         predictions1, predictions2
     ), "モデルの予測結果に再現性がありません"
+
+
+def get_model_metrics(model, X_test, y_test):
+    """モデルの精度と推論時間を計測して返す"""
+    import time
+
+    start_time = time.time()
+    y_pred = model.predict(X_test)
+    end_time = time.time()
+
+    accuracy = accuracy_score(y_test, y_pred)
+    inference_time = end_time - start_time
+
+    return accuracy, inference_time
+
+
+def test_print_model_metrics(train_model):
+    """精度と推論時間を表示するだけ"""
+    model, X_test, y_test = train_model
+    acc, inf_time = get_model_metrics(model, X_test, y_test)
+
+    print(f"Model accuracy: {acc:.4f}")
+    print(f"Model inference time: {inf_time:.4f} seconds")
