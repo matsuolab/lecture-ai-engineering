@@ -16,7 +16,7 @@ from sklearn.pipeline import Pipeline
 DATA_PATH = os.path.join(os.path.dirname(__file__), "../data/Titanic.csv")
 MODEL_DIR = os.path.join(os.path.dirname(__file__), "../models")
 MODEL_PATH = os.path.join(MODEL_DIR, "titanic_model.pkl")
-
+OLD_MODEL_PATH = os.path.join(MODEL_DIR, "old_titanic_model.pkl")
 
 @pytest.fixture
 def sample_data():
@@ -120,6 +120,34 @@ def test_model_accuracy(train_model):
     # Titanicデータセットでは0.75以上の精度が一般的に良いとされる
     assert accuracy >= 0.75, f"モデルの精度が低すぎます: {accuracy}"
 
+def test_model_accuracy_vs_old_model():
+    """古いモデルと新しいモデルの精度を比較"""
+    # if not os.path.exists(OLD_MODEL_PATH):
+    #     pytest.skip("古いモデルファイルが存在しないためスキップします")
+
+    with open(MODEL_PATH, "rb") as f:
+        new_model = pickle.load(f)
+
+    # with open(OLD_MODEL_PATH, "rb") as f:
+    #     old_model = pickle.load(f)
+
+    # テストデータの準備
+    sample_data = pd.read_csv(DATA_PATH)
+    X = sample_data.drop("Survived", axis=1)
+    y = sample_data["Survived"].astype(int)
+    X_train, X_test, y_train, y_test = train_test_split(
+        X, y, test_size=0.2, random_state=42
+    )
+
+    # 新しいモデルと古いモデルの精度を比較
+    new_accuracy = accuracy_score(y_test, new_model.predict(X_test))
+    # old_accuracy = accuracy_score(y_test, old_model.predict(X_test))
+    old_accuracy = 0.8  # 仮の値、実際には古いモデルの精度を計算する必要があります
+
+    assert new_accuracy >= old_accuracy, (
+        f"新しいモデルの精度が古いモデルより低いです: "
+        f"新しいモデル: {new_accuracy}, 古いモデル: {old_accuracy}"
+    )
 
 def test_model_inference_time(train_model):
     """モデルの推論時間を検証"""
@@ -171,3 +199,4 @@ def test_model_reproducibility(sample_data, preprocessor):
     assert np.array_equal(
         predictions1, predictions2
     ), "モデルの予測結果に再現性がありません"
+
