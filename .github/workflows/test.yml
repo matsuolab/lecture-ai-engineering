@@ -39,3 +39,12 @@ jobs:
     - name: Run model tests
       run: |
         pytest day5/演習3/tests/test_model.py -v
+  #モデルの推論精度と推論時間の検証 ---
+    - name: Run model performance tests
+      run: |
+        python day5/演習3/tests/test_model_performance.py
+
+    # 過去バージョンとの性能劣化検証 ---
+    - name: Check for model performance degradation
+      run: |
+        python day5/演習3/tests/test_model_degradation.py
