@@ -115,7 +115,7 @@ def test_model_accuracy(train_model):
     y_pred = model.predict(X_test)
     accuracy = accuracy_score(y_test, y_pred)
 
-    #print(f"Model accuracy: {accuracy:.4f}")
+    # print(f"Model accuracy: {accuracy:.4f}")
 
     assert accuracy >= 0.75, f"モデルの精度が低すぎます: {accuracy}"
     model, X_test, y_test = train_model
@@ -135,7 +135,7 @@ def test_model_inference_time(train_model):
 
     inference_time = end_time - start_time
 
-    #print(f"Model inference time: {inference_time:.4f} seconds")
+    # print(f"Model inference time: {inference_time:.4f} seconds")
 
     assert inference_time < 1.0, f"推論時間が長すぎます: {inference_time}秒"
 
