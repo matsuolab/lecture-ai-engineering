@@ -16,6 +16,7 @@ from sklearn.pipeline import Pipeline
 DATA_PATH = os.path.join(os.path.dirname(__file__), "../data/Titanic.csv")
 MODEL_DIR = os.path.join(os.path.dirname(__file__), "../models")
 MODEL_PATH = os.path.join(MODEL_DIR, "titanic_model.pkl")
+BASELINE_MODEL_PATH = os.path.join(MODEL_DIR, "baseline_titanic_model.pkl")
 
 
 @pytest.fixture
@@ -171,3 +172,27 @@ def test_model_reproducibility(sample_data, preprocessor):
     assert np.array_equal(
         predictions1, predictions2
     ), "モデルの予測結果に再現性がありません"
+
+
+def test_performance_against_baseline(train_model):
+    """現在学習されたモデルがベースラインモデルに対して性能劣化していないか検証"""
+    current_model, X_test, y_test = train_model
+
+    # ベースラインモデルのロード
+    assert os.path.exists(BASELINE_MODEL_PATH), "ベースラインモデルファイルが存在しません"
+    with open(BASELINE_MODEL_PATH, "rb") as f:
+        baseline_model = pickle.load(f)
+
+    # 現在のモデルの性能評価
+    current_y_pred = current_model.predict(X_test)
+    current_accuracy = accuracy_score(y_test, current_y_pred)
+
+    # ベースラインモデルの性能評価
+    baseline_y_pred = baseline_model.predict(X_test)
+    baseline_accuracy = accuracy_score(y_test, baseline_y_pred)
+
+    print(f"Current model accuracy: {current_accuracy:.4f}")
+    print(f"Baseline model accuracy: {baseline_accuracy:.4f}")
+
+    # 性能比較のアサーション (例: 現在の精度がベースラインの95%以上であること)
+    assert current_accuracy >= (baseline_accuracy * 0.95), f"Current accuracy {current_accuracy:.4f} is significantly lower than baseline accuracy {baseline_accuracy:.4f}"
