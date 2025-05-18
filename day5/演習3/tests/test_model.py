@@ -88,7 +88,16 @@ def train_model(sample_data, preprocessor):
     model = Pipeline(
         steps=[
             ("preprocessor", preprocessor),
-            ("classifier", LGBMClassifier(n_estimators=200, random_state=42)),
+            (
+                "classifier",
+                LGBMClassifier(
+                    n_estimators=100,
+                    random_state=42,
+                    min_data_in_leaf=1,
+                    num_leaves=31,
+                    verbosity=-1  # warning を suppress したい場合
+                ),
+            ),
         ]
     )
 
@@ -179,7 +188,6 @@ def test_model_reproducibility(sample_data, preprocessor):
 
 
 def get_model_metrics(model, X_test, y_test):
-    """モデルの精度と推論時間を計測して返す"""
     import time
 
     start_time = time.time()
@@ -193,7 +201,6 @@ def get_model_metrics(model, X_test, y_test):
 
 
 def test_print_model_metrics(train_model):
-    """精度と推論時間を表示するだけ"""
     model, X_test, y_test = train_model
     acc, inf_time = get_model_metrics(model, X_test, y_test)
 

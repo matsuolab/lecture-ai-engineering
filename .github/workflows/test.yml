@@ -1,4 +1,4 @@
-name: ML Pipeline CI
+name: lightGBMの実装
 
 on:
   # push:
