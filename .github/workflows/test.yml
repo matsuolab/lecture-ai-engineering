@@ -20,7 +20,7 @@ jobs:
     - name: Install dependencies
       run: |
         python -m pip install --upgrade pip
-        pip install pytest great_expectations pandas scikit-learn flake8 black mypy pytest-cov
+        pip install pytest lightgbm great_expectations pandas scikit-learn flake8 black mypy pytest-cov
         if [ -f requirements.txt ]; then pip install -r requirements.txt; fi
         
     - name: Lint with flake8
@@ -31,7 +31,7 @@ jobs:
     - name: Format check with black
       run: |
         black --check day5/演習3
-        
+
     - name: Run data tests
       run: |
         pytest day5/演習3/tests/test_data.py -v
