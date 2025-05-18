@@ -7,7 +7,7 @@ import pandas as pd
 
 # 設定
 MODEL_PATH = Path("day5/演習3/model.pkl")
-TEST_DATA_PATH = Path("day5/演習3/tests/fixtures/test_data.csv")
+TEST_DATA_PATH = Path("day5/演習3/data/Titanic.csv")
 OUTPUT = Path("current_metrics.json")
 REPEATS = 100
 
