@@ -39,3 +39,7 @@ jobs:
     - name: Run model tests
       run: |
         pytest day5/演習3/tests/test_model.py -v -s
+
+    - name: Print model metrics (accuracy & inference time)
+      run: |
+        pytest day5/演習3/tests/test_model.py -v -s -k test_print_model_metrics
