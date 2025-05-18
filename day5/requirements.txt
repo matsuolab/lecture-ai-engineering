@@ -4,4 +4,3 @@ mlflow
 pandas
 pytest
 great_expectations
-black

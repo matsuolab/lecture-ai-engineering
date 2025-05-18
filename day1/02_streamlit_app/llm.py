@@ -1,87 +1,73 @@
 # llm.py
-import os
-import torch
-from transformers import pipeline
 import streamlit as st
+import os
 import time
-from config import MODEL_NAME
+import torch
+import streamlit as st
+from transformers import pipeline
 from huggingface_hub import login
+from config import MODEL_NAME
 
-# モデルをキャッシュして再利用
+# ── ここに「必ず中学生にもわかるように例えを入れて解説する」システムプロンプトを定義
+SYSTEM_PROMPT = (
+    "【システム】これから中学生にもわかるように、"
+    "例えを交えて丁寧に説明してください。\n"
+)
 @st.cache_resource
 def load_model():
-    """LLMモデルをロードする"""
-    try:
+    """
+    LLMモデルをロードし、パイプラインをキャッシュする。
+    Hugging Face トークンのログイン処理もここで実施。
+    """
+    # HF トークンを取得してログイン（.streamlit/secrets.toml に設定しておくこと）
+    hf_token = os.environ["HUGGINGFACE_TOKEN"]
+    login(token=hf_token)
 
-        # アクセストークンを保存
-        hf_token = st.secrets["huggingface"]["token"]
-        
-        device = "cuda" if torch.cuda.is_available() else "cpu"
-        st.info(f"Using device: {device}") # 使用デバイスを表示
-        pipe = pipeline(
-            "text-generation",
-            model=MODEL_NAME,
-            model_kwargs={"torch_dtype": torch.bfloat16},
-            device=device
-        )
-        st.success(f"モデル '{MODEL_NAME}' の読み込みに成功しました。")
-        return pipe
-    except Exception as e:
-        st.error(f"モデル '{MODEL_NAME}' の読み込みに失敗しました: {e}")
-        st.error("GPUメモリ不足の可能性があります。不要なプロセスを終了するか、より小さいモデルの使用を検討してください。")
-        return None
+    # デバイス設定
+    device = "cuda" if torch.cuda.is_available() else "cpu"
+    st.info(f"Using device: {device}")
 
-def generate_response(pipe, user_question):
-    """LLMを使用して質問に対する回答を生成する"""
-    if pipe is None:
-        return "モデルがロードされていないため、回答を生成できません。", 0
+    # テキスト生成パイプラインを構築
+    pipe = pipeline(
+        # ここでモデルの種類を指定するが、まだ未定
+        "text-generation",
+        model=MODEL_NAME,
+        model_kwargs={"torch_dtype": torch.bfloat16},
+        device=device,)
+    st.success(f"モデル '{MODEL_NAME}' の読み込みに成功しました。")
+    return pipe
 
-    try:
-        start_time = time.time()
-        messages = [
-            {"role": "user", "content": user_question},
-        ]
-        # max_new_tokensを調整可能にする（例）
-        outputs = pipe(messages, max_new_tokens=512, do_sample=True, temperature=0.7, top_p=0.9)
+pipe = load_model()
 
-        # Gemmaの出力形式に合わせて調整が必要な場合がある
-        # 最後のassistantのメッセージを取得
-        assistant_response = ""
-        if outputs and isinstance(outputs, list) and outputs[0].get("generated_text"):
-           if isinstance(outputs[0]["generated_text"], list) and len(outputs[0]["generated_text"]) > 0:
-               # messages形式の場合
-               last_message = outputs[0]["generated_text"][-1]
-               if last_message.get("role") == "assistant":
-                   assistant_response = last_message.get("content", "").strip()
-           elif isinstance(outputs[0]["generated_text"], str):
-               # 単純な文字列の場合（古いtransformers？） - プロンプト部分を除く処理が必要かも
-               # この部分はモデルやtransformersのバージョンによって調整が必要
-               full_text = outputs[0]["generated_text"]
-               # 簡単な方法：ユーザーの質問以降の部分を取得
-               prompt_end = user_question
-               response_start_index = full_text.find(prompt_end) + len(prompt_end)
-               # 応答部分のみを抽出（より堅牢な方法が必要な場合あり）
-               possible_response = full_text[response_start_index:].strip()
-               # 特定の開始トークンを探すなど、モデルに合わせた調整
-               if "<start_of_turn>model" in possible_response:
-                    assistant_response = possible_response.split("<start_of_turn>model\n")[-1].strip()
-               else:
-                    assistant_response = possible_response # フォールバック
+def generate_response(
+    user_question: str,
+    max_new_tokens: int = 256,
+    temperature: float = 0.7,
+    top_p: float = 0.9
+) -> tuple[str, float]:
+    """
+    ユーザーの質問にシステムプロンプトを先行付与し、
+    モデルから回答を取得する。
 
-        if not assistant_response:
-             # 上記で見つからない場合のフォールバックやデバッグ
-             print("Warning: Could not extract assistant response. Full output:", outputs)
-             assistant_response = "回答の抽出に失敗しました。"
+    Returns:
+      (回答文字列, 応答時間[s])
+    """
+    # 1) システムプロンプト + ユーザークエリ を結合
+    prompt = SYSTEM_PROMPT + user_question
 
+    # 2) モデル呼び出し＆時間計測
+    start_time = time.time()
+    outputs = pipe(
+        prompt,
+        max_new_tokens=512,
+        do_sample=True,
+        temperature=0.7,
+        top_p=top_p
+    )
+    elapsed = time.time() - start_time
 
-        end_time = time.time()
-        response_time = end_time - start_time
-        print(f"Generated response in {response_time:.2f}s") # デバッグ用
-        return assistant_response, response_time
+    # 3) 出力からシステムプロンプト部分を削って回答部分だけ抽出
+    full_text = outputs[0]["generated_text"]
+    answer = full_text[len(SYSTEM_PROMPT):].strip()
 
-    except Exception as e:
-        st.error(f"回答生成中にエラーが発生しました: {e}")
-        # エラーの詳細をログに出力
-        import traceback
-        traceback.print_exc()
-        return f"エラーが発生しました: {str(e)}", 0
+    return answer, elapsed

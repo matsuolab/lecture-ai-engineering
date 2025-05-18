@@ -1,5 +1,9 @@
 # app.py
 import streamlit as st
+
+# --- アプリケーション設定 ---
+st.set_page_config(page_title="Gemma Chatbot", layout="wide")
+
 import ui                   # UIモジュール
 import llm                  # LLMモジュール
 import database             # データベースモジュール
@@ -9,9 +13,6 @@ import torch
 from transformers import pipeline
 from config import MODEL_NAME
 from huggingface_hub import HfFolder
-
-# --- アプリケーション設定 ---
-st.set_page_config(page_title="Gemma Chatbot", layout="wide")
 
 # --- 初期化処理 ---
 # NLTKデータのダウンロード（初回起動時など）
@@ -23,31 +24,11 @@ database.init_db()
 # データベースが空ならサンプルデータを投入
 data.ensure_initial_data()
 
-# LLMモデルのロード（キャッシュを利用）
-# モデルをキャッシュして再利用
-@st.cache_resource
-def load_model():
-    """LLMモデルをロードする"""
-    try:
-        device = "cuda" if torch.cuda.is_available() else "cpu"
-        st.info(f"Using device: {device}") # 使用デバイスを表示
-        pipe = pipeline(
-            "text-generation",
-            model=MODEL_NAME,
-            model_kwargs={"torch_dtype": torch.bfloat16},
-            device=device
-        )
-        st.success(f"モデル '{MODEL_NAME}' の読み込みに成功しました。")
-        return pipe
-    except Exception as e:
-        st.error(f"モデル '{MODEL_NAME}' の読み込みに失敗しました: {e}")
-        st.error("GPUメモリ不足の可能性があります。不要なプロセスを終了するか、より小さいモデルの使用を検討してください。")
-        return None
 pipe = llm.load_model()
 
 # --- Streamlit アプリケーション ---
-st.title("🤖 Gemma 2 Chatbot with Feedback")
-st.write("Gemmaモデルを使用したチャットボットです。回答に対してフィードバックを行えます。")
+st.title("💭 Gemma 2 Chatbot with Feedback")
+st.write("Gemmaモデルを使用したチャットボットです。初学者向けに平易な回答をします！回答に対してフィードバックを行えます。")
 st.markdown("---")
 
 # --- サイドバー ---
@@ -78,4 +59,4 @@ elif st.session_state.page == "サンプルデータ管理":
 
 # --- フッターなど（任意） ---
 st.sidebar.markdown("---")
-st.sidebar.info("開発者: [Your Name]")
+st.sidebar.info("開発者: Kei")# app.py
