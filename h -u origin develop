@@ -1,0 +1,55 @@
+[1mdiff --git "a/day5/\346\274\224\347\277\2221/models/titanic_model.pkl" "b/day5/\346\274\224\347\277\2221/models/titanic_model.pkl"[m
+[1mindex 6fec87e..f0a5667 100644[m
+Binary files "a/day5/\346\274\224\347\277\2221/models/titanic_model.pkl" and "b/day5/\346\274\224\347\277\2221/models/titanic_model.pkl" differ
+[1mdiff --git "a/day5/\346\274\224\347\277\2222/black_check.py" "b/day5/\346\274\224\347\277\2222/black_check.py"[m
+[1mindex 3158f95..910a40c 100644[m
+[1m--- "a/day5/\346\274\224\347\277\2222/black_check.py"[m
+[1m+++ "b/day5/\346\274\224\347\277\2222/black_check.py"[m
+[36m@@ -1,7 +1,18 @@[m
+[32m+[m[32mdef say_hello(name):[m
+[32m+[m[32m    print("Hello," + name + "!")  # greet[m
+[32m+[m
+[32m+[m
+[32m+[m[32mdef say_hello(name):[m
+[32m+[m[32m    print("Hello," + name + "!")  # greet[m
+[32m+[m
+[32m+[m
+[32m+[m[32mdef add(a, b):[m
+[32m+[m[32m    return a + b[m
+[32m+[m
+[32m+[m
+[32m+[m[32mdef add(a, b):[m
+[32m+[m[32m    return a + b[m
+[32m+[m
+ [m
+[31m-def say_hello(name):print("Hello,"+name+"!")   # greet[m
+[31m-def say_hello(name):print("Hello,"     +    name   +"!")   # greet[m
+[31m-def add( a,b):return a+b[m
+[31m-def add( a ,     b    ):return a+b[m
+ def add(a, b):[m
+[31m-    return a+b[m
+\ No newline at end of file[m
+[32m+[m[32m    return a + b[m
+[1mdiff --git "a/day5/\346\274\224\347\277\2222/main.py" "b/day5/\346\274\224\347\277\2222/main.py"[m
+[1mindex 776b70e..ee61067 100644[m
+[1m--- "a/day5/\346\274\224\347\277\2222/main.py"[m
+[1m+++ "b/day5/\346\274\224\347\277\2222/main.py"[m
+[36m@@ -11,6 +11,7 @@[m [mimport pickle[m
+ import time[m
+ import great_expectations as gx[m
+ [m
+[32m+[m
+ class DataLoader:[m
+     """データロードを行うクラス"""[m
+ [m
+[36m@@ -49,6 +50,7 @@[m [mclass DataLoader:[m
+             return data, None[m
+ [m
+ [m
+[32m+[m
+ class DataValidator:[m
+     """データバリデーションを行うクラス"""[m
+ [m
+[1mdiff --git "a/day5/\346\274\224\347\277\2222/models/titanic_model.pkl" "b/day5/\346\274\224\347\277\2222/models/titanic_model.pkl"[m
+[1mindex 9e1859f..f5f5e86 100644[m
+Binary files "a/day5/\346\274\224\347\277\2222/models/titanic_model.pkl" and "b/day5/\346\274\224\347\277\2222/models/titanic_model.pkl" differ

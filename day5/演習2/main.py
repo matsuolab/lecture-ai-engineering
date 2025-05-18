@@ -11,6 +11,7 @@ import pickle
 import time
 import great_expectations as gx
 
+
 class DataLoader:
     """データロードを行うクラス"""
 
@@ -47,6 +48,7 @@ class DataLoader:
             return X, y
         else:
             return data, None
+
 
 
 class DataValidator:

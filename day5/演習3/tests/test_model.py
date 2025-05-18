@@ -5,6 +5,7 @@ import numpy as np
 import pickle
 import time
 from sklearn.ensemble import RandomForestClassifier
+from lightgbm import LGBMClassifier
 from sklearn.model_selection import train_test_split
 from sklearn.metrics import accuracy_score
 from sklearn.impute import SimpleImputer
@@ -87,7 +88,16 @@ def train_model(sample_data, preprocessor):
     model = Pipeline(
         steps=[
             ("preprocessor", preprocessor),
-            ("classifier", RandomForestClassifier(n_estimators=100, random_state=42)),
+            (
+                "classifier",
+                LGBMClassifier(
+                    n_estimators=100,
+                    random_state=42,
+                    min_data_in_leaf=1,
+                    num_leaves=31,
+                    verbosity=-1,  # warning を suppress したい場合
+                ),
+            ),
         ]
     )
 
@@ -110,29 +120,33 @@ def test_model_exists():
 
 
 def test_model_accuracy(train_model):
-    """モデルの精度を検証"""
     model, X_test, y_test = train_model
 
-    # 予測と精度計算
     y_pred = model.predict(X_test)
     accuracy = accuracy_score(y_test, y_pred)
 
-    # Titanicデータセットでは0.75以上の精度が一般的に良いとされる
+    # print(f"Model accuracy: {accuracy:.4f}")
+
+    assert accuracy >= 0.75, f"モデルの精度が低すぎます: {accuracy}"
+    model, X_test, y_test = train_model
+
+    y_pred = model.predict(X_test)
+    accuracy = accuracy_score(y_test, y_pred)
+
     assert accuracy >= 0.75, f"モデルの精度が低すぎます: {accuracy}"
 
 
 def test_model_inference_time(train_model):
-    """モデルの推論時間を検証"""
     model, X_test, _ = train_model
 
-    # 推論時間の計測
     start_time = time.time()
     model.predict(X_test)
     end_time = time.time()
 
     inference_time = end_time - start_time
 
-    # 推論時間が1秒未満であることを確認
+    # print(f"Model inference time: {inference_time:.4f} seconds")
+
     assert inference_time < 1.0, f"推論時間が長すぎます: {inference_time}秒"
 
 
@@ -171,3 +185,24 @@ def test_model_reproducibility(sample_data, preprocessor):
     assert np.array_equal(
         predictions1, predictions2
     ), "モデルの予測結果に再現性がありません"
+
+
+def get_model_metrics(model, X_test, y_test):
+    import time
+
+    start_time = time.time()
+    y_pred = model.predict(X_test)
+    end_time = time.time()
+
+    accuracy = accuracy_score(y_test, y_pred)
+    inference_time = end_time - start_time
+
+    return accuracy, inference_time
+
+
+def test_print_model_metrics(train_model):
+    model, X_test, y_test = train_model
+    acc, inf_time = get_model_metrics(model, X_test, y_test)
+
+    print(f"Model accuracy: {acc:.4f}")
+    print(f"Model inference time: {inf_time:.4f} seconds")
