@@ -1,4 +1,4 @@
 {
-  "accuracy": 0.92,
-  "latency_ms": 5.0
+  "accuracy": 0.75,
+  "latency_ms": 2.0
 }
