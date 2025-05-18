@@ -40,6 +40,6 @@ jobs:
       run: |
         pytest day5/演習3/tests/test_model.py -v
     
-    #- name: Run model tests
-    #  run: |
-    #    pytest day5/演習3/tests/test_model_extra.py -v
+    - name: Run model tests
+      run: |
+        pytest day5/演習3/tests/test_model_extra.py -v
