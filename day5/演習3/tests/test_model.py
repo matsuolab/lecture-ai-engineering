@@ -127,7 +127,6 @@ def test_model_reproducibility(sample_data, preprocessor):
         model1.predict(X_test), model2.predict(X_test)
     ), "モデルの予測結果に再現性がありません"
 
-
 def test_model_regression_against_previous(train_model):
     """過去モデルと比較して性能が著しく劣化していないか検証"""
     model, X_test, y_test = train_model
@@ -144,3 +143,4 @@ def test_model_regression_against_previous(train_model):
     assert (
         new_acc >= old_acc - 0.02
     ), f"モデルの精度が劣化しています。新: {new_acc:.4f}, 旧: {old_acc:.4f}"
+
