@@ -35,7 +35,7 @@ def sample_data():
 
         os.makedirs(os.path.dirname(DATA_PATH), exist_ok=True)
         df.to_csv(DATA_PATH, index=False)
-        
+
     return pd.read_csv(DATA_PATH)
 
 
