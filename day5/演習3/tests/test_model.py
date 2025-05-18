@@ -35,7 +35,7 @@ def sample_data():
 
         os.makedirs(os.path.dirname(DATA_PATH), exist_ok=True)
         df.to_csv(DATA_PATH, index=False)
-
+        
     return pd.read_csv(DATA_PATH)
 
 
@@ -87,7 +87,7 @@ def train_model(sample_data, preprocessor):
     model = Pipeline(
         steps=[
             ("preprocessor", preprocessor),
-            ("classifier", RandomForestClassifier(n_estimators=100, random_state=42)),
+            ("classifier", RandomForestClassifier(n_estimators=5, random_state=42)),
         ]
     )
 
