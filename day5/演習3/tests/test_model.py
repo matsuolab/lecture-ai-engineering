@@ -171,3 +171,22 @@ def test_model_reproducibility(sample_data, preprocessor):
     assert np.array_equal(
         predictions1, predictions2
     ), "モデルの予測結果に再現性がありません"
+
+
+def test_model_performance_comparison(train_model):
+    """過去バージョンのモデルと比較して性能劣化がないか検証"""
+    current_model, X_test, y_test = train_model
+    
+    # 現在のモデルの性能を評価
+    current_predictions = current_model.predict(X_test)
+    current_accuracy = accuracy_score(y_test, current_predictions)
+    
+    # 基準となる性能値（この値は過去の実績に基づいて設定）
+    BASELINE_ACCURACY = 0.75
+    
+    # 性能比較
+    assert current_accuracy >= BASELINE_ACCURACY, (
+        f"モデルの性能が基準値を下回っています。"
+        f"現在の精度: {current_accuracy:.3f}, "
+        f"基準精度: {BASELINE_ACCURACY:.3f}"
+    )

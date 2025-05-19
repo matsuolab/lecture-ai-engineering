@@ -31,11 +31,10 @@ jobs:
     - name: Format check with black
       run: |
         black --check day5/演習3
-        
-    - name: Run data tests
+          - name: Run data tests
       run: |
         pytest day5/演習3/tests/test_data.py -v
         
-    - name: Run model tests
+    - name: Run model tests with coverage
       run: |
-        pytest day5/演習3/tests/test_model.py -v
+        pytest day5/演習3/tests/test_model.py -v --cov=day5/演習3 --cov-report=term-missing
