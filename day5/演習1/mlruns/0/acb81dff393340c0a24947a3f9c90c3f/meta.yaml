@@ -1,0 +1,15 @@
+artifact_uri: file:///Users/ryuhei/class/ai-engeneer/lecture-ai-engineering/day5/%E6%BC%94%E7%BF%921/mlruns/0/acb81dff393340c0a24947a3f9c90c3f/artifacts
+end_time: 1747658737143
+entry_point_name: ''
+experiment_id: '0'
+lifecycle_stage: active
+run_id: acb81dff393340c0a24947a3f9c90c3f
+run_name: classy-sponge-233
+run_uuid: acb81dff393340c0a24947a3f9c90c3f
+source_name: ''
+source_type: 4
+source_version: ''
+start_time: 1747658733763
+status: 3
+tags: []
+user_id: ryuhei

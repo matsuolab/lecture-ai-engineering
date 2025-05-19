@@ -1,0 +1,6 @@
+artifact_location: file:///Users/ryuhei/class/ai-engeneer/lecture-ai-engineering/day5/%E6%BC%94%E7%BF%921/mlruns/240465198786603614
+creation_time: 1747658796013
+experiment_id: '240465198786603614'
+last_update_time: 1747658796013
+lifecycle_stage: active
+name: titanic-survival-prediction

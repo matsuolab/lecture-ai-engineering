@@ -1,0 +1,15 @@
+artifact_uri: file:///Users/ryuhei/class/ai-engeneer/lecture-ai-engineering/day5/%E6%BC%94%E7%BF%921/mlruns/240465198786603614/8b3112c53f3943c39c449e98a1e1e764/artifacts
+end_time: 1747658799200
+entry_point_name: ''
+experiment_id: '240465198786603614'
+lifecycle_stage: active
+run_id: 8b3112c53f3943c39c449e98a1e1e764
+run_name: dashing-gnu-437
+run_uuid: 8b3112c53f3943c39c449e98a1e1e764
+source_name: ''
+source_type: 4
+source_version: ''
+start_time: 1747658796394
+status: 3
+tags: []
+user_id: ryuhei
