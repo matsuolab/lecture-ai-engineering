@@ -5,6 +5,7 @@ import pandas as pd
 import numpy as np
 import random
 import pickle
+import time
 from sklearn.model_selection import train_test_split
 from sklearn.ensemble import RandomForestClassifier
 from sklearn.metrics import accuracy_score
@@ -121,3 +122,19 @@ if __name__ == "__main__":
     with open(model_path, "wb") as f:
         pickle.dump(model, f)
     print(f"モデルを {model_path} に保存しました")
+
+    # モデル推論時間のテスト処理
+    print("\n--- Inference Time Test ---")
+    with open(model_path, "rb") as f:
+        loaded_model = pickle.load(f)
+    
+    if not X_test.empty:
+        start_time = time.perf_counter()
+        loaded_model.predict(X_test)
+        end_time = time.perf_counter()
+        inference_time = end_time - start_time
+        print(f"Test data size for inference: {len(X_test)} samples")
+        print(f"Inference time for X_test: {inference_time:.6f} seconds")
+    else:
+        print("X_test is empty, skipping inference time test.")
+    print("---------------------------")
