@@ -3,7 +3,7 @@ from sklearn.metrics import accuracy_score
 import pandas as pd
 
 def test_model_accuracy():
-    model = load("models/titanic_model.pkl")
+    model = load("../../model_temp.pkl")
     X_test = pd.read_csv("data/Titanic.csv").drop("Survived", axis=1)
     y_test = pd.read_csv("data/Titanic.csv")["Survived"]
 
