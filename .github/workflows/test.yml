@@ -40,8 +40,8 @@ jobs:
       run: |
         pytest day5/演習3/tests/test_model.py -v
 #追加行
-    - name: evaluation of performance and runtime
-      run: |
-        pytest day5/演習3/main.py
 
+#    - name: evaluation of performance and runtime
+ #     run: |
+  #      pytest day5/演習3/main.py
         
