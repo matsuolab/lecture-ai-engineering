@@ -102,6 +102,7 @@ def train_model(sample_data, preprocessor):
 
     return model, X_test, y_test
 
+
 @pytest.fixture
 def baseline_model(sample_data, preprocessor):
     """モデルの学習とテストデータの準備"""
@@ -201,11 +202,12 @@ def test_model_reproducibility(sample_data, preprocessor):
         predictions1, predictions2
     ), "モデルの予測結果に再現性がありません"
 
+
 def test_better_than_baseline(train_model, baseline_model):
     """モデルがベースラインより良いか確認"""
     model, X_test, y_test = train_model
-    baseline_model, _, _  = baseline_model
-    
+    baseline_model, _, _ = baseline_model
+
     # ベースラインモデルの精度を計算
     y_pred_baseline = baseline_model.predict(X_test)
     baseline_accuracy = accuracy_score(y_test, y_pred_baseline)
@@ -214,4 +216,6 @@ def test_better_than_baseline(train_model, baseline_model):
     y_pred = model.predict(X_test)
     accuracy = accuracy_score(y_test, y_pred)
 
-    assert accuracy >= baseline_accuracy, f"モデルの精度がベースラインを下回っています: train_model.accuracy{accuracy} baseline_model.accuracy{baseline_accuracy}"
+    assert (
+        accuracy >= baseline_accuracy
+    ), f"モデルの精度がベースラインを下回っています: train_model.accuracy{accuracy} baseline_model.accuracy{baseline_accuracy}"
