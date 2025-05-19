@@ -22,13 +22,16 @@ logger = logging.getLogger(__name__)
 
 # データ準備
 def prepare_data():
+    base_dir = os.path.dirname(__file__)#0519NEW
     try:
         # Titanicデータセットの読み込み
-        path = "data/Titanic.csv"
-        if not os.path.exists(path):
-            raise FileNotFoundError(f"データファイルが見つかりません: {path}")
+        # path = "data/Titanic.csv"
+        data_path = os.path.join(base_dir, 'data', 'Titanic.csv')#0519NEW
+        if not os.path.exists(data_path):
+            raise FileNotFoundError(f"データファイルが見つかりません: {data_path}")
 
-        data = pd.read_csv(path)
+        # data = pd.read_csv(path)
+        data = pd.read_csv(data_path)
         logger.info(f"データを読み込みました。行数: {len(data)}")
 
         # 必要な特徴量の選択と前処理

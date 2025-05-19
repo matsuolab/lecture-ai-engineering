@@ -11,12 +11,14 @@ from sklearn.metrics import accuracy_score
 from sklearn.preprocessing import LabelEncoder
 from mlflow.models.signature import infer_signature
 
-
 # データ準備
 def prepare_data(test_size=0.2, random_state=42):
+    base_dir = os.path.dirname(__file__)#0519NEW
     # Titanicデータセットの読み込み
-    path = "data/Titanic.csv"
-    data = pd.read_csv(path)
+    #path = "data/Titanic.csv"#0519NEW
+    data_path = os.path.join(base_dir, 'data', 'Titanic.csv')#0519NEW
+    #data = pd.read_csv(path)
+    data = pd.read_csv(data_path)
 
     # 必要な特徴量の選択と前処理
     data = data[["Pclass", "Sex", "Age", "Fare", "Survived"]].dropna()
