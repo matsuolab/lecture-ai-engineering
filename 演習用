@@ -1,0 +1,44 @@
+import time
+import joblib
+import pandas as pd
+from sklearn.metrics import accuracy_score, precision_score, recall_score, f1_score
+import pytest
+import os
+
+MODEL_PATH = 'day5/演習3/models/current_titanic_model.pkl'
+TEST_DATA_PATH = 'day5/演習3/data/processed/test.csv'
+
+@pytest.fixture
+def model():
+    if os.path.exists(MODEL_PATH):
+        return joblib.load(MODEL_PATH)
+    else:
+        pytest.fail(f"Model not found at {MODEL_PATH}")
+
+@pytest.fixture
+def test_data():
+    if os.path.exists(TEST_DATA_PATH):
+        df = pd.read_csv(TEST_DATA_PATH)
+        return df.drop('target_column', axis=1), df['target_column']
+    else:
+        pytest.fail(f"Test data not found at {TEST_DATA_PATH}")
+
+def test_model_accuracy(model, test_data):
+    X_test, y_test = test_data
+    y_pred = model.predict(X_test)
+    accuracy = accuracy_score(y_test, y_pred)
+    assert accuracy > 0.8, f"Accuracy is too low: {accuracy}"
+
+def test_model_precision(model, test_data):
+    X_test, y_test = test_data
+    y_pred = model.predict(X_test)
+    precision = precision_score(y_test, y_pred, average='binary')
+    assert precision > 0.7, f"Precision is too low: {precision}"
+
+def test_model_inference_time(model, test_data):
+    X_test, _ = test_data
+    start_time = time.time()
+    model.predict(X_test[:1])
+    end_time = time.time()
+    inference_time = end_time - start_time
+    assert inference_time < 0.1, f"Inference time is too high: {inference_time}"
