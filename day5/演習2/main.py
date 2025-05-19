@@ -11,6 +11,7 @@ import pickle
 import time
 import great_expectations as gx
 
+
 class DataLoader:
     """データロードを行うクラス"""
 
@@ -270,7 +271,7 @@ if __name__ == "__main__":
     )
 
     # パラメータ設定
-    model_params = {"n_estimators": 100, "random_state": 42}
+    model_params = {"n_estimators": 30, "random_state": 42}
 
     # モデルトレーニング
     model = ModelTester.train_model(X_train, y_train, model_params)

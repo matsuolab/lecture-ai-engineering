@@ -75,7 +75,6 @@ def preprocessor():
 
 @pytest.fixture
 def train_model(sample_data, preprocessor):
-    # n_estimatorsを可変させて一番精度の良いモデルと既存モデルを比較して精度の高いモデルを保存する
     """モデルの学習とテストデータの準備"""
     # データの分割とラベル変換
     X = sample_data.drop("Survived", axis=1)
@@ -83,74 +82,24 @@ def train_model(sample_data, preprocessor):
     X_train, X_test, y_train, y_test = train_test_split(
         X, y, test_size=0.2, random_state=42
     )
-    # 既存モデル読み込み
-    existing_model = None
-    existing_model_accuracy = 0.0
-    try:
-        with open(MODEL_PATH, "rb") as f:
-            existing_model = pickle.load(f)
 
-        y_pred_existing = existing_model.predict(X_test)
-        existing_model_accuracy = accuracy_score(y_test, y_pred_existing)
-        print(f"既存モデル精度：({existing_model_accuracy})")
-    except Exception as e:
-        print(f"既存モデルなし:({e})")
-
-    best_model_so_far = None
-    best_accuracy_sor_far = 0.0
-    best_n_estimators_for_model = 0
-    # このパラメータを探索する
-    n_estimators_values = range(50, 101, 10)
-
-    for n_est in n_estimators_values:
-        current_model = Pipeline(
-            steps=[
-                ("preprocessor", preprocessor),
-                ("classifier", RandomForestClassifier(n_estimators=n_est)),
-            ]
-        )
-        current_model.fit(X_train, y_train)
-        y_pred = current_model.predict(X_test)
-        current_accuracy = accuracy_score(y_test, y_pred)
-
-        if current_accuracy > best_accuracy_sor_far:
-            best_accuracy_sor_far = current_accuracy
-            best_model_so_far = current_model
-            best_n_estimators_for_model = n_est
-
-    print(
-        f"新規モデル精度：（{best_accuracy_sor_far}）---n_est({best_n_estimators_for_model})"
+    # モデルパイプラインの作成
+    model = Pipeline(
+        steps=[
+            ("preprocessor", preprocessor),
+            ("classifier", RandomForestClassifier(n_estimators=100, random_state=42)),
+        ]
     )
 
-    # 新旧モデルの比較
-    model_to_save = None
-    # model_to_return = None
+    # モデルの学習
+    model.fit(X_train, y_train)
 
-    if best_accuracy_sor_far > existing_model_accuracy:
-        print(
-            f"新規モデル：{best_accuracy_sor_far}が既存モデル：{existing_model_accuracy}を上回りました。"
-        )
-        model_to_save = best_model_so_far
-
-    elif best_accuracy_sor_far < existing_model_accuracy:
-        print(
-            f"新規モデル：{best_accuracy_sor_far}が既存モデル：{existing_model_accuracy}を上回りませんでした。"
-        )
-        model_to_save = existing_model
-
-    elif best_accuracy_sor_far:
-        print(f"新規モデル：{best_accuracy_sor_far}のみ記録されています。")
-        model_to_save = best_model_so_far
-
-    elif existing_model_accuracy:
-        print(f"既存モデル：{existing_model}のみ記録されています。")
-        model_to_save = existing_model
-
+    # モデルの保存
     os.makedirs(MODEL_DIR, exist_ok=True)
     with open(MODEL_PATH, "wb") as f:
-        pickle.dump(model_to_save, f)
+        pickle.dump(model, f)
 
-    return model_to_save, X_test, y_test
+    return model, X_test, y_test
 
 
 def test_model_exists():
