@@ -1,8 +1,8 @@
 name: ML Pipeline CI
 
 on:
-   push:
-     branches: [ feature/add-tests  ]
+  push:
+    branches: [ feature/add-tests  ]
   pull_request:
     branches: [ main ]
 
