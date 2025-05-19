@@ -171,3 +171,21 @@ def test_model_reproducibility(sample_data, preprocessor):
     assert np.array_equal(
         predictions1, predictions2
     ), "モデルの予測結果に再現性がありません"
+
+### ここから追加 ###
+def test_model_against_baseline(train_model):
+    """ベースラインと比較してモデルの性能を検証"""
+    model, X_test, y_test = train_model
+
+    # ベースラインの精度を定義（例: 0.75）
+    baseline_accuracy = 0.75
+
+    # 現在のモデルの精度を計算
+    y_pred = model.predict(X_test)
+    current_accuracy = accuracy_score(y_test, y_pred)
+
+    # ベースラインと比較
+    assert current_accuracy >= baseline_accuracy, (
+        f"モデルの精度がベースラインを下回っています: "
+        f"現在の精度={current_accuracy}, ベースライン={baseline_accuracy}"
+    )
