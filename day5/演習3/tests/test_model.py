@@ -11,6 +11,7 @@ from sklearn.impute import SimpleImputer
 from sklearn.preprocessing import OneHotEncoder, StandardScaler
 from sklearn.compose import ColumnTransformer
 from sklearn.pipeline import Pipeline
+from sklearn.tree import DecisionTreeClassifier
 
 # テスト用データとモデルパスを定義
 DATA_PATH = os.path.join(os.path.dirname(__file__), "../data/Titanic.csv")
@@ -102,6 +103,35 @@ def train_model(sample_data, preprocessor):
     return model, X_test, y_test
 
 
+@pytest.fixture
+def baseline_model(sample_data, preprocessor):
+    """モデルの学習とテストデータの準備"""
+    # データの分割とラベル変換
+    X = sample_data.drop("Survived", axis=1)
+    y = sample_data["Survived"].astype(int)
+    X_train, X_test, y_train, y_test = train_test_split(
+        X, y, test_size=0.2, random_state=42
+    )
+
+    # モデルパイプラインの作成
+    model = Pipeline(
+        steps=[
+            ("preprocessor", preprocessor),
+            ("classifier", DecisionTreeClassifier(random_state=42)),
+        ]
+    )
+
+    # モデルの学習
+    model.fit(X_train, y_train)
+
+    # モデルの保存
+    os.makedirs(MODEL_DIR, exist_ok=True)
+    with open(MODEL_PATH, "wb") as f:
+        pickle.dump(model, f)
+
+    return model, X_test, y_test
+
+
 def test_model_exists():
     """モデルファイルが存在するか確認"""
     if not os.path.exists(MODEL_PATH):
@@ -171,3 +201,21 @@ def test_model_reproducibility(sample_data, preprocessor):
     assert np.array_equal(
         predictions1, predictions2
     ), "モデルの予測結果に再現性がありません"
+
+
+def test_better_than_baseline(train_model, baseline_model):
+    """モデルがベースラインより良いか確認"""
+    model, X_test, y_test = train_model
+    baseline_model, _, _ = baseline_model
+
+    # ベースラインモデルの精度を計算
+    y_pred_baseline = baseline_model.predict(X_test)
+    baseline_accuracy = accuracy_score(y_test, y_pred_baseline)
+
+    # 予測と精度計算
+    y_pred = model.predict(X_test)
+    accuracy = accuracy_score(y_test, y_pred)
+
+    assert (
+        accuracy >= baseline_accuracy
+    ), f"モデルの精度がベースラインを下回っています: train_model.accuracy{accuracy} baseline_model.accuracy{baseline_accuracy}"
