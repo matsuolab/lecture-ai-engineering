@@ -175,9 +175,9 @@ class ModelTester:
     @staticmethod
     def evaluate_model(model, X_test, y_test):
         """モデルを評価する"""
-        start_time = time.time()
+        start_time = time.perf_counter()
         y_pred = model.predict(X_test)
-        inference_time = time.time() - start_time
+        inference_time = time.perf_counter() - start_time
 
         accuracy = accuracy_score(y_test, y_pred)
         return {"accuracy": accuracy, "inference_time": inference_time}
