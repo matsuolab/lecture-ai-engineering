@@ -1,7 +1,5 @@
-# 演習で作成されるシークレットファイルとdbファイル
-**/secrets.toml
-**/secret.toml
-**/chat_feedback.db
+mlruns
+
 
 # Byte-compiled / optimized / DLL files
 __pycache__/
