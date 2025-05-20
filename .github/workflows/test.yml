@@ -4,7 +4,7 @@ on:
   # push:
   #   branches: [ main, master  ]
   pull_request:
-    branches: [ main, master,develop ]
+    branches: [ main, master,develop]
 
 jobs:
   test:
@@ -39,3 +39,5 @@ jobs:
     - name: Run model tests
       run: |
         pytest day5/演習3/tests/test_model.py -v
+        
+# developブランチもCI対象とする
