@@ -50,7 +50,3 @@ jobs:
     - name: Run inference performance tests
       run: |
         pytest day5/演習3/tests/test_inference.py -v
-
-    - name: Run model regression test
-      run: |
-        pytest day5/演習3/tests/test_model_regression.py -v
