@@ -1,41 +1,52 @@
 name: ML Pipeline CI
 
 on:
-  # push:
-  #   branches: [ main, master  ]
+  push:
+    branches: [ main, master ]
   pull_request:
     branches: [ main, master ]
+  workflow_dispatch:
 
 jobs:
   test:
     runs-on: ubuntu-latest
     steps:
-    - uses: actions/checkout@v3
-    
-    - name: Set up Python
-      uses: actions/setup-python@v4
-      with:
-        python-version: '3.10'
-        
-    - name: Install dependencies
-      run: |
-        python -m pip install --upgrade pip
-        pip install pytest great_expectations pandas scikit-learn flake8 black mypy pytest-cov
-        if [ -f requirements.txt ]; then pip install -r requirements.txt; fi
-        
-    - name: Lint with flake8
-      run: |
-        flake8 day5/演習3 --count --select=E9,F63,F7,F82 --show-source --statistics
-        flake8 day5/演習3 --count --exit-zero --max-complexity=10 --max-line-length=88 --statistics
-        
-    - name: Format check with black
-      run: |
-        black --check day5/演習3
-        
-    - name: Run data tests
-      run: |
-        pytest day5/演習3/tests/test_data.py -v
-        
-    - name: Run model tests
-      run: |
-        pytest day5/演習3/tests/test_model.py -v
+      - uses: actions/checkout@v3
+
+      - name: Set up Python
+        uses: actions/setup-python@v4
+        with:
+          python-version: '3.10'
+
+      - name: Install dependencies
+        run: |
+          python -m pip install --upgrade pip
+          pip install pytest great_expectations pandas scikit-learn flake8 black mypy pytest-cov joblib
+
+      # 演習3のリント & テスト
+      - name: Lint 演習3
+        run: |
+          flake8 day5/演習3 --count --select=E9,F63,F7,F82 --show-source --statistics
+          flake8 day5/演習3 --count --exit-zero --max-complexity=10 --max-line-length=88 --statistics
+
+      - name: Format check 演習3
+        run: |
+          black --check day5/演習3
+
+      - name: Run 演習3 tests
+        run: |
+          pytest day5/演習3/tests -v
+
+      # ✅ homework2 のテストを追加
+      - name: Run homework2 tests
+        run: |
+          pytest day5/homework2/tests -v
+          - name: Install dependencies
+          run: |
+            python -m pip install --upgrade pip
+            pip install pytest pandas scikit-learn joblib mlflow flake8 black mypy pytest-cov
+  
+      - name: Generate model files for homework2
+        run: |
+          python day5/homework2/main.py
+  
