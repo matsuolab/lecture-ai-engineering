@@ -1,9 +1,0 @@
-streamlit
-torch
-transformers
-pandas
-nltk
-scikit-learn
-accelerate
-janome
-pyngrok

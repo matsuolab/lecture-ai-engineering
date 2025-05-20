@@ -1,8 +1,0 @@
-fastapi
-uvicorn
-pydantic
-transformers
-accelerate
-sentencepiece
-protobuf
-pyngrok
