@@ -11,6 +11,9 @@ from sklearn.impute import SimpleImputer
 from sklearn.preprocessing import OneHotEncoder, StandardScaler
 from sklearn.compose import ColumnTransformer
 from sklearn.pipeline import Pipeline
+from day5.演習2.main import DataLoader, ModelTester  # ←パスは必要に応じて調整
+from sklearn.model_selection import train_test_split
+
 
 # テスト用データとモデルパスを定義
 DATA_PATH = os.path.join(os.path.dirname(__file__), "../data/Titanic.csv")
