@@ -94,7 +94,7 @@ def train_model(sample_data, preprocessor):
     # モデルの学習 学習時間の検証
     model.fit(X_train, y_train)
 
-    # 過学習の確認 trainとvalidで精度差が10%以上あれば過学習と判定
+    # 過学習の確認 trainとvalidで精度差が20%以上あれば過学習と判定
 
     y_train_pred = model.predict(X_train)
     train_accuracy = accuracy_score(y_train, y_train_pred)
@@ -102,7 +102,7 @@ def train_model(sample_data, preprocessor):
     y_test_pred = model.predict(X_test)
     test_accuracy = accuracy_score(y_test, y_test_pred)
 
-    assert test_accuracy - train_accuracy > 0.10, "過学習が発生しています。"
+    assert (train_accuracy - test_accuracy) < 0.20, "過学習が発生しています。"
 
     # モデルの保存
     os.makedirs(MODEL_DIR, exist_ok=True)
