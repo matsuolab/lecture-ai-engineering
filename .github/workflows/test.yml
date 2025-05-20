@@ -6,10 +6,7 @@ on:
   pull_request:
     branches: [ main, master ]
   workflow_dispatch:
-  push:
-    branches: [ main, master ]
-  pull_request:
-    branches: [ main, master ]
+
 jobs:
   test:
     runs-on: ubuntu-latest
@@ -40,7 +37,7 @@ jobs:
         run: |
           pytest day5/演習3/tests -v
 
-      # ✅ 宿題のテストを追加
-      - name: Run homework tests
+      # ✅ homework2 のテストを追加
+      - name: Run homework2 tests
         run: |
-          pytest day5/homework/tests -v
+          pytest day5/homework2/tests -v
