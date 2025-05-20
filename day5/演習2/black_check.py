@@ -4,4 +4,3 @@ def say_hello(name):
 
 def add(a, b):
     return a + b
-
