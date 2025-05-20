@@ -171,3 +171,56 @@ def test_model_reproducibility(sample_data, preprocessor):
     assert np.array_equal(
         predictions1, predictions2
     ), "モデルの予測結果に再現性がありません"
+
+def test_model_no_regression(train_model):
+    """過去バージョンのモデルと比較して性能が劣化していないことを確認"""
+    import pickle
+    model, X_test, y_test = train_model
+
+    y_pred_new = model.predict(X_test)
+    new_acc = accuracy_score(y_test, y_pred_new)
+
+    old_model_path = os.path.join(MODEL_DIR, "titanic_model_old.pkl")
+    if not os.path.exists(old_model_path):
+        pytest.skip("過去モデルが存在しないためスキップします")
+    with open(old_model_path, "rb") as f:
+        old_model = pickle.load(f)
+
+    y_pred_old = old_model.predict(X_test)
+    old_acc = accuracy_score(y_test, y_pred_old)
+
+    assert new_acc >= old_acc - 0.01, f"精度が劣化しています: 新={new_acc:.3f} / 旧={old_acc:.3f}"
+
+def test_model_output_shape(train_model):
+    """予測結果の shape が正しいことを確認"""
+    model, X_test, _ = train_model
+    y_pred = model.predict(X_test)
+    assert y_pred.shape[0] == X_test.shape[0], (
+        f"予測数（{y_pred.shape[0]}）と入力数（{X_test.shape[0]}）が一致しません"
+    )
+
+def test_model_stability_multiple_runs(sample_data, preprocessor):
+    """複数回学習した場合のスコアの安定性を確認"""
+    X = sample_data.drop("Survived", axis=1)
+    y = sample_data["Survived"].astype(int)
+
+    accuracies = []
+    for seed in [1, 2, 3, 4, 5]:
+        X_train, X_test, y_train, y_test = train_test_split(
+            X, y, test_size=0.2, random_state=seed
+        )
+
+        model = Pipeline(
+            steps=[
+                ("preprocessor", preprocessor),
+                ("classifier", RandomForestClassifier(n_estimators=100, random_state=seed)),
+            ]
+        )
+
+        model.fit(X_train, y_train)
+        acc = accuracy_score(y_test, model.predict(X_test))
+        accuracies.append(acc)
+
+    std = np.std(accuracies)
+    assert std < 0.02, f"精度のばらつきが大きすぎます（標準偏差: {std:.4f}）"
+
