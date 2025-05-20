@@ -186,5 +186,7 @@ def test_model_save_and_load(tmp_path):
     ModelTester.save_model(model, path=str(path))  # 保存
     loaded_model = ModelTester.load_model(str(path))  # 読み込み
 
-    assert loaded_model is not None 
+=======
+    assert loaded_model is not None
     assert hasattr(loaded_model, "predict")  # 予測できるか確認
+>>>>>>> 07708fd (Format code with black)
