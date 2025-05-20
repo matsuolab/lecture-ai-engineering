@@ -1,18 +1,31 @@
-from kedro.io import MemoryDataset, KedroDataCatalog
-from kedro.pipeline import Pipeline, node
-from kedro.runner import SequentialRunner
-from sklearn.model_selection import train_test_split
-from sklearn.ensemble import RandomForestClassifier
-from sklearn.metrics import accuracy_score
-from sklearn.preprocessing import LabelEncoder
-import pandas as pd
-import mlflow
-import mlflow.sklearn
-from mlflow.models.signature import infer_signature
+import logging
 import os
 import random
-import logging
 
+import mlflow
+import mlflow.sklearn
+import pandas as pd
+from kedro.io import DataCatalog, MemoryDataset
+from kedro.pipeline import Pipeline, node
+from kedro.runner import SequentialRunner
+from mlflow.models.signature import infer_signature
+from sklearn.ensemble import RandomForestClassifier
+from sklearn.metrics import accuracy_score
+from sklearn.model_selection import train_test_split
+from sklearn.preprocessing import LabelEncoder
+
+# データカタログの作成
+catalog = DataCatalog(
+    {
+        "X_train": MemoryDataset(),
+        "X_test": MemoryDataset(),
+        "y_train": MemoryDataset(),
+        "y_test": MemoryDataset(),
+        "model": MemoryDataset(),
+        "accuracy": MemoryDataset(),
+        "params": MemoryDataset(),
+    }
+)
 # ロガーの設定
 logging.basicConfig(
     level=logging.INFO, format="%(asctime)s - %(name)s - %(levelname)s - %(message)s"
@@ -154,7 +167,7 @@ if __name__ == "__main__":
         pipeline = create_pipeline()
 
         # データカタログの作成
-        catalog = KedroDataCatalog(
+        catalog = DataCatalog(
             {
                 "X_train": MemoryDataset(),
                 "X_test": MemoryDataset(),
