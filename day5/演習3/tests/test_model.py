@@ -116,6 +116,7 @@ def test_model_accuracy(train_model):
     # 予測と精度計算
     y_pred = model.predict(X_test)
     accuracy = accuracy_score(y_test, y_pred)
+    print('モデル精度=',accuracy)
 
     # Titanicデータセットでは0.75以上の精度が一般的に良いとされる
     assert accuracy >= 0.75, f"モデルの精度が低すぎます: {accuracy}"
@@ -131,6 +132,7 @@ def test_model_inference_time(train_model):
     end_time = time.time()
 
     inference_time = end_time - start_time
+    print('推論時間=',inference_time)
 
     # 推論時間が1秒未満であることを確認
     assert inference_time < 1.0, f"推論時間が長すぎます: {inference_time}秒"
