@@ -11,6 +11,7 @@ import pickle
 import time
 import great_expectations as gx
 
+
 class DataLoader:
     """データロードを行うクラス"""
 
@@ -285,3 +286,27 @@ if __name__ == "__main__":
     # ベースラインとの比較
     baseline_ok = ModelTester.compare_with_baseline(metrics)
     print(f"ベースライン比較: {'合格' if baseline_ok else '不合格'}")
+
+# -------------------------
+# 追加テスト関数（末尾に追加）
+# -------------------------
+
+
+def test_inference_speed_and_accuracy():
+    """推論時間と精度の制約チェック"""
+    data = DataLoader.load_titanic_data()
+    X, y = DataLoader.preprocess_titanic_data(data)
+    X_train, X_test, y_train, y_test = train_test_split(
+        X, y, test_size=0.2, random_state=42
+    )
+    model = ModelTester.train_model(X_train, y_train)
+    metrics = ModelTester.evaluate_model(model, X_test, y_test)
+
+    # 推論時間チェック
+    assert metrics["inference_time"] < 0.5, f"推論時間が長すぎます: {metrics['inference_time']}秒"
+    print(f"✅ 推論時間チェック合格: {metrics['inference_time']:.4f}秒")
+
+    # 精度チェック
+    assert metrics["accuracy"] >= 0.80, f"精度が基準未満です: {metrics['accuracy']}"
+    print(f"✅ 精度チェック合格: {metrics['accuracy']:.4f}")
+
