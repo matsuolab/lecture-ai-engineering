@@ -18,18 +18,21 @@ BASELINE_METRICS_PATH = os.path.join(BASELINE_DIR, "metrics.json")
 CANDIDATE_MODEL_PATH = os.path.join(ROOT, "models", "titanic_model.pkl")
 
 # 許容マージン
-ACCURACY_TOLERANCE = 0.02      # 2% だけ劣化を許す
-SPEED_TOLERANCE    = 0.10      # 10% だけ遅くなるのを許す
+ACCURACY_TOLERANCE = 0.02  # 2% だけ劣化を許す
+SPEED_TOLERANCE = 0.10  # 10% だけ遅くなるのを許す
+
 
 @pytest.fixture(scope="module")
 def titanic_df():
     return pd.read_csv(DATA_PATH)
+
 
 def _predict(model, X):
     start = time.time()
     y_pred = model.predict(X)
     duration = time.time() - start
     return y_pred, duration
+
 
 def test_regression_performance(titanic_df):
     # --- ベースライン読込 ---
@@ -54,9 +57,9 @@ def test_regression_performance(titanic_df):
     acc_cand = accuracy_score(y, y_pred_cand)
 
     # --- アサーション ---
-    assert acc_cand + ACCURACY_TOLERANCE >= acc_base, (
-        f"精度が劣化しています: baseline={acc_base:.3f}, new={acc_cand:.3f}"
-    )
-    assert time_cand <= time_base * (1 + SPEED_TOLERANCE), (
-        f"推論が遅くなっています: baseline={time_base:.3f}s → new={time_cand:.3f}s"
-    )
+    assert (
+        acc_cand + ACCURACY_TOLERANCE >= acc_base
+    ), f"精度が劣化しています: baseline={acc_base:.3f}, new={acc_cand:.3f}"
+    assert time_cand <= time_base * (
+        1 + SPEED_TOLERANCE
+    ), f"推論が遅くなっています: baseline={time_base:.3f}s → new={time_cand:.3f}s"
