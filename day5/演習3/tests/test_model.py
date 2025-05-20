@@ -6,7 +6,7 @@ import pickle
 import time
 from sklearn.ensemble import RandomForestClassifier
 from sklearn.model_selection import train_test_split
-from sklearn.metrics import accuracy_score
+from sklearn.metrics import accuracy_score, precision_score, recall_score
 from sklearn.impute import SimpleImputer
 from sklearn.preprocessing import OneHotEncoder, StandardScaler
 from sklearn.compose import ColumnTransformer
@@ -16,6 +16,7 @@ from sklearn.pipeline import Pipeline
 DATA_PATH = os.path.join(os.path.dirname(__file__), "../data/Titanic.csv")
 MODEL_DIR = os.path.join(os.path.dirname(__file__), "../models")
 MODEL_PATH = os.path.join(MODEL_DIR, "titanic_model.pkl")
+BASELINE_MODEL_PATH = os.path.join(MODEL_DIR, "baseline_titanic_model.pkl")
 
 
 @pytest.fixture
@@ -171,3 +172,33 @@ def test_model_reproducibility(sample_data, preprocessor):
     assert np.array_equal(
         predictions1, predictions2
     ), "モデルの予測結果に再現性がありません"
+
+
+def test_model_precision_recall(train_model):
+    """モデルの Precision と Recall を検証"""
+    model, X_test, y_test = train_model
+    y_pred = model.predict(X_test)
+
+    precision = precision_score(y_test, y_pred)
+    recall = recall_score(y_test, y_pred)
+
+    assert precision >= 0.7, f"Precision {precision} が 0.7 に達していません"
+    assert recall >= 0.7, f"Recall {recall} が 0.7 に達していません"
+
+
+def test_compare_with_baseline_model(train_model):
+    """ベースラインモデルとの比較"""
+    model, X_test, y_test = train_model
+    current_metrics = accuracy_score(y_test, model.predict(X_test))
+
+    if not os.path.exists(BASELINE_MODEL_PATH):
+        pytest.skip("ベースラインモデルのファイルが存在しないため、テストをスキップします")
+
+    with open(BASELINE_MODEL_PATH, "rb") as f:
+        baseline_model = pickle.load(f)
+
+    baseline_metrics = accuracy_score(y_test, baseline_model.predict(X_test))
+
+    assert current_metrics >= baseline_metrics, (
+        f"現在のモデルの精度 {current_metrics} はベースラインモデルの {baseline_metrics} よりも低いです"
+    )

@@ -5,3 +5,4 @@ pandas
 pytest
 great_expectations
 black
+flake8

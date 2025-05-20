@@ -1,0 +1,36 @@
+name: CI Pipeline
+
+on:
+  push:
+    branches: [ main, develop ]
+  pull_request:
+    branches: [ main ]
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v3
+
+    - name: Set up Python
+      uses: actions/setup-python@v4
+      with:
+        python-version: '3.9'
+
+    - name: Install dependencies
+      run: |
+        python -m pip install --upgrade pip
+        pip install -r day5/requirements.txt
+
+    - name: Run pytest
+      run: |
+        cd day5/演習2
+        pytest test_model.py -v
+
+    - name: Run code linting
+      run: |
+        cd day5/演習2
+        black --check test_model.py
+        flake8 test_model.py
