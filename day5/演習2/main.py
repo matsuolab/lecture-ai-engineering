@@ -13,17 +13,29 @@ import great_expectations as gx
 
 class DataLoader:
     """データロードを行うクラス"""
-
+    
     @staticmethod
     def load_titanic_data(path=None):
         """Titanicデータセットを読み込む"""
         if path:
             return pd.read_csv(path)
         else:
-            # ローカルのファイル
-            local_path = "data/Titanic.csv"
-            if os.path.exists(local_path):
-                return pd.read_csv(local_path)
+            # 現在のスクリプトが存在するディレクトリからの相対パスで試す
+            script_dir = os.path.dirname(os.path.abspath(__file__))
+            
+            # 可能性のあるパスをリストアップ
+            possible_paths = [
+                os.path.join("演習2", "data", "Titanic.csv")
+            ]
+            
+            # パスを順番に試す
+            for p in possible_paths:
+                if os.path.exists(p):
+                    print(f"ファイルを読み込みます: {p}")
+                    return pd.read_csv(p)
+            
+            # どのパスも見つからなかった場合
+            raise FileNotFoundError(f"ファイルが見つかりません。試したパス: {possible_paths}")
 
     @staticmethod
     def preprocess_titanic_data(data):
