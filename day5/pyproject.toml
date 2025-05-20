@@ -1,0 +1,18 @@
+[project]
+name = "day5"
+version = "0.1.0"
+description = ""
+authors = [
+    {name = "konitaro524",email = "r.konishi5@gmail.com"}
+]
+readme = "README.md"
+requires-python = ">=3.11"
+dependencies = [
+    "scikit-learn (>=1.6.1,<2.0.0)",
+    "pandas (>=2.2.3,<3.0.0)"
+]
+
+
+[build-system]
+requires = ["poetry-core>=2.0.0,<3.0.0"]
+build-backend = "poetry.core.masonry.api"
