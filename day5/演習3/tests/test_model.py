@@ -44,20 +44,26 @@ def preprocessor():
     numeric_features = ["Age", "Pclass", "SibSp", "Parch", "Fare"]
     categorical_features = ["Sex", "Embarked"]
 
-    numeric_transformer = Pipeline([
-        ("imputer", SimpleImputer(strategy="median")),
-        ("scaler", StandardScaler()),
-    ])
+    numeric_transformer = Pipeline(
+        [
+            ("imputer", SimpleImputer(strategy="median")),
+            ("scaler", StandardScaler()),
+        ]
+    )
 
-    categorical_transformer = Pipeline([
-        ("imputer", SimpleImputer(strategy="most_frequent")),
-        ("onehot", OneHotEncoder(handle_unknown="ignore")),
-    ])
+    categorical_transformer = Pipeline(
+        [
+            ("imputer", SimpleImputer(strategy="most_frequent")),
+            ("onehot", OneHotEncoder(handle_unknown="ignore")),
+        ]
+    )
 
-    preprocessor = ColumnTransformer([
-        ("num", numeric_transformer, numeric_features),
-        ("cat", categorical_transformer, categorical_features),
-    ])
+    preprocessor = ColumnTransformer(
+        [
+            ("num", numeric_transformer, numeric_features),
+            ("cat", categorical_transformer, categorical_features),
+        ]
+    )
 
     return preprocessor
 
@@ -71,10 +77,12 @@ def train_model(sample_data, preprocessor):
         X, y, test_size=0.2, random_state=42
     )
 
-    model = Pipeline([
-        ("preprocessor", preprocessor),
-        ("classifier", RandomForestClassifier(n_estimators=100, random_state=42)),
-    ])
+    model = Pipeline(
+        [
+            ("preprocessor", preprocessor),
+            ("classifier", RandomForestClassifier(n_estimators=100, random_state=42)),
+        ]
+    )
 
     model.fit(X_train, y_train)
 
@@ -118,14 +126,18 @@ def test_model_reproducibility(sample_data, preprocessor):
         X, y, test_size=0.2, random_state=42
     )
 
-    model1 = Pipeline([
-        ("preprocessor", preprocessor),
-        ("classifier", RandomForestClassifier(n_estimators=100, random_state=42)),
-    ])
-    model2 = Pipeline([
-        ("preprocessor", preprocessor),
-        ("classifier", RandomForestClassifier(n_estimators=100, random_state=42)),
-    ])
+    model1 = Pipeline(
+        [
+            ("preprocessor", preprocessor),
+            ("classifier", RandomForestClassifier(n_estimators=100, random_state=42)),
+        ]
+    )
+    model2 = Pipeline(
+        [
+            ("preprocessor", preprocessor),
+            ("classifier", RandomForestClassifier(n_estimators=100, random_state=42)),
+        ]
+    )
 
     model1.fit(X_train, y_train)
     model2.fit(X_train, y_train)
