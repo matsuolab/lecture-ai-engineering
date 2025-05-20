@@ -59,18 +59,18 @@ class DataValidator:
         if not isinstance(data, pd.DataFrame):
             return False, ["データはpd.DataFrameである必要があります"]
 
-        # Great Expectationsを使用したバリデーション
+        # Great Expectationsを使用したバリデーション→APIのversion違いのため下記に変更
         try:
-            context = gx.get_context()
-            data_source = context.data_sources.add_pandas("pandas")
-            data_asset = data_source.add_dataframe_asset(name="pd dataframe asset")
+            # context = gx.get_context()
+            # data_source = context.data_sources.add_pandas("pandas")       
+            # data_asset = data_source.add_dataframe_asset(name="pd dataframe asset")
 
-            batch_definition = data_asset.add_batch_definition_whole_dataframe(
-                "batch definition"
-            )
-            batch = batch_definition.get_batch(batch_parameters={"dataframe": data})
+            # batch_definition = data_asset.add_batch_definition_whole_dataframe(
+            #     "batch definition"
+            # )
+            # batch = batch_definition.get_batch(batch_parameters={"dataframe": data})
 
-            results = []
+            
 
             # 必須カラムの存在確認
             required_columns = [
@@ -88,31 +88,50 @@ class DataValidator:
             if missing_columns:
                 print(f"警告: 以下のカラムがありません: {missing_columns}")
                 return False, [{"success": False, "missing_columns": missing_columns}]
+            
+            # APIのversion違いのため下記に変更
+            gx_df = gx.from_pandas(data)
+            results = []
+            # どういう値だと望ましいのかを判定
+            result = gx_df.expect_column_values_to_be_between(
+                column="Age", min_value=0, max_value=100
+            )
+            result = gx_df.expect_column_values_to_be_between(
+                column="Fare", min_value=0, max_value=600
+            )
+            result = gx_df.expect_column_values_to_be_in_set(
+                column="Pclass", value_set=[1, 2, 3]
+            )
+            result = gx_df.expect_column_values_to_be_in_set(
+                column="Sex", value_set=["male", "female"]
+            )
+            result = gx_df.expect_column_values_to_be_in_set(
+                column="Embarked", value_set=["C", "Q", "S", ""]
+            )
+            # expectations = [
+            #     gx.expectations.ExpectColumnDistinctValuesToBeInSet(
+            #         column="Pclass", value_set=[1, 2, 3]
+            #     ),
+            #     gx.expectations.ExpectColumnDistinctValuesToBeInSet(
+            #         column="Sex", value_set=["male", "female"]
+            #     ),
+            #     gx.expectations.ExpectColumnValuesToBeBetween(
+            #         column="Age", min_value=0, max_value=100
+            #     ),
+            #     gx.expectations.ExpectColumnValuesToBeBetween(
+            #         column="Fare", min_value=0, max_value=600
+            #     ),
+            #     gx.expectations.ExpectColumnDistinctValuesToBeInSet(
+            #         column="Embarked", value_set=["C", "Q", "S", ""]
+            #     ),
+            # ]
 
-            expectations = [
-                gx.expectations.ExpectColumnDistinctValuesToBeInSet(
-                    column="Pclass", value_set=[1, 2, 3]
-                ),
-                gx.expectations.ExpectColumnDistinctValuesToBeInSet(
-                    column="Sex", value_set=["male", "female"]
-                ),
-                gx.expectations.ExpectColumnValuesToBeBetween(
-                    column="Age", min_value=0, max_value=100
-                ),
-                gx.expectations.ExpectColumnValuesToBeBetween(
-                    column="Fare", min_value=0, max_value=600
-                ),
-                gx.expectations.ExpectColumnDistinctValuesToBeInSet(
-                    column="Embarked", value_set=["C", "Q", "S", ""]
-                ),
-            ]
-
-            for expectation in expectations:
-                result = batch.validate(expectation)
-                results.append(result)
+            # for expectation in expectations:
+            #     result = batch.validate(expectation)
+            #     results.append(result)
 
             # すべての検証が成功したかチェック
-            is_successful = all(result.success for result in results)
+            is_successful = all(result["success"] for result in results)
             return is_successful, results
 
         except Exception as e:
