@@ -1,5 +1,3 @@
-# day5/演習3/tests/test_inference.py
-
 import time
 import numpy as np
 from sklearn.metrics import accuracy_score

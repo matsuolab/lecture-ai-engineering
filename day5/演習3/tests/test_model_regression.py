@@ -1,5 +1,3 @@
-# day5/演習3/tests/test_model_regression.py
-
 import numpy as np
 from sklearn.metrics import accuracy_score
 from day5.演習3.model import load_model, predict, load_sample_data
