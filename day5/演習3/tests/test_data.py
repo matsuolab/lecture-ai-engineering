@@ -38,9 +38,7 @@ def test_data_columns(sample_data):
         "Survived",
     ]
     for col in expected_columns:
-        assert (
-            col in sample_data.columns
-        ), f"カラム '{col}' がデータセットに存在しません"
+        assert col in sample_data.columns, f"カラム '{col}' がデータセットに存在しません"
 
 
 def test_data_types(sample_data):
@@ -55,9 +53,7 @@ def test_data_types(sample_data):
     # カテゴリカルカラム
     categorical_columns = ["Sex", "Embarked"]
     for col in categorical_columns:
-        assert (
-            sample_data[col].dtype == "object"
-        ), f"カラム '{col}' がカテゴリカル型ではありません"
+        assert sample_data[col].dtype == "object", f"カラム '{col}' がカテゴリカル型ではありません"
 
     # 目的変数
     survived_vals = sample_data["Survived"].dropna().unique()
@@ -71,9 +67,7 @@ def test_missing_values_acceptable(sample_data):
     # 完全に欠損するのではなく、許容範囲内の欠損を確認
     for col in sample_data.columns:
         missing_rate = sample_data[col].isna().mean()
-        assert (
-            missing_rate < 0.8
-        ), f"カラム '{col}' の欠損率が80%を超えています: {missing_rate:.2%}"
+        assert missing_rate < 0.8, f"カラム '{col}' の欠損率が80%を超えています: {missing_rate:.2%}"
 
 
 def test_value_ranges(sample_data):

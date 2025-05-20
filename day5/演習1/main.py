@@ -79,9 +79,7 @@ def log_model(model, accuracy, params):
 # メイン処理
 if __name__ == "__main__":
     # ランダム要素の設定
-    test_size = round(
-        random.uniform(0.1, 0.3), 2
-    )  # 10%〜30%の範囲でテストサイズをランダム化
+    test_size = round(random.uniform(0.1, 0.3), 2)  # 10%〜30%の範囲でテストサイズをランダム化
     data_random_state = random.randint(1, 100)
     model_random_state = random.randint(1, 100)
     n_estimators = random.randint(50, 200)
