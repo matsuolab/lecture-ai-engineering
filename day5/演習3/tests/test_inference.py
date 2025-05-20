@@ -3,6 +3,7 @@ import numpy as np
 from sklearn.metrics import accuracy_score
 from day5.演習3.model import load_model, predict, load_sample_data
 
+
 def test_inference_time_and_accuracy():
     # モデルとテストデータの読み込み
     model = load_model("models/current_model.pkl")
