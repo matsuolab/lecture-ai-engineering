@@ -47,3 +47,4 @@ jobs:
     - name: Run model regression test
       run: |
         pytest day5/演習3/tests/test_model_regression.py -v
+
