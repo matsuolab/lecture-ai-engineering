@@ -45,8 +45,8 @@ jobs:
 
     - name: Run model accuracy/inference/reproducibility tests
       run: |
-        pytest day5/演習3/tests/test_model.py -v
+        PYTHONPATH=${{ github.workspace }} pytest day5/演習3/tests/test_model.py -v
 
     - name: Run inference performance tests
       run: |
-        pytest day5/演習3/tests/test_inference.py -v
+        PYTHONPATH=${{ github.workspace }} pytest day5/演習3/tests/test_inference.py -v
