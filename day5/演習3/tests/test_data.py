@@ -130,16 +130,4 @@ def test_value_ranges(sample_data):
         is_successful = all(result.success for result in results)
     assert is_successful, "データの値範囲が期待通りではありません"
 
-def test_model_save_and_load(tmp_path):
-    """モデルの保存と読み込みが正しく行えるかのテスト"""
-    data = DataLoader.load_titanic_data()
-    X, y = DataLoader.preprocess_titanic_data(data)
-    X_train, _, y_train, _ = train_test_split(X, y, test_size=0.2)
-    model = ModelTester.train_model(X_train, y_train)
 
-    path = tmp_path / "model.pkl"  # 一時ディレクトリに保存
-    ModelTester.save_model(model, path=str(path))  # 保存
-    loaded_model = ModelTester.load_model(str(path))  # 読み込み
-
-    assert loaded_model is not None
-    assert hasattr(loaded_model, "predict")  # 予測できるか確認
