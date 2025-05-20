@@ -212,6 +212,8 @@ class ModelTester:
                 ("classifier", RandomForestClassifier(**model_params)),
             ]
         )
+        
+        print("モデルの学習を開始します...")
 
         # 学習を実行
         model.fit(X_train, y_train)
