@@ -1,10 +1,11 @@
 import os
-import pytest
-import pandas as pd
-import numpy as np
-import great_expectations as gx
-from sklearn.datasets import fetch_openml
 import warnings
+
+import great_expectations as gx
+import numpy as np
+import pandas as pd
+import pytest
+from sklearn.datasets import fetch_openml
 
 # 警告を抑制
 warnings.filterwarnings("ignore")
@@ -15,7 +16,7 @@ DATA_PATH = os.path.join(os.path.dirname(__file__), "../data/Titanic.csv")
 
 @pytest.fixture
 def sample_data():
-    """Titanicテスト用データセットを読み込む"""
+    """Titanicテスト用データセットを読込む"""
     return pd.read_csv(DATA_PATH)
 
 
