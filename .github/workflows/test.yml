@@ -1,8 +1,6 @@
 name: ML Pipeline CI
 
 on:
-  # push:
-  #   branches: [ main, master  ]
   pull_request:
     branches: [ main, master ]
 
@@ -10,32 +8,44 @@ jobs:
   test:
     runs-on: ubuntu-latest
     steps:
-    - uses: actions/checkout@v3
-    
-    - name: Set up Python
-      uses: actions/setup-python@v4
-      with:
-        python-version: '3.10'
-        
-    - name: Install dependencies
-      run: |
-        python -m pip install --upgrade pip
-        pip install pytest great_expectations pandas scikit-learn flake8 black mypy pytest-cov
-        if [ -f requirements.txt ]; then pip install -r requirements.txt; fi
-        
-    - name: Lint with flake8
-      run: |
-        flake8 day5/演習3 --count --select=E9,F63,F7,F82 --show-source --statistics
-        flake8 day5/演習3 --count --exit-zero --max-complexity=10 --max-line-length=88 --statistics
-        
-    - name: Format check with black
-      run: |
-        black --check day5/演習3
-        
-    - name: Run data tests
-      run: |
-        pytest day5/演習3/tests/test_data.py -v
-        
-    - name: Run model tests
-      run: |
-        pytest day5/演習3/tests/test_model.py -v
+      - uses: actions/checkout@v3
+
+      - name: Set up Python
+        uses: actions/setup-python@v4
+        with:
+          python-version: '3.10'
+
+      - name: Install dependencies
+        run: |
+          python -m pip install --upgrade pip
+          pip install pytest great_expectations pandas scikit-learn flake8 black mypy pytest-cov joblib mlflow
+          # now install all Day5-specific deps (includes kedro)
+          if [ -f day5/requirements.txt ]; then pip install -r day5/requirements.txt; fi
+
+      - name: Generate model for tests
+        run: |
+          cd day5/演習1
+          python main.py      # データ準備→学習→モデル保存
+          python pipeline.py  # Kedroパイプライン
+          cd ../..
+
+      - name: Lint with flake8
+        run: |
+          flake8 day5/演習3 --count --select=E9,F63,F7,F82 --show-source --statistics
+          flake8 day5/演習3 --count --exit-zero --max-complexity=10 --max-line-length=88 --statistics
+
+      - name: Format check with black
+        run: |
+          black --check day5/演習3
+
+      - name: Run data tests
+        run: |
+          pytest day5/演習3/tests/test_data.py -v
+
+      - name: Run model tests
+        run: |
+          pytest day5/演習3/tests/test_model.py -v
+
+      - name: Run model performance accuracy test
+        run: |
+          pytest day5/演習3/tests/test_model_performance.py::test_model_inference_accuracy -v
