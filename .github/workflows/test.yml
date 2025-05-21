@@ -39,3 +39,7 @@ jobs:
     - name: Run model tests
       run: |
         pytest day5/演習3/tests/test_model.py -v
+
+    - name: Run tests in 演習2/main.py
+      run: |
+        pytest day5/演習2/main.py -v
