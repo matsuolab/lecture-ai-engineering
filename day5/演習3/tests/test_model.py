@@ -3,7 +3,10 @@ import pytest
 import pandas as pd
 import numpy as np
 import pickle
+import pathlib
+from datetime import datetime
 import time
+import json
 from sklearn.ensemble import RandomForestClassifier
 from sklearn.model_selection import train_test_split
 from sklearn.metrics import accuracy_score
@@ -11,6 +14,9 @@ from sklearn.impute import SimpleImputer
 from sklearn.preprocessing import OneHotEncoder, StandardScaler
 from sklearn.compose import ColumnTransformer
 from sklearn.pipeline import Pipeline
+
+BASELINE_PATH = pathlib.Path(__file__).resolve().parents[1] / "baseline.json"
+
 
 # テスト用データとモデルパスを定義
 DATA_PATH = os.path.join(os.path.dirname(__file__), "../data/Titanic.csv")
@@ -101,6 +107,19 @@ def train_model(sample_data, preprocessor):
 
     return model, X_test, y_test
 
+def _load_baseline() -> float | None:
+    """baseline.json から accuracy を読む（無ければ None）"""
+    if BASELINE_PATH.exists():
+        data = json.loads(BASELINE_PATH.read_text())
+        return data.get("accuracy")
+    return None
+
+def _save_baseline(new_acc: float):
+    """精度が向上したとき baseline.json を更新"""
+    BASELINE_PATH.write_text(json.dumps(
+        {"accuracy": new_acc, "updated": datetime.utcnow().isoformat()},
+        indent=2
+    ))
 
 def test_model_exists():
     """モデルファイルが存在するか確認"""
