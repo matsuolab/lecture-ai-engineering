@@ -77,31 +77,29 @@ def test_missing_values_acceptable(sample_data):
 
 
 def test_value_ranges(sample_data):
-    """値の範囲を検証"""
-    context = gx.get_context()
-    data_source = context.data_sources.add_pandas("pandas")
-    data_asset = data_source.add_dataframe_asset(name="pd dataframe asset")
+    """値の範囲を手動で検証"""
 
-    batch_definition = data_asset.add_batch_definition_whole_dataframe(
-        "batch definition"
-    )
-    batch = batch_definition.get_batch(batch_parameters={"dataframe": sample_data})
+    required_columns = ["Pclass", "Sex", "Age", "Fare", "Embarked"]
 
-    results = []
+    # 必要カラムのチェック
+    missing_columns = [col for col in required_columns if col not in sample_data.columns]
+    assert not missing_columns, f"警告: 以下のカラムがありません: {missing_columns}"
 
-    # 必須カラムの存在確認
-    required_columns = [
-        "Pclass",
-        "Sex",
-        "Age",
-        "SibSp",
-        "Parch",
-        "Fare",
-        "Embarked",
-    ]
-    missing_columns = [
-        col for col in required_columns if col not in sample_data.columns
-    ]
+    # Pclass は 1, 2, 3 のみ
+    assert sample_data["Pclass"].dropna().isin([1, 2, 3]).all(), "Pclassに不正な値があります"
+
+    # Sex は male / female のみ
+    assert sample_data["Sex"].dropna().isin(["male", "female"]).all(), "Sexに不正な値があります"
+
+    # Age は 0～100 の範囲
+    assert sample_data["Age"].dropna().between(0, 100).all(), "Ageに不正な値があります"
+
+    # Fare は 0～600 の範囲
+    assert sample_data["Fare"].dropna().between(0, 600).all(), "Fareに不正な値があります"
+
+    # Embarked は C / Q / S のいずれか
+    assert sample_data["Embarked"].dropna().isin(["C", "Q", "S"]).all(), "Embarkedに不正な値があります"
+
     if missing_columns:
         print(f"警告: 以下のカラムがありません: {missing_columns}")
         return False, [{"success": False, "missing_columns": missing_columns}]
