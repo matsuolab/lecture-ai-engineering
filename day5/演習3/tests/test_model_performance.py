@@ -6,14 +6,9 @@ import os
 
 
 def load_test_data():
+    # テストデータの読み込み
     df = pd.read_csv(
-        os.path.join(
-            os.path.abspath(os.path.join(os.path.dirname(__file__), "../../../..")),
-            "day5",
-            "演習1",
-            "data",
-            "titanic_test.csv",
-        )
+        os.path.join(os.getcwd(), "day5", "演習1", "data", "titanic_test.csv")
     )
     X = df.drop("Survived", axis=1)
     y = df["Survived"]
@@ -21,8 +16,10 @@ def load_test_data():
 
 
 def get_model():
-    repo_root = os.path.abspath(os.path.join(os.path.dirname(__file__), "../../../.."))
-    model_path = os.path.join(repo_root, "day5", "演習1", "models", "titanic_model.pkl")
+    # モデルファイルのパスをカレントディレクトリ基準で指定
+    model_path = os.path.join(
+        os.getcwd(), "day5", "演習1", "models", "titanic_model.pkl"
+    )
     assert os.path.exists(model_path), f"Model file not found at {model_path}"
     return joblib.load(model_path)
 
