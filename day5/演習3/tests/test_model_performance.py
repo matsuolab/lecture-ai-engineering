@@ -7,16 +7,16 @@ import pytest
 from sklearn.metrics import accuracy_score
 from sklearn.model_selection import train_test_split
 
+
 def load_test_data():
     full = pd.read_csv(
         os.path.join(os.getcwd(), "day5", "演習1", "data", "Titanic.csv")
     )
     X = full.drop("Survived", axis=1)
     y = full["Survived"]
-    _, X_test, _, y_test = train_test_split(
-        X, y, test_size=0.11, random_state=88
-    )
+    _, X_test, _, y_test = train_test_split(X, y, test_size=0.11, random_state=88)
     return X_test, y_test
+
 
 def get_model():
     model_path = os.path.join(
@@ -24,6 +24,7 @@ def get_model():
     )
     assert os.path.exists(model_path), f"Model not found at {model_path}"
     return joblib.load(model_path)
+
 
 def parse_main_accuracy():
     """main.py の stdout から精度を抜き出す"""
@@ -37,11 +38,13 @@ def parse_main_accuracy():
             return val
     pytest.skip("Unable to parse accuracy from main.py output")
 
+
 def test_model_inference_accuracy():
     # まず main.py を動かして accuracy を取得
     acc = parse_main_accuracy()
     # 有色実行環境では若干ぶれるので 0.74 以上を合格ラインに
     assert acc >= 0.74, f"Expected accuracy >= 0.74, got {acc:.3f}"
+
 
 def test_model_inference_time():
     model = get_model()
