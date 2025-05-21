@@ -44,9 +44,9 @@ jobs:
       id: model_test
       run: |
         cd day5/演習3/tests
-        pytest test_model.py -v -s --capture-output
+        pytest test_model.py -v -s > output.log
         echo "TEST_OUTPUT<<EOF" >> $GITHUB_OUTPUT
-        cat ${{ steps.model_test.outputs.stdout }} >> $GITHUB_OUTPUT
+        cat output.log >> $GITHUB_OUTPUT
         echo "EOF" >> $GITHUB_OUTPUT
 
     - name: Update baseline accuracy (if tests passed)
