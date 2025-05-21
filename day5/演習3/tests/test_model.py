@@ -14,6 +14,7 @@ from sklearn.pipeline import Pipeline
 
 BASELINE_PATH = pathlib.Path(__file__).resolve().parents[1] / "baseline.json"
 
+
 # テスト用データとモデルパスを定義
 DATA_PATH = os.path.join(os.path.dirname(__file__), "../data/Titanic.csv")
 MODEL_DIR = os.path.join(os.path.dirname(__file__), "../models")
