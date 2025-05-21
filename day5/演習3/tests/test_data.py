@@ -6,6 +6,7 @@ import great_expectations as gx
 from sklearn.datasets import fetch_openml
 import warnings
 from 演習2.main import DataLoader, ModelTester
+from sklearn.model_selection import train_test_split
 
 # 警告を抑制
 warnings.filterwarnings("ignore")
