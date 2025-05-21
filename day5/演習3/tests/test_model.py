@@ -135,6 +135,19 @@ def test_model_inference_time(train_model):
     # 推論時間が1秒未満であることを確認
     assert inference_time < 1.0, f"推論時間が長すぎます: {inference_time}秒"
 
+def test_model_inference_time_2(train_model):
+    """モデルの推論時間を検証"""
+    model, X_test, _ = train_model
+
+    # 推論時間の計測
+    start_time = time.time()
+    model.predict(X_test)
+    end_time = time.time()
+
+    inference_time = end_time - start_time
+
+    # 推論時間が1秒未満であることを確認
+    assert inference_time < 0.9, f"推論時間が長すぎます: {inference_time}秒"
 
 def test_model_reproducibility(sample_data, preprocessor):
     """モデルの再現性を検証"""
