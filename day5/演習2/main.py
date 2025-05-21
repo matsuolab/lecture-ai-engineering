@@ -11,6 +11,7 @@ import pickle
 import time
 import great_expectations as gx
 
+
 class DataLoader:
     """データロードを行うクラス"""
 
@@ -20,10 +21,14 @@ class DataLoader:
         if path:
             return pd.read_csv(path)
         else:
-            # ローカルのファイル
-            local_path = "data/Titanic.csv"
+            # ローカルのファイル (絶対パスで指定)
+            base_dir = os.path.dirname(os.path.abspath(__file__))
+            local_path = os.path.join(base_dir, "data", "Titanic.csv")
             if os.path.exists(local_path):
                 return pd.read_csv(local_path)
+            else:
+                print(f"Error: File not found at {local_path}")
+                return None
 
     @staticmethod
     def preprocess_titanic_data(data):
@@ -285,3 +290,85 @@ if __name__ == "__main__":
     # ベースラインとの比較
     baseline_ok = ModelTester.compare_with_baseline(metrics)
     print(f"ベースライン比較: {'合格' if baseline_ok else '不合格'}")
+
+
+def test_inference_speed_and_accuracy():
+    """推論時間と精度をチェックする関数"""
+    print("\n--- 推論時間と精度のチェックを開始 ---")
+
+    # データロード
+    data = DataLoader.load_titanic_data()
+    if data is None:
+        print("データロードに失敗しました。")
+        return
+
+    X, y = DataLoader.preprocess_titanic_data(data)
+
+    # データバリデーション
+    success, results = DataValidator.validate_titanic_data(X)
+    if not success:
+        print("データ検証に失敗しました。推論時間と精度のチェックを中断します。")
+        return
+
+    # モデルのトレーニングと評価
+    X_train, X_test, y_train, y_test = train_test_split(
+        X, y, test_size=0.2, random_state=42
+    )
+
+    # パラメータ設定
+    model_params = {"n_estimators": 100, "random_state": 42}
+
+    # モデルトレーニング
+    model = ModelTester.train_model(X_train, y_train, model_params)
+    metrics = ModelTester.evaluate_model(model, X_test, y_test)
+
+    print(f"最終的な精度: {metrics['accuracy']:.4f}")
+    print(f"最終的な推論時間: {metrics['inference_time']:.4f}秒")
+
+    # ベースラインとの比較
+    baseline_ok = ModelTester.compare_with_baseline(metrics)
+    print(f"最終的なベースライン比較: {'合格' if baseline_ok else '不合格'}")
+    print("--- 推論時間と精度のチェックを終了 ---")
+
+
+if __name__ == "__main__":
+    # 既存のメイン処理
+    # データロード
+    data = DataLoader.load_titanic_data()
+    X, y = DataLoader.preprocess_titanic_data(data)
+
+    # データバリデーション
+    success, results = DataValidator.validate_titanic_data(X)
+    print(f"データ検証結果: {'成功' if success else '失敗'}")
+    for result in results:
+        # "success": falseの場合はエラーメッセージを表示
+        if not result["success"]:
+            print(f"異常タイプ: {result['expectation_config']['type']}, 結果: {result}")
+    if not success:
+        print("データ検証に失敗しました。処理を終了します。")
+        exit(1)
+
+    # モデルのトレーニングと評価
+    X_train, X_test, y_train, y_test = train_test_split(
+        X, y, test_size=0.2, random_state=42
+    )
+
+    # パラメータ設定
+    model_params = {"n_estimators": 100, "random_state": 42}
+
+    # モデルトレーニング
+    model = ModelTester.train_model(X_train, y_train, model_params)
+    metrics = ModelTester.evaluate_model(model, X_test, y_test)
+
+    print(f"精度: {metrics['accuracy']:.4f}")
+    print(f"推論時間: {metrics['inference_time']:.4f}秒")
+
+    # モデル保存
+    model_path = ModelTester.save_model(model)
+
+    # ベースラインとの比較
+    baseline_ok = ModelTester.compare_with_baseline(metrics)
+    print(f"ベースライン比較: {'合格' if baseline_ok else '不合格'}")
+
+    # 新しく追加した推論時間と精度のチェック関数を実行
+    test_inference_speed_and_accuracy()
