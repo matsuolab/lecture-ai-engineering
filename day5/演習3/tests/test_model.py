@@ -1,9 +1,9 @@
-import os
 import pytest
 import pandas as pd
 import numpy as np
 import pickle
 import time
+import os  # ← これを追加！
 from sklearn.ensemble import RandomForestClassifier
 from sklearn.model_selection import train_test_split
 from sklearn.metrics import accuracy_score
@@ -17,6 +17,13 @@ DATA_PATH = os.path.join(os.path.dirname(__file__), "../data/Titanic.csv")
 MODEL_DIR = os.path.join(os.path.dirname(__file__), "../models")
 MODEL_PATH = os.path.join(MODEL_DIR, "titanic_model.pkl")
 
+BASELINE_ACCURACY = 0.78  # 過去バージョンの精度などで設定
+
+def test_accuracy_vs_baseline(train_model):
+    model, X_test, y_test = train_model
+    y_pred = model.predict(X_test)
+    accuracy = accuracy_score(y_test, y_pred)
+    assert accuracy >= BASELINE_ACCURACY, f"モデル精度がベースラインを下回っています: {accuracy} < {BASELINE_ACCURACY}"
 
 @pytest.fixture
 def sample_data():
@@ -171,3 +178,4 @@ def test_model_reproducibility(sample_data, preprocessor):
     assert np.array_equal(
         predictions1, predictions2
     ), "モデルの予測結果に再現性がありません"
+
