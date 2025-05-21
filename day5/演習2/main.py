@@ -11,6 +11,7 @@ import pickle
 import time
 import great_expectations as gx
 
+
 class DataLoader:
     """データロードを行うクラス"""
 
@@ -203,6 +204,27 @@ class ModelTester:
         """ベースラインと比較する"""
         return current_metrics["accuracy"] >= baseline_threshold
 
+    @staticmethod
+    def verify_performance(metrics, acc_threshold=0.75, time_threshold=1.0):
+        """
+        モデルの accuracy と inference_time をチェックし、
+        結果を [PASS]/[FAIL] で表示する
+        """
+        acc = metrics["accuracy"]
+        inf_time = metrics["inference_time"]
+
+        # 精度チェック
+        if acc >= acc_threshold:
+            print(f"[PASS] Accuracy = {acc:.3f} ≥ {acc_threshold}")
+        else:
+            print(f"[FAIL] Accuracy = {acc:.3f} < {acc_threshold}")
+
+        # 推論時間チェック
+        if inf_time < time_threshold:
+            print(f"[PASS] Inference time = {inf_time:.3f}s < {time_threshold}s")
+        else:
+            print(f"[FAIL] Inference time = {inf_time:.3f}s ≥ {time_threshold}s")
+
 
 # テスト関数（pytestで実行可能）
 def test_data_validation():
@@ -281,6 +303,9 @@ if __name__ == "__main__":
 
     # モデル保存
     model_path = ModelTester.save_model(model)
+
+    # 推論精度・推論時間のチェックコメントを出力
+    ModelTester.verify_performance(metrics, acc_threshold=0.75, time_threshold=1.0)
 
     # ベースラインとの比較
     baseline_ok = ModelTester.compare_with_baseline(metrics)

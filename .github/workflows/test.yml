@@ -2,8 +2,7 @@ name: ML Pipeline CI
 
 on:
   pull_request:
-    branches:
-      - develop
+    branches: [ develop, master, main ]
   push:
     branches:
       - develop
@@ -27,20 +26,14 @@ jobs:
         
     - name: Lint with flake8
       run: |
-        flake8 day5/演習3 --count --select=E9,F63,F7,F82 --show-source --statistics
-        flake8 day5/演習3 --count --exit-zero --max-complexity=10 --max-line-length=88 --statistics
+        flake8 day5/演習2 --count --select=E9,F63,F7,F82 --show-source --statistics
+        flake8 day5/演習2 --count --exit-zero --max-complexity=10 --max-line-length=88 --statistics
         
     - name: Format check with black
       run: |
-        black --check day5/演習3
+        black --check day5/演習2
         
-    - name: Run data tests
-      run: |
-        pytest day5/演習3/tests/test_data.py -v
-        
-    - name: Run model tests
-      run: |
-        pytest day5/演習3/tests/test_model.py -v
 
-    - name: Run tests
-      run: pytest tests/
+    - name: Run pytests on main.py
+      run: |
+        pytest day5/演習2/main.py -v
