@@ -21,6 +21,7 @@ jobs:
       run: |
         python -m pip install --upgrade pip
         pip install pytest great_expectations pandas scikit-learn flake8 black mypy pytest-cov
+        pip install mlflow numpy tensorflow
         if [ -f requirements.txt ]; then pip install -r requirements.txt; fi
         
     - name: Lint with flake8
@@ -39,3 +40,13 @@ jobs:
     - name: Run model tests
       run: |
         pytest day5/演習3/tests/test_model.py -v
+        
+    # 追加: モデルの推論精度・時間の検証
+    - name: Run model inference tests
+      run: |
+        pytest day5/演習3/tests/test_model_inference.py -v
+        
+    # 追加: モデルのパフォーマンス比較テスト
+    - name: Run model performance comparison
+      run: |
+        pytest day5/演習3/tests/test_model_comparison.py -v
