@@ -22,9 +22,12 @@ jobs:
     # ... (セットアップ、依存関係インストールなど)
     - name: Run model tests
       run: |
-        echo "BASELINE_ACCURACY is: ${{ vars.BASELINE_ACCURACY }}" # 環境変数として定義されている場合
-        python -c "import os; print(f'BASELINE_ACCURACY from os: {os.environ.get(\"BASELINE_ACCURACY\")}')" # 環境変数として定義されている場合
+        echo "BASELINE_ACCURACY from vars: ${{ vars.BASELINE_ACCURACY }}" # 確認用
+        echo "BASELINE_ACCURACY from env: ${{ env.BASELINE_ACCURACY }}"   # 確認用
+        python -c "import os; print(f'BASELINE_ACCURACY from os: {os.environ.get(\"BASELINE_ACCURACY\")}')" # 確認用
         pytest day5/演習3/tests/test_model.py -v -s
+      env:
+        BASELINE_ACCURACY: ${{ vars.BASELINE_ACCURACY }}
     
     - name: Set up Python
       uses: actions/setup-python@v4
