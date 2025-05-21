@@ -5,6 +5,7 @@ import numpy as np
 import great_expectations as gx
 from sklearn.datasets import fetch_openml
 import warnings
+from 演習2.main import DataLoader, ModelTester
 
 # 警告を抑制
 warnings.filterwarnings("ignore")
@@ -129,6 +130,17 @@ def test_value_ranges(sample_data):
         results.append(result)
         is_successful = all(result.success for result in results)
     assert is_successful, "データの値範囲が期待通りではありません"
+
+
+def train_model():
+    """演習2のモデルとテストデータを返すfixture"""
+    data = DataLoader.load_titanic_data()
+    X, y = DataLoader.preprocess_titanic_data(data)
+    X_train, X_test, y_train, y_test = train_test_split(
+        X, y, test_size=0.2, random_state=42
+    )
+    model = ModelTester.train_model(X_train, y_train)
+    return model, X_test, y_test
 
 
 def test_feature_count(train_model):
