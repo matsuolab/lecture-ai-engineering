@@ -11,6 +11,7 @@ import pickle
 import time
 import great_expectations as gx
 
+
 class DataLoader:
     """データロードを行うクラス"""
 
@@ -21,9 +22,10 @@ class DataLoader:
             return pd.read_csv(path)
         else:
             # ローカルのファイル
-            local_path = "data/Titanic.csv"
-            if os.path.exists(local_path):
-                return pd.read_csv(local_path)
+            script_dir = os.path.dirname(os.path.abspath(__file__))
+            absolute_local_path = os.path.join(script_dir, "data", "Titanic.csv")
+            if os.path.exists(absolute_local_path):
+                return pd.read_csv(absolute_local_path)
 
     @staticmethod
     def preprocess_titanic_data(data):
@@ -243,9 +245,7 @@ def test_model_performance():
     ), f"モデル性能がベースラインを下回っています: {metrics['accuracy']}"
 
     # 推論時間の確認
-    assert (
-        metrics["inference_time"] < 1.0
-    ), f"推論時間が長すぎます: {metrics['inference_time']}秒"
+    assert metrics["inference_time"] < 1.0, f"推論時間が長すぎます: {metrics['inference_time']}秒"
 
 
 if __name__ == "__main__":
@@ -285,3 +285,104 @@ if __name__ == "__main__":
     # ベースラインとの比較
     baseline_ok = ModelTester.compare_with_baseline(metrics)
     print(f"ベースライン比較: {'合格' if baseline_ok else '不合格'}")
+
+import os  # os.path.exists を使うために必要
+import pandas as pd  # DataLoader, preprocess_titanic_data が pandas を使うため
+from sklearn.model_selection import train_test_split  # train_test_split を使うため
+
+# (main.pyの他の必要なimport文 ... DataLoader, ModelTesterなど)
+# この関数がmain.py内にある前提で、DataLoaderやModelTesterは既にインポートされているとします。
+# もしこの関数を別ファイルにする場合は、必要なクラスのimport文を追加してください。
+
+
+def test_inference_speed_and_accuracy():
+    """学習済みモデルの推論時間と精度をチェックする関数"""
+    print("\n--- 学習済みモデルの推論時間と精度のテスト開始 ---")
+
+    # --- 合格基準の設定 ---
+    # これらの値は必要に応じて調整してください
+    TARGET_ACCURACY = 0.80  # 例: 精度の目標値 (80%以上で合格)
+    TARGET_INFERENCE_TIME_SECONDS = 0.05  # 例: 推論時間の目標値 (0.05秒以内で合格)
+    # ---------------------
+
+    # 1. データロードと前処理
+    try:
+        data_full = DataLoader.load_titanic_data()
+        if data_full is None:
+            print("エラー: データファイル (data/Titanic.csv想定) のロードに失敗しました。")
+            print("スクリプトと同じ階層に 'data' フォルダがあり、その中に 'Titanic.csv' があるか確認してください。")
+            print("--- 推論時間と精度のテスト中止 ---")
+            return
+    except Exception as e:
+        print(f"データロード中に予期せぬエラーが発生しました: {e}")
+        print("--- 推論時間と精度のテスト中止 ---")
+        return
+
+    X_full, y_full = DataLoader.preprocess_titanic_data(data_full)
+
+    if y_full is None:
+        print("エラー: データに目的変数 'Survived' が見つかりません。精度評価ができません。")
+        print("--- 推論時間と精度のテスト中止 ---")
+        return
+
+    _, X_test, _, y_test = train_test_split(
+        X_full, y_full, test_size=0.2, random_state=42
+    )
+
+    # 2. モデルのロード
+    model_path = "models/titanic_model.pkl"
+    if not os.path.exists(model_path):
+        print(f"エラー: 学習済みモデルファイルが見つかりません: {model_path}")
+        print(f"メイン処理 (if __name__ == '__main__': ブロック) を実行して、モデルを学習・保存してください。")
+        print("--- 推論時間と精度のテスト中止 ---")
+        return
+
+    try:
+        model = ModelTester.load_model(path=model_path)
+        print(f"モデルをロードしました: {model_path}")
+    except FileNotFoundError:
+        print(f"エラー: モデルファイル '{model_path}' のロードに失敗しました。ファイルが存在しません。")
+        print("--- 推論時間と精度のテスト中止 ---")
+        return
+    except Exception as e:
+        print(f"モデルのロード中に予期せぬエラーが発生しました: {e}")
+        print("--- 推論時間と精度のテスト中止 ---")
+        return
+
+    # 3. モデル評価 (推論時間と精度)
+    print(f"ロードされたモデルを使用して、テストデータで評価を行います...")
+    metrics = ModelTester.evaluate_model(model, X_test, y_test)
+    actual_accuracy = metrics["accuracy"]
+    actual_inference_time = metrics["inference_time"]
+
+    # 4. 結果の表示と合否判定
+    print(f"\n評価結果:")
+    print(f"  実際の精度: {actual_accuracy:.4f} (目標: {TARGET_ACCURACY:.4f} 以上)")
+    print(
+        f"  実際の推論時間: {actual_inference_time:.4f}秒 (目標: {TARGET_INFERENCE_TIME_SECONDS:.4f}秒 以下)"
+    )
+
+    print("\n合否判定:")
+    # 精度の判定
+    if actual_accuracy >= TARGET_ACCURACY:
+        print(f"  ◎ 精度: 合格！ ({actual_accuracy:.4f} >= {TARGET_ACCURACY:.4f})")
+    else:
+        print(f"  × 精度: 不合格… ({actual_accuracy:.4f} < {TARGET_ACCURACY:.4f})")
+
+    # 推論時間の判定
+    if actual_inference_time <= TARGET_INFERENCE_TIME_SECONDS:
+        print(
+            f"  ◎ 推論時間: 合格！ ({actual_inference_time:.4f}秒 <= {TARGET_INFERENCE_TIME_SECONDS:.4f}秒)"
+        )
+    else:
+        print(
+            f"  × 推論時間: 不合格… ({actual_inference_time:.4f}秒 > {TARGET_INFERENCE_TIME_SECONDS:.4f}秒)"
+        )
+
+    baseline_threshold = 0.75
+    baseline_ok = ModelTester.compare_with_baseline(
+        metrics, baseline_threshold=baseline_threshold
+    )
+    print(f"  ベースライン比較 (閾値 {baseline_threshold}): {'合格' if baseline_ok else '不合格'}")
+
+    print("\n--- 学習済みモデルの推論時間と精度のテスト終了 ---")
