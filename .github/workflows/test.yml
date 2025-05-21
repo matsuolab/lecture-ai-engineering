@@ -39,30 +39,28 @@ jobs:
     - name: Run data tests
       run: |
         pytest day5/演習3/tests/test_data.py -v -s
-        
-    - name: Run model tests
-      run: |
-        pytest day5/演習3/tests/test_model.py -v -s
-    
+
     - name: Run model tests and get accuracy
       id: model_test
       run: |
-          cd day5/演習3/tests
-          pytest test_model.py -v -s --capture-output # 標準出力をキャプチャ
+        cd day5/演習3/tests
+        pytest test_model.py -v -s --capture-output
+        echo "TEST_OUTPUT<<EOF" >> $GITHUB_OUTPUT
+        cat ${{ steps.model_test.outputs.stdout }} >> $GITHUB_OUTPUT
+        echo "EOF" >> $GITHUB_OUTPUT
 
     - name: Update baseline accuracy (if tests passed)
       if: success()
       run: |
-          import re
-          accuracy_output = ${{ steps.model_test.outputs.stdout }}
-          # ログから現在の精度を抽出する (pytest の出力形式に合わせて調整)
-          current_accuracy_match = re.search(r"現在のモデルの精度\((\d+\.\d+)\)", accuracy_output)
-          if current_accuracy_match:
-            current_accuracy=$(echo "${current_accuracy_match[1]}" | awk '{printf "%.4f", $1}')
-            echo "Updating BASELINE_ACCURACY to: $current_accuracy"
-            gh variable set BASELINE_ACCURACY "$current_accuracy"
-          else:
-            echo "Could not extract current accuracy from logs."
-            exit 1
+        import re
+        accuracy_output = ${{ steps.model_test.outputs.stdout }}
+        current_accuracy_match = re.search(r"現在のモデルの精度\((\d+\.\d+)\)", accuracy_output)
+        if current_accuracy_match:
+          current_accuracy=$(echo "${current_accuracy_match[1]}" | awk '{printf "%.4f", $1}')
+          echo "Updating BASELINE_ACCURACY to: $current_accuracy"
+          gh variable set BASELINE_ACCURACY "$current_accuracy"
+        else:
+          echo "Could not extract current accuracy from logs."
+          exit 1
       env:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
