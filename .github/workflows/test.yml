@@ -66,6 +66,7 @@ jobs:
         else
           echo "Error: Could not extract accuracy from pytest output."
           exit 1
+        fi
         # 必要であれば、TEST_OUTPUT の設定は削除またはコメントアウト
         # echo "TEST_OUTPUT<<EOF" >> $GITHUB_OUTPUT
         # cat output.log >> $GITHUB_OUTPUT
