@@ -8,11 +8,12 @@ on:
 
 permissions:
   contents: read
-  actions: write 
+  actions: write
 
 jobs:
   test:
     runs-on: ubuntu-latest
+    environment: BASE_ACCURACY # デプロイ先環境を 'development' に固定
     steps:
     - uses: actions/checkout@v3
     - name: Clear environment # テスト的に追加
@@ -21,31 +22,30 @@ jobs:
     # ... (セットアップ、依存関係インストールなど)
     - name: Run model tests
       run: |
-        echo "BASELINE_ACCURACY is: ${{ env.BASELINE_ACCURACY }}" # 確認用
-        python -c "import os; print(f'BASELINE_ACCURACY from os: {os.environ.get(\"BASELINE_ACCURACY\")}')" # 確認用
+        echo "BASELINE_ACCURACY is: ${{ vars.BASELINE_ACCURACY }}" # 環境変数として定義されている場合
+        python -c "import os; print(f'BASELINE_ACCURACY from os: {os.environ.get(\"BASELINE_ACCURACY\")}')" # 環境変数として定義されている場合
         pytest day5/演習3/tests/test_model.py -v -s
-    # ...
-
+    
     - name: Set up Python
       uses: actions/setup-python@v4
       with:
         python-version: '3.10'
-        
+
     - name: Install dependencies
       run: |
         python -m pip install --upgrade pip
         pip install pytest great_expectations pandas scikit-learn flake8 black mypy pytest-cov gh
         if [ -f requirements.txt ]; then pip install -r requirements.txt; fi
-        
+
     - name: Lint with flake8
       run: |
         flake8 day5/演習3 --count --select=E9,F63,F7,F82 --show-source --statistics
         flake8 day5/演習3 --count --exit-zero --max-complexity=10 --max-line-length=88 --statistics
-        
+
     - name: Format check with black
       run: |
         black --check day5/演習3
-        
+
     - name: Run data tests
       run: |
         pytest day5/演習3/tests/test_data.py -v -s
@@ -59,8 +59,8 @@ jobs:
         cat output.log >> $GITHUB_OUTPUT
         echo "EOF" >> $GITHUB_OUTPUT
       env:
-        BASELINE_ACCURACY: ${{ vars.BASELINE_ACCURACY }}
-        
+        BASELINE_ACCURACY: ${{ vars.BASELINE_ACCURACY }} # 環境変数として定義されている場合
+
     - name: Update baseline accuracy (if tests passed)
       if: success()
       run: |
