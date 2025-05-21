@@ -121,6 +121,22 @@ def test_model_accuracy(train_model):
     assert accuracy >= 0.75, f"モデルの精度が低すぎます: {accuracy}"
 
 
+def test_model_log_loss(train_model):
+    """
+    モデルの log loss（交差エントロピー損失）が
+    閾値（ここでは 0.5）以下であることを検証
+    """
+    from sklearn.metrics import log_loss
+
+    model, X_test, y_test = train_model
+
+    # 各クラスの確率予測を取得
+    y_prob = model.predict_proba(X_test)
+    loss = log_loss(y_test, y_prob)
+
+    # 閾値はモデル性能に合わせて調整してください
+    assert loss <= 0.5, f"Log loss が大きすぎます: {loss:.3f}"
+
 def test_model_inference_time(train_model):
     """モデルの推論時間を検証"""
     model, X_test, _ = train_model
