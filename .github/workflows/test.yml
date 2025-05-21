@@ -64,13 +64,11 @@ jobs:
           echo "ACCURACY_OUTPUT=$current_accuracy" >> $GITHUB_OUTPUT
           echo "Extracted accuracy: $current_accuracy"
         else
+          echo "ACCURACY_OUTPUT=" >> $GITHUB_OUTPUT # 空の場合も設定
           echo "Error: Could not extract accuracy from pytest output."
           exit 1
         fi
-        # 必要であれば、TEST_OUTPUT の設定は削除またはコメントアウト
-        # echo "TEST_OUTPUT<<EOF" >> $GITHUB_OUTPUT
-        # cat output.log >> $GITHUB_OUTPUT
-        # echo "EOF" >> $GITHUB_OUTPUT
+        
 
     - name: Update baseline accuracy (if tests passed)
       if: success()
