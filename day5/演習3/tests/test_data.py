@@ -130,6 +130,7 @@ def test_value_ranges(sample_data):
         is_successful = all(result.success for result in results)
     assert is_successful, "データの値範囲が期待通りではありません"
 
+
 def test_feature_count(train_model):
     """前処理後の特徴量数とモデルが学習時に認識した特徴量数が一致するか確認"""
     model, X_test, _ = train_model
@@ -151,8 +152,10 @@ def test_model_invalid_input(train_model):
     model, _, _ = train_model
 
     # 数値ではなく文字列を含む入力を意図的に与える
-    invalid_input = pd.DataFrame([["invalid", None, "bad", "input", "data", "xxx", "???"]],
-                                 columns=["Pclass", "Sex", "Age", "SibSp", "Parch", "Fare", "Embarked"])
+    invalid_input = pd.DataFrame(
+        [["invalid", None, "bad", "input", "data", "xxx", "???"]],
+        columns=["Pclass", "Sex", "Age", "SibSp", "Parch", "Fare", "Embarked"],
+    )
 
     with pytest.raises(Exception) as exc_info:
         model.predict(invalid_input)
@@ -162,5 +165,6 @@ def test_model_invalid_input(train_model):
     print("予想されるエラーメッセージ:", error_msg)
 
     # エラーメッセージを一部確認しておくと堅牢性アップ
-    assert "could not convert" in error_msg or "input" in error_msg.lower(), \
-        f"期待される形式のエラーメッセージではありません: {error_msg}"
+    assert (
+        "could not convert" in error_msg or "input" in error_msg.lower()
+    ), f"期待される形式のエラーメッセージではありません: {error_msg}"
