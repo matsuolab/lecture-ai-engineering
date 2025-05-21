@@ -15,6 +15,16 @@ jobs:
     runs-on: ubuntu-latest
     steps:
     - uses: actions/checkout@v3
+    - name: Clear environment # テスト的に追加
+      run: |
+        env -i bash -c "env"
+    # ... (セットアップ、依存関係インストールなど)
+    - name: Run model tests
+      run: |
+        echo "BASELINE_ACCURACY is: ${{ env.BASELINE_ACCURACY }}" # 確認用
+        python -c "import os; print(f'BASELINE_ACCURACY from os: {os.environ.get(\"BASELINE_ACCURACY\")}')" # 確認用
+        pytest day5/演習3/tests/test_model.py -v -s
+    # ...
     
     - name: Set up Python
       uses: actions/setup-python@v4
