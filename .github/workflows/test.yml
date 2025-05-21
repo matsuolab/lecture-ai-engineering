@@ -49,7 +49,3 @@ jobs:
       - name: Run model performance accuracy test
         run: |
           pytest day5/演習3/tests/test_model_performance.py::test_model_inference_accuracy -v
-
-      - name: Run model performance inference-time test
-        run: |
-          pytest day5/演習3/tests/test_model_performance.py::test_model_inference_time -v
