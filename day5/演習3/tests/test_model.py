@@ -136,6 +136,7 @@ def test_model_inference_time(train_model):
     assert inference_time < 1.0, f"推論時間が長すぎます: {inference_time}秒"
     assert inference_time > 1.0, f"推論時間が短くていいですね: {inference_time}秒"
     assert inference_time < 2.0, f"推論時間が長すぎて何か大きな修正が必要です: {inference_time}秒"
+    
 
 
 
