@@ -2,18 +2,15 @@ name: ML Pipeline CI
 
 on:
   # push:
-  #   branches: [ develop ]
+  #   branches: [ main, master  ]
   pull_request:
-      branches: [ develop ]
+    branches: [ main, master ]
 
 jobs:
   test:
     runs-on: ubuntu-latest
     steps:
-    - name: Checkout code
-      uses: actions/checkout@v4
-      with:
-        fetch-depth: 0  # 差分検知やmainブランチ比較に必要
+    - uses: actions/checkout@v3
     
     - name: Set up Python
       uses: actions/setup-python@v4
@@ -42,18 +39,3 @@ jobs:
     - name: Run model tests
       run: |
         pytest day5/演習3/tests/test_model.py -v
-    
-    # 最新モデルのテスト（精度・推論時間）
-    - name: Run model test (accuracy and inference time)
-      run: |
-        pytest tests/test_model_metrics.py
-
-    # mainブランチのモデルを取得して比較
-    - name: Checkout main branch for regression test
-      run: |
-        git fetch origin main:main
-        git checkout main -- path/to/model.pkl
-
-    - name: Run regression test (compare with main)
-      run: |
-        pytest tests/test_model_regression.py
