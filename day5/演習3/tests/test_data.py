@@ -133,13 +133,12 @@ def test_value_ranges(sample_data):
     assert is_successful, "データの値範囲が期待通りではありません"
 
 
+@pytest.fixture
 def train_model():
-    """演習2のモデルとテストデータを返すfixture"""
+    """モデルを学習して返す fixture"""
     data = DataLoader.load_titanic_data()
     X, y = DataLoader.preprocess_titanic_data(data)
-    X_train, X_test, y_train, y_test = train_test_split(
-        X, y, test_size=0.2, random_state=42
-    )
+    X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.2, random_state=42)
     model = ModelTester.train_model(X_train, y_train)
     return model, X_test, y_test
 
