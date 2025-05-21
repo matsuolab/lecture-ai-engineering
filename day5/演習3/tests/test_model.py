@@ -121,6 +121,16 @@ def test_model_accuracy(train_model):
     assert accuracy >= 0.75, f"モデルの精度が低すぎます: {accuracy}"
 
 
+def test_model_high_accuracy(train_model):
+    """モデルの精度が0.80以上と高い水準にあるかを確認"""
+    model, X_test, y_test = train_model
+
+    y_pred = model.predict(X_test)
+    accuracy = accuracy_score(y_test, y_pred)
+
+    assert accuracy >= 0.80, f"精度がやや低いです: {accuracy:.3f} < 0.80"
+
+
 def test_model_inference_time(train_model):
     """モデルの推論時間を検証"""
     model, X_test, _ = train_model
