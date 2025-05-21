@@ -193,3 +193,5 @@ def test_model_performance_against_baseline(train_model):
     assert (
         current_accuracy >= baseline_accuracy
     ), f"現在のモデルの精度({current_accuracy:.4f})がベースライン({baseline_accuracy:.4f})を下回っています"
+    print(f"現在のモデルの精度({current_accuracy:.4f})")
+    
