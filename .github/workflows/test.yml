@@ -75,6 +75,7 @@ jobs:
     - name: Update baseline accuracy (if tests passed)
       if: success()
       run: |
+        echo "ACCURACY_OUTPUT from previous step: ${{ steps.model_test.outputs.ACCURACY_OUTPUT }}"
         current_accuracy="${{ steps.model_test.outputs.ACCURACY_OUTPUT }}"
         if [[ -n "$current_accuracy" ]]; then
           echo "Updating BASELINE_ACCURACY to: $current_accuracy"
