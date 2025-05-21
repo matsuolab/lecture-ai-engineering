@@ -58,17 +58,21 @@ jobs:
       id: model_test
       run: |
         cd day5/演習3/tests
-        pytest test_model.py -v -s | grep "現在のモデルの精度" | awk -F'(' '{print $2}' | awk -F')' '{print $1}' > accuracy.txt
+        pytest test_model.py -v -s > pytest_output.log
+
+        grep "現在のモデルの精度" pytest_output.log | awk -F'(' '{print $2}' | awk -F')' '{print $1}' > accuracy.txt
+
         if [ -s "accuracy.txt" ]; then
           current_accuracy=$(cat accuracy.txt)
           echo "ACCURACY_OUTPUT=$current_accuracy" >> $GITHUB_OUTPUT
           echo "Extracted accuracy: $current_accuracy"
         else
-          echo "ACCURACY_OUTPUT=" >> $GITHUB_OUTPUT # 空の場合も設定
+          echo "ACCURACY_OUTPUT=" >> $GITHUB_OUTPUT
           echo "Error: Could not extract accuracy from pytest output."
+          cat pytest_output.log  # デバッグ用に出力
           exit 1
         fi
-        
+
 
     - name: Update baseline accuracy (if tests passed)
       if: success()
