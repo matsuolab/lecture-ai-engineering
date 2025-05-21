@@ -7,9 +7,7 @@ import os
 
 def load_test_data():
     # テストデータの読み込み
-    df = pd.read_csv(
-        os.path.join(os.getcwd(), "day5", "演習1", "data", "titanic_test.csv")
-    )
+    df = pd.read_csv(os.path.join(os.getcwd(), "day5", "演習1", "data", "Titanic.csv"))
     X = df.drop("Survived", axis=1)
     y = df["Survived"]
     return X, y
