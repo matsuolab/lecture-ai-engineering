@@ -4,11 +4,21 @@ import pandas as pd
 from sklearn.metrics import accuracy_score
 import os
 
+
 def load_test_data():
-    df = pd.read_csv(os.path.join(os.path.abspath(os.path.join(os.path.dirname(__file__), "../../../..")), "day5", "演習1", "data", "titanic_test.csv"))
-    X = df.drop('Survived', axis=1)
-    y = df['Survived']
+    df = pd.read_csv(
+        os.path.join(
+            os.path.abspath(os.path.join(os.path.dirname(__file__), "../../../..")),
+            "day5",
+            "演習1",
+            "data",
+            "titanic_test.csv",
+        )
+    )
+    X = df.drop("Survived", axis=1)
+    y = df["Survived"]
     return X, y
+
 
 def get_model():
     repo_root = os.path.abspath(os.path.join(os.path.dirname(__file__), "../../../.."))
@@ -16,12 +26,14 @@ def get_model():
     assert os.path.exists(model_path), f"Model file not found at {model_path}"
     return joblib.load(model_path)
 
+
 def test_model_inference_accuracy():
     model = get_model()
     X_test, y_test = load_test_data()
     y_pred = model.predict(X_test)
     acc = accuracy_score(y_test, y_pred)
     assert acc >= 0.75, f"Expected accuracy >= 0.75, got {acc:.3f}"
+
 
 def test_model_inference_time():
     model = get_model()
