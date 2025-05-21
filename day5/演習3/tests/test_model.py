@@ -19,11 +19,15 @@ MODEL_PATH = os.path.join(MODEL_DIR, "titanic_model.pkl")
 
 BASELINE_ACCURACY = 0.78  # 過去バージョンの精度などで設定
 
+
 def test_accuracy_vs_baseline(train_model):
     model, X_test, y_test = train_model
     y_pred = model.predict(X_test)
     accuracy = accuracy_score(y_test, y_pred)
-    assert accuracy >= BASELINE_ACCURACY, f"モデル精度がベースラインを下回っています: {accuracy} < {BASELINE_ACCURACY}"
+    assert (
+        accuracy >= BASELINE_ACCURACY
+    ), f"モデル精度がベースラインを下回っています: {accuracy} < {BASELINE_ACCURACY}"
+
 
 @pytest.fixture
 def sample_data():
@@ -178,4 +182,3 @@ def test_model_reproducibility(sample_data, preprocessor):
     assert np.array_equal(
         predictions1, predictions2
     ), "モデルの予測結果に再現性がありません"
-
