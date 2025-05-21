@@ -51,6 +51,21 @@ def train_and_evaluate(
     accuracy = accuracy_score(y_test, predictions)
     return model, accuracy
 
+# 推論精度と推論時間を評価
+def evaluate_inference_performance(model, X_test, y_test):
+    start_time = time.time()
+    predictions = model.predict(X_test)
+    end_time = time.time()
+
+    total_time = end_time - start_time
+    avg_time_per_sample = total_time / len(X_test)
+
+    accuracy = accuracy_score(y_test, predictions)
+
+    print("\n=== 推論性能評価 ===")
+    print(f"精度（accuracy）: {accuracy:.4f}")
+    print(f"全体推論時間: {total_time:.4f}秒")
+    print(f"1件あたり平均推論時間: {avg_time_per_sample * 1000:.4f} ms")
 
 # モデル保存
 def log_model(model, accuracy, params):
@@ -111,6 +126,8 @@ if __name__ == "__main__":
         max_depth=max_depth,
         random_state=model_random_state,
     )
+
+    evaluate_inference_performance(model, X_test, y_test)  # ← ★ 追加呼び出し
 
     # モデル保存
     log_model(model, accuracy, params)
