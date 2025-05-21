@@ -237,7 +237,7 @@ class ModelTester:
 
         return {"accuracy": accuracy, "inference_time": inference_time}
 
-        @staticmethod
+    @staticmethod
     def save_model(model, path="models/titanic_model.pkl"):
         """学習済みモデルを保存する静的メソッド"""
 

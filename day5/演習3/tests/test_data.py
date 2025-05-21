@@ -12,7 +12,6 @@ warnings.filterwarnings("ignore")
 # テスト用データパスを定義
 DATA_PATH = os.path.join(os.path.dirname(__file__), "../data/Titanic.csv")
 
-
 @pytest.fixture
 def sample_data():
     """Titanicテスト用データセットを読み込む"""
@@ -72,8 +71,8 @@ def test_missing_values_acceptable(sample_data):
     for col in sample_data.columns:
         missing_rate = sample_data[col].isna().mean()
         assert (
-            missing_rate < 0.8
-        ), f"カラム '{col}' の欠損率が80%を超えています: {missing_rate:.2%}"
+            missing_rate < 0.7
+        ), f"カラム '{col}' の欠損率が70%を超えています: {missing_rate:.2%}"
 
 
 def test_value_ranges(sample_data):
