@@ -84,7 +84,7 @@ if __name__ == "__main__":
     )  # 10%〜30%の範囲でテストサイズをランダム化
     data_random_state = random.randint(1, 100)
     model_random_state = random.randint(1, 100)
-    n_estimators = random.randint(50, 200)
+    n_estimators = random.randint(50, 150)
     max_depth = random.choice([None, 3, 5, 10, 15])
 
     # パラメータ辞書の作成
