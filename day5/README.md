@@ -131,6 +131,7 @@ GitHub CLIを使用した場合のプルリクエストの流れ
 ```bash
 git branch develop
 git checkout develop
+gh repo set-default
 gh pr create
 ```
 
