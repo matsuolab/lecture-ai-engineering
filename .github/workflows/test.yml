@@ -21,6 +21,13 @@ jobs:
           pip install pytest great_expectations pandas scikit-learn flake8 black mypy pytest-cov joblib
           if [ -f requirements.txt ]; then pip install -r requirements.txt; fi
 
+      - name: Generate model for tests
+        run: |
+          cd day5/演習1
+          python main.py      # データ準備→学習→モデル保存
+          python pipeline.py  # （必要ならKedroパイプラインも）
+          cd ../..            # ルートに戻る
+
       - name: Lint with flake8
         run: |
           flake8 day5/演習3 --count --select=E9,F63,F7,F82 --show-source --statistics
