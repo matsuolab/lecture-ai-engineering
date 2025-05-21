@@ -58,45 +58,31 @@ jobs:
       id: model_test
       run: |
         cd day5/演習3/tests
-        pytest test_model.py -v -s > output.log
-        echo "TEST_OUTPUT<<EOF" >> $GITHUB_OUTPUT
-        cat output.log >> $GITHUB_OUTPUT
-        echo "EOF" >> $GITHUB_OUTPUT
-      env:
-        BASELINE_ACCURACY: ${{ vars.BASELINE_ACCURACY }} # 環境変数として定義されている場合
+        pytest test_model.py -v -s | grep "現在のモデルの精度" | awk -F'(' '{print $2}' | awk -F')' '{print $1}' > accuracy.txt
+        if [ -s "accuracy.txt" ]; then
+          current_accuracy=$(cat accuracy.txt)
+          echo "ACCURACY_OUTPUT=$current_accuracy" >> $GITHUB_OUTPUT
+          echo "Extracted accuracy: $current_accuracy"
+        else
+          echo "Error: Could not extract accuracy from pytest output."
+          exit 1
+        # 必要であれば、TEST_OUTPUT の設定は削除またはコメントアウト
+        # echo "TEST_OUTPUT<<EOF" >> $GITHUB_OUTPUT
+        # cat output.log >> $GITHUB_OUTPUT
+        # echo "EOF" >> $GITHUB_OUTPUT
 
     - name: Update baseline accuracy (if tests passed)
       if: success()
       run: |
-        python -c "import os
-        import re
-        import subprocess
-
-        accuracy_output = os.environ.get('ACCURACY_OUTPUT')
-        github_token = os.environ.get('GITHUB_TOKEN')
-
-        if accuracy_output:
-          current_accuracy_match = re.search(r'現在のモデルの精度\((\d+\.\d+)\)', accuracy_output)
-          if current_accuracy_match:
-            current_accuracy = subprocess.run(
-                ['awk', '{printf \"%.4f\", $1}'],
-                input=current_accuracy_match[1],
-                text=True,
-                capture_output=True,
-                check=True
-            ).stdout.strip()
-            print(f'Updating BASELINE_ACCURACY to: {current_accuracy}')
-            subprocess.run(
-                ['gh', 'variable', 'set', 'BASELINE_ACCURACY', current_accuracy],
-                env={'GITHUB_TOKEN': github_token},
-                check=True
-            )
-          else:
-            print('Could not extract current accuracy from logs.')
-            exit(1)
-        else:
-          print('Error: ACCURACY_OUTPUT environment variable not set.')
-          exit(1)"
+        current_accuracy="${{ steps.model_test.outputs.ACCURACY_OUTPUT }}"
+        if [[ -n "$current_accuracy" ]]; then
+          echo "Updating BASELINE_ACCURACY to: $current_accuracy"
+          gh variable set BASELINE_ACCURACY "$current_accuracy"
+        else
+          echo "Error: ACCURACY_OUTPUT is empty."
+          exit 1
+        fi
       env:
-        ACCURACY_OUTPUT: ${{ steps.model_test.outputs.stdout }}
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+       
