@@ -1,4 +1,4 @@
-#コミットできるかのテストのためのコメント
+#コミットできるかのテストのためのコメントの修正
 import os
 import pandas as pd
 from sklearn.ensemble import RandomForestClassifier
