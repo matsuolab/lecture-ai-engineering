@@ -25,7 +25,7 @@ jobs:
         python -c "import os; print(f'BASELINE_ACCURACY from os: {os.environ.get(\"BASELINE_ACCURACY\")}')" # 確認用
         pytest day5/演習3/tests/test_model.py -v -s
     # ...
-    
+
     - name: Set up Python
       uses: actions/setup-python@v4
       with:
@@ -58,7 +58,9 @@ jobs:
         echo "TEST_OUTPUT<<EOF" >> $GITHUB_OUTPUT
         cat output.log >> $GITHUB_OUTPUT
         echo "EOF" >> $GITHUB_OUTPUT
-
+      env:
+        BASELINE_ACCURACY: ${{ vars.BASELINE_ACCURACY }}
+        
     - name: Update baseline accuracy (if tests passed)
       if: success()
       run: |
