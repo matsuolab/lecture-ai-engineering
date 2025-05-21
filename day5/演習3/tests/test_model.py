@@ -172,7 +172,7 @@ def test_model_reproducibility(sample_data, preprocessor):
         predictions1, predictions2
     ), "モデルの予測結果に再現性がありません"
 
-   
+
 def test_model_performance_against_baseline(train_model):
     """現在のモデルの精度がベースライン以上であることを検証"""
     model, X_test, y_test = train_model
@@ -190,5 +190,6 @@ def test_model_performance_against_baseline(train_model):
     except ValueError:
         pytest.fail("環境変数 BASELINE_ACCURACY の値が float に変換できません")
 
-    assert current_accuracy >= baseline_accuracy, f"現在のモデルの精度({current_accuracy:.4f})がベースライン({baseline_accuracy:.4f})を下回っています"
-    
+    assert (
+        current_accuracy >= baseline_accuracy
+    ), f"現在のモデルの精度({current_accuracy:.4f})がベースライン({baseline_accuracy:.4f})を下回っています"
