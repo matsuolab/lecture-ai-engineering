@@ -7,7 +7,6 @@ from sklearn.model_selection import train_test_split
 
 
 def load_test_data():
-    # フルデータを読み込み、main.py と同じ分割条件でテストセットを再現
     full = pd.read_csv(
         os.path.join(os.getcwd(), "day5", "演習1", "data", "Titanic.csv")
     )
@@ -18,20 +17,19 @@ def load_test_data():
 
 
 def get_model():
-    # リポジトリルート基準でモデルファイルパスを指定
     model_path = os.path.join(
         os.getcwd(), "day5", "演習1", "models", "titanic_model.pkl"
     )
     assert os.path.exists(model_path), f"Model file not found at {model_path}"
-    model = joblib.load(model_path)
-    return model
+    return joblib.load(model_path)
 
 
 def preprocess_X(model, X):
-    # モデルが学習時に見た特徴量(feature_names_in_)のみを抽出して ndarray 化
+    # モデルの feature_names_in_ から必要な列のみ抽出
     feat = list(model.feature_names_in_)
     X_sel = X[feat]
-    return X_sel.values
+    X_num = X_sel.select_dtypes(include="number")
+    return X_num.values
 
 
 def test_model_inference_accuracy():
