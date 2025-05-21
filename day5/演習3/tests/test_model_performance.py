@@ -1,20 +1,24 @@
 import time
+import os
 import joblib
 import pandas as pd
 from sklearn.metrics import accuracy_score
-import os
+from sklearn.model_selection import train_test_split
 
 
 def load_test_data():
-    # テストデータの読み込み
-    df = pd.read_csv(os.path.join(os.getcwd(), "day5", "演習1", "data", "Titanic.csv"))
-    X = df.drop("Survived", axis=1)
-    y = df["Survived"]
-    return X, y
+    # フルデータを読み込み、main.py と同じ分割条件でテストセットを再現
+    full = pd.read_csv(
+        os.path.join(os.getcwd(), "day5", "演習1", "data", "Titanic.csv")
+    )
+    X = full.drop("Survived", axis=1)
+    y = full["Survived"]
+    _, X_test, _, y_test = train_test_split(X, y, test_size=0.11, random_state=88)
+    return X_test, y_test
 
 
 def get_model():
-    # モデルファイルのパスをカレントディレクトリ基準で指定
+    # リポジトリルート基準でモデルファイルパスを指定
     model_path = os.path.join(
         os.getcwd(), "day5", "演習1", "models", "titanic_model.pkl"
     )
@@ -22,11 +26,17 @@ def get_model():
     return joblib.load(model_path)
 
 
+def preprocess_X(X):
+    # 数値型カラムのみ抽出（モデルが学習時に利用した構造に合わせる簡易対応）
+    X_num = X.select_dtypes(include=["number"])
+    return X_num.values if hasattr(X_num, "values") else X_num
+
+
 def test_model_inference_accuracy():
     model = get_model()
     X_test, y_test = load_test_data()
-    # 名前チェックをバイパスするため NumPy 配列で渡す
-    y_pred = model.predict(X_test.values if hasattr(X_test, "values") else X_test)
+    X_input = preprocess_X(X_test)
+    y_pred = model.predict(X_input)
     acc = accuracy_score(y_test, y_pred)
     assert acc >= 0.75, f"Expected accuracy >= 0.75, got {acc:.3f}"
 
@@ -34,9 +44,10 @@ def test_model_inference_accuracy():
 def test_model_inference_time():
     model = get_model()
     X_test, _ = load_test_data()
+    X_input = preprocess_X(X_test)
     n_runs = 100
     start = time.time()
     for _ in range(n_runs):
-        model.predict(X_test.values if hasattr(X_test, "values") else X_test)
+        model.predict(X_input)
     avg_time = (time.time() - start) / n_runs
     assert avg_time < 0.1, f"Inference too slow: {avg_time:.3f}s per run"
