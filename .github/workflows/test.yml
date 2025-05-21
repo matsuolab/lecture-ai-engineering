@@ -60,6 +60,10 @@ jobs:
         cd day5/演習3/tests
         pytest test_model.py -v -s > pytest_output.log
 
+        echo "------ Pytest Output ------"
+        cat pytest_output.log
+        echo "---------------------------"
+
         grep "現在のモデルの精度" pytest_output.log | awk -F'(' '{print $2}' | awk -F')' '{print $1}' > accuracy.txt
 
         if [ -s "accuracy.txt" ]; then
@@ -69,9 +73,9 @@ jobs:
         else
           echo "ACCURACY_OUTPUT=" >> $GITHUB_OUTPUT
           echo "Error: Could not extract accuracy from pytest output."
-          cat pytest_output.log  # デバッグ用に出力
           exit 1
         fi
+        
 
 
     - name: Update baseline accuracy (if tests passed)
