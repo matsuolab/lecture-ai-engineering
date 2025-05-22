@@ -48,6 +48,5 @@ jobs:
           git config user.name "github-actions[bot]"
           git config user.email "github-actions[bot]@users.noreply.github.com"
           git add models/previous_accuracy.json
-          # 変更があればコミット
           git diff --cached --quiet || \
             (git commit -m "ci: update accuracy baseline" && git push)
