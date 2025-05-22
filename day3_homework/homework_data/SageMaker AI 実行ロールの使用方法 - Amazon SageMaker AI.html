@@ -1,0 +1,1195 @@
+<!DOCTYPE html>
+    <html xmlns="http://www.w3.org/1999/xhtml" lang="ja-JP"><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8" /><title>SageMaker AI 実行ロールの使用方法 - Amazon SageMaker AI</title><meta name="viewport" content="width=device-width,initial-scale=1" /><meta name="assets_root" content="/assets" /><meta name="target_state" content="sagemaker-roles" /><meta name="default_state" content="sagemaker-roles" /><link rel="icon" type="image/ico" href="/assets/images/favicon.ico" /><link rel="shortcut icon" type="image/ico" href="/assets/images/favicon.ico" /><link rel="canonical" href="https://docs.aws.amazon.com/ja_jp/sagemaker/latest/dg/sagemaker-roles.html" /><meta name="description" content="Amazon SageMaker AI 実行ロールとは何か、およびそれらを使用する方法について説明します。" /><meta name="deployment_region" content="IAD" /><meta name="product" content="Amazon SageMaker AI" /><meta name="guide" content="デベロッパーガイド" /><meta name="abstract" content="SageMaker AI を使用して、 で機械学習モデルを構築、トレーニング、ホストします AWS。" /><meta name="guide-locale" content="ja_jp" /><meta name="tocs" content="toc-contents.json" /><link rel="canonical" href="https://docs.aws.amazon.com/ja_jp/sagemaker/latest/dg/sagemaker-roles.html" /><link rel="alternative" href="https://docs.aws.amazon.com/id_id/sagemaker/latest/dg/sagemaker-roles.html" hreflang="id-id" /><link rel="alternative" href="https://docs.aws.amazon.com/id_id/sagemaker/latest/dg/sagemaker-roles.html" hreflang="id" /><link rel="alternative" href="https://docs.aws.amazon.com/de_de/sagemaker/latest/dg/sagemaker-roles.html" hreflang="de-de" /><link rel="alternative" href="https://docs.aws.amazon.com/de_de/sagemaker/latest/dg/sagemaker-roles.html" hreflang="de" /><link rel="alternative" href="https://docs.aws.amazon.com/sagemaker/latest/dg/sagemaker-roles.html" hreflang="en-us" /><link rel="alternative" href="https://docs.aws.amazon.com/sagemaker/latest/dg/sagemaker-roles.html" hreflang="en" /><link rel="alternative" href="https://docs.aws.amazon.com/es_es/sagemaker/latest/dg/sagemaker-roles.html" hreflang="es-es" /><link rel="alternative" href="https://docs.aws.amazon.com/es_es/sagemaker/latest/dg/sagemaker-roles.html" hreflang="es" /><link rel="alternative" href="https://docs.aws.amazon.com/fr_fr/sagemaker/latest/dg/sagemaker-roles.html" hreflang="fr-fr" /><link rel="alternative" href="https://docs.aws.amazon.com/fr_fr/sagemaker/latest/dg/sagemaker-roles.html" hreflang="fr" /><link rel="alternative" href="https://docs.aws.amazon.com/it_it/sagemaker/latest/dg/sagemaker-roles.html" hreflang="it-it" /><link rel="alternative" href="https://docs.aws.amazon.com/it_it/sagemaker/latest/dg/sagemaker-roles.html" hreflang="it" /><link rel="alternative" href="https://docs.aws.amazon.com/ja_jp/sagemaker/latest/dg/sagemaker-roles.html" hreflang="ja-jp" /><link rel="alternative" href="https://docs.aws.amazon.com/ja_jp/sagemaker/latest/dg/sagemaker-roles.html" hreflang="ja" /><link rel="alternative" href="https://docs.aws.amazon.com/ko_kr/sagemaker/latest/dg/sagemaker-roles.html" hreflang="ko-kr" /><link rel="alternative" href="https://docs.aws.amazon.com/ko_kr/sagemaker/latest/dg/sagemaker-roles.html" hreflang="ko" /><link rel="alternative" href="https://docs.aws.amazon.com/pt_br/sagemaker/latest/dg/sagemaker-roles.html" hreflang="pt-br" /><link rel="alternative" href="https://docs.aws.amazon.com/pt_br/sagemaker/latest/dg/sagemaker-roles.html" hreflang="pt" /><link rel="alternative" href="https://docs.aws.amazon.com/zh_cn/sagemaker/latest/dg/sagemaker-roles.html" hreflang="zh-cn" /><link rel="alternative" href="https://docs.aws.amazon.com/zh_tw/sagemaker/latest/dg/sagemaker-roles.html" hreflang="zh-tw" /><link rel="alternative" href="https://docs.aws.amazon.com/sagemaker/latest/dg/sagemaker-roles.html" hreflang="x-default" /><meta name="feedback-item" content="SageMaker" /><meta name="this_doc_product" content="Amazon SageMaker AI" /><meta name="this_doc_guide" content="デベロッパーガイド" /><script defer="" src="/assets/r/vendor4.js?version=2021.12.02"></script><script defer="" src="/assets/r/vendor3.js?version=2021.12.02"></script><script defer="" src="/assets/r/vendor1.js?version=2021.12.02"></script><script defer="" src="/assets/r/awsdocs-common.js?version=2021.12.02"></script><script defer="" src="/assets/r/awsdocs-doc-page.js?version=2021.12.02"></script><link href="/assets/r/vendor4.css?version=2021.12.02" rel="stylesheet" /><link href="/assets/r/awsdocs-common.css?version=2021.12.02" rel="stylesheet" /><link href="/assets/r/awsdocs-doc-page.css?version=2021.12.02" rel="stylesheet" /><script async="" id="awsc-panorama-bundle" type="text/javascript" src="https://prod.pa.cdn.uis.awsstatic.com/panorama-nav-init.js" data-config="{'appEntity':'aws-documentation','region':'us-east-1','service':'sagemaker'}"></script><meta id="panorama-serviceSubSection" value="デベロッパーガイド" /><meta id="panorama-serviceConsolePage" value="SageMaker AI 実行ロールの使用方法" /></head><body class="awsdocs awsui"><div class="awsdocs-container"><awsdocs-header></awsdocs-header><awsui-app-layout id="app-layout" class="awsui-util-no-gutters" ng-controller="ContentController as $ctrl" header-selector="awsdocs-header" navigation-hide="false" navigation-width="$ctrl.navWidth" navigation-open="$ctrl.navOpen" navigation-change="$ctrl.onNavChange($event)" tools-hide="$ctrl.hideTools" tools-width="$ctrl.toolsWidth" tools-open="$ctrl.toolsOpen" tools-change="$ctrl.onToolsChange($event)"><div id="guide-toc" dom-region="navigation"><awsdocs-toc></awsdocs-toc></div><div id="main-column" dom-region="content" tabindex="-1"><awsdocs-view class="awsdocs-view"><div id="awsdocs-content"><head><title>SageMaker AI 実行ロールの使用方法 - Amazon SageMaker AI</title><meta name="pdf" content="sagemaker-dg.pdf#sagemaker-roles" /><meta name="rss" content="amazon-sagemaker-release-notes.rss" /><meta name="forums" content="https://repost.aws/ja/tags/TAT80swPyVRPKPcA0rsJYPuA" /><meta name="feedback" content="https://docs.aws.amazon.com/forms/aws-doc-feedback?hidden_service_name=SageMaker&amp;topic_url=https://docs.aws.amazon.com/ja_jp/sagemaker/latest/dg/sagemaker-roles.html" /><meta name="feedback-yes" content="feedbackyes.html?topic_url=https://docs.aws.amazon.com/ja_jp/sagemaker/latest/dg/sagemaker-roles.html" /><meta name="feedback-no" content="feedbackno.html?topic_url=https://docs.aws.amazon.com/ja_jp/sagemaker/latest/dg/sagemaker-roles.html" /><meta name="keywords" content="SageMaker,Amazon SageMaker,機械学習,ノートブックインスタンス" /><script type="application/ld+json">
+{
+    "@context" : "https://schema.org",
+    "@type" : "BreadcrumbList",
+    "itemListElement" : [
+      {
+        "@type" : "ListItem",
+        "position" : 1,
+        "name" : "AWS",
+        "item" : "https://aws.amazon.com"
+      },
+      {
+        "@type" : "ListItem",
+        "position" : 2,
+        "name" : "Amazon SageMaker",
+        "item" : "https://docs.aws.amazon.com/sagemaker/index.html"
+      },
+      {
+        "@type" : "ListItem",
+        "position" : 3,
+        "name" : "デベロッパーガイド",
+        "item" : "https://docs.aws.amazon.com/ja_jp/sagemaker/latest/dg"
+      },
+      {
+        "@type" : "ListItem",
+        "position" : 4,
+        "name" : "Amazon SageMaker AI でセキュリティを設定する",
+        "item" : "https://docs.aws.amazon.com/ja_jp/sagemaker/latest/dg/security.html"
+      },
+      {
+        "@type" : "ListItem",
+        "position" : 5,
+        "name" : "AWS Identity and Access Management for Amazon SageMaker AI",
+        "item" : "https://docs.aws.amazon.com/ja_jp/sagemaker/latest/dg/security-iam.html"
+      },
+      {
+        "@type" : "ListItem",
+        "position" : 6,
+        "name" : "SageMaker AI 実行ロールの使用方法",
+        "item" : "https://docs.aws.amazon.com/ja_jp/sagemaker/latest/dg/security-iam.html"
+      }
+    ]
+}
+</script></head><body><div id="main"><div style="display: none"><a href="sagemaker-dg.pdf#sagemaker-roles" target="_blank" rel="noopener noreferrer" title="PDF を開く"></a></div><div id="breadcrumbs" class="breadcrumb"><a href="/index.html">ドキュメント</a><a href="/sagemaker/index.html">Amazon SageMaker</a><a href="whatis.html">デベロッパーガイド</a></div><div id="page-toc-src"><a href="#sagemaker-roles-create-execution-role">実行ロールを作成する</a><a href="#sagemaker-roles-get-execution-role">実行ロールを取得する</a><a href="#sagemaker-roles-change-execution-role">実行ロールを変更する</a><a href="#sagemaker-roles-modify-to-execution-role">実行ロールのアクセス許可を変更する</a><a href="#sagemaker-roles-pass-role">ロールを渡す</a><a href="#sagemaker-roles-autopilot-perms">CreateAutoMLJob と CreateAutoMLJobV2 API: 実行ロールのアクセス許可</a><a href="#sagemaker-roles-createdomain-perms">CreateDomain API: 実行ロールアクセス許可</a><a href="#sagemaker-roles-createimage-perms">CreateImage API と UpdateImage API: 実行ロールアクセス許可</a><a href="#sagemaker-roles-createnotebookinstance-perms">CreateNotebookInstance API: 実行ロールアクセス許可</a><a href="#sagemaker-roles-createhyperparametertiningjob-perms">CreateHyperParameterTuningJob API: 実行ロールアクセス許可</a><a href="#sagemaker-roles-createprocessingjob-perms">CreateProcessingJob API: 実行ロールのアクセス許可</a><a href="#sagemaker-roles-createtrainingjob-perms">CreateTrainingJob API: 実行ロールアクセス許可</a><a href="#sagemaker-roles-createmodel-perms">CreateModel API: 実行ロールアクセス許可</a></div><div id="main-content" class="awsui-util-container"><div id="main-col-body"><awsdocs-language-banner data-service="$ctrl.pageService"></awsdocs-language-banner><awsui-alert class="awsdocs-page-banner awsui-util-mb-l"><p>翻訳は機械翻訳により提供されています。提供された翻訳内容と英語版の間で齟齬、不一致または矛盾がある場合、英語版が優先します。</p></awsui-alert><h1 class="topictitle" id="sagemaker-roles">SageMaker AI 実行ロールの使用方法</h1><div class="awsdocs-page-header-container"><awsdocs-page-header></awsdocs-page-header><awsdocs-filter-selector id="awsdocs-filter-selector"></awsdocs-filter-selector></div><p>Amazon SageMaker AI は、ユーザーに代わって他の AWS サービスを使用してオペレーションを実行します。これらのサービスとそのサービスが動作するリソースを使用するためのアクセス許可を SageMaker AI に付与する必要があります。（ AWS Identity and Access Management IAM) 実行ロールを使用して、SageMaker AI にこれらのアクセス許可を付与します。IAM ロールの詳細については、「<a href="https://docs.aws.amazon.com/IAM/latest/UserGuide/id_roles.html">IAM ロール</a>」を参照してください。</p><p>実行ロールを作成して使用するには、以下の手順を実行します。</p>
+            <h2 id="sagemaker-roles-create-execution-role">実行ロールを作成する</h2>
+            <p>以下の手順を実行して、IAM 管理ポリシー <code class="code">AmazonSageMakerFullAccess</code> をアタッチした実行ロールを作成します。詳細なアクセス許可が必要なユースケースの場合は、このページの他のセクションを使用して、ビジネスニーズを満たす実行ロールを作成します。SageMaker AI コンソールまたは を使用して実行ロールを作成できます AWS CLI。</p>
+            <div class="awsdocs-note awsdocs-important"><div class="awsdocs-note-title"><awsui-icon name="status-warning" variant="error"></awsui-icon><h6>重要</h6></div><div class="awsdocs-note-text"><p>以下の手順で使用されている IAM 管理ポリシー <code class="code">AmazonSageMakerFullAccess</code> では、名前に <code class="code">SageMaker</code>、<code class="code">Sagemaker</code>、<code class="code">sagemaker</code>、<code class="code">aws-glue</code> を持つ特定の Amazon S3 アクションをバケットまたはオブジェクトで実行するアクセス許可のみが実行ロールに付与されます。実行ロールにポリシーを追加して、他の Amazon S3 バケットやオブジェクトへのアクセス権を付与する方法については、「<a href="#sagemaker-roles-get-execution-role-s3">SageMaker AI 実行ロールに Amazon S3 アクセス許可を追加する</a>」を参照してください。</p></div></div>
+            <div class="awsdocs-note"><div class="awsdocs-note-title"><awsui-icon name="status-info" variant="link"></awsui-icon><h6>注記</h6></div><div class="awsdocs-note-text"><p>SageMaker AI ドメインまたはノートブックインスタンスを作成するときに、実行ロールを直接作成できます。</p><div class="itemizedlist">
+                     
+                     
+                <ul class="itemizedlist"><li class="listitem">
+                        <p>SageMaker AI ドメインを作成する方法については、「」を参照してください<a href="./gs.html">Amazon SageMaker AI のセットアップガイド</a>。</p>
+                    </li><li class="listitem">
+                        <p>ノートブックインスタンスを作成する方法については、「<a href="./gs-setup-working-env.html">チュートリアル用 Amazon SageMaker ノートブックインスタンスを作成する</a>」を参照してください。</p>
+                    </li></ul></div></div></div>
+            <p><b>SageMaker AI コンソールから新しい実行ロールを作成するには</b></p>
+            <div class="procedure"><ol><li><p>IAM コンソール (<a href="https://console.aws.amazon.com/iam/" rel="noopener noreferrer" target="_blank"><span>https://console.aws.amazon.com/iam/</span><awsui-icon class="awsdocs-link-icon" name="external"></awsui-icon></a>) を開きます。</p></li><li>
+                    <p><b>[Roles]</b> (ロール)、<b>[Create role]</b> (ロールの作成) の順に選択します。</p>
+                </li><li>
+                    <p><b>AWS サービスを</b><b>信頼されたエンティティタイプ</b>として保持し、下矢印を使用して他のサービスのユースケースで <b>SageMaker AI</b> を見つけます。 <b> AWS </b></p>
+                </li><li>
+                    <p><b>SageMaker AI – Execution</b> を選択し、<b>Next</b> を選択します。</p>
+                </li><li>
+                    <p>IAM マネージドポリシー <code class="code">AmazonSageMakerFullAccess</code> は、ロールに自動的にアタッチされます。このポリシーに含まれるアクセス許可を表示するには、ポリシー名の横にあるプラス (<b>+</b>) 記号を選択します。[<b>次へ</b>] を選択します。</p>
+                </li><li>
+                    <p><b>[ロール名]</b> と <b>[説明]</b> を入力します。</p>
+                </li><li>
+                    <p>(オプション) ロールにアクセス許可とタグを追加します。</p>
+                </li><li>
+                    <p>[<b>ロールの作成</b>] を選択してください。</p>
+                </li><li>
+                    <p>IAM コンソールの <b>[ロール]</b> セクションで、先ほど作成したロールを検索します。必要に応じて、テキストボックスを使用してロール名でロールを検索します。</p>
+                </li><li>
+                    <p>ロールの概要ページにある ARN を書き留めておきます。</p>
+                </li></ol></div>
+            <p><b> AWS CLIから新しい実行ロールを作成する</b></p>
+            <p>を使用して実行ロールを作成する前に AWS CLI、「」の手順に従って実行ロールを更新および設定し<a href="./gs-set-up.html#gs-cli-prereq">（オプション) を設定する AWS CLI</a>、「」の手順を続行してください<a href="./onboard-custom.html#onboard-custom-instructions-cli">を使用したカスタムセットアップ AWS CLI</a>。</p>
+            <p>実行ロールを作成したら、SageMaker AI ドメイン、ユーザープロファイル、または Jupyter ノートブックインスタンスに関連付けることができます。</p>
+            <div class="itemizedlist">
+                 
+                 
+                 
+            <ul class="itemizedlist"><li class="listitem">
+                    <p>実行ロールを既存の SageMaker AI ドメインに関連付ける方法については、「」を参照してください<a href="./domain-edit.html">ドメイン設定を編集する</a>。</p>
+                </li><li class="listitem">
+                    <p>実行ロールを既存のユーザープロファイルに関連付ける方法については、「<a href="./domain-user-profile-add.html">ユーザープロファイルの追加</a>」を参照してください。</p>
+                </li><li class="listitem">
+                    <p>実行ロールを既存のノートブックインスタンスに関連付ける方法については、「<a href="./nbi-update.html">ノートブックインスタンスを更新する</a>」を参照してください。</p>
+                </li></ul></div>
+            <p>実行ロールの ARN を API コールに渡すこともできます。例えば、<a href="https://sagemaker.readthedocs.io/en/stable" rel="noopener noreferrer" target="_blank"><span>Amazon SageMaker Python SDK</span><awsui-icon class="awsdocs-link-icon" name="external"></awsui-icon></a> を使用すると、実行ロールの ARN を推定器に渡すことができます。以下のコードサンプルでは、XGBoost アルゴリズムコンテナを使用して推定器を作成し、実行ロールの ARN をパラメータとして渡します。GitHub のサンプル全体については、「<a href="https://github.com/aws/amazon-sagemaker-examples/blob/89c54681b7e0f83ce137b34b879388cf5960af93/introduction_to_applying_machine_learning/xgboost_customer_churn/xgboost_customer_churn.ipynb" rel="noopener noreferrer" target="_blank"><span>Customer Churn Prediction with XGBoost</span><awsui-icon class="awsdocs-link-icon" name="external"></awsui-icon></a>」を参照してください。</p>
+            <pre class="programlisting"><div class="code-btn-container"><div class="btn-copy-code" title="コピー"><awsui-icon name="copy"></awsui-icon></div></div><!--DEBUG: cli (py)--><code class="py ">import sagemaker, boto3
+from sagemaker import image_uris
+
+sess = sagemaker.Session()
+region = sess.boto_region_name
+bucket = sess.default_bucket()
+prefix = "sagemaker/DEMO-xgboost-churn"
+container = sagemaker.image_uris.retrieve("xgboost", region, "1.7-1")
+
+xgb = sagemaker.estimator.Estimator(
+    container,
+    <code class="replaceable">execution-role-ARN</code>,
+    instance_count=1,
+    instance_type="ml.m4.xlarge",
+    output_path="s3://<span>{</span>}/<span>{</span>}/output".format(bucket, prefix),
+    sagemaker_session=sess,
+)
+
+...
+</code></pre>
+
+             
+                <h3 id="sagemaker-roles-get-execution-role-s3">SageMaker AI 実行ロールに Amazon S3 アクセス許可を追加する</h3>
+                <p>入力データなどの Amazon S3 のリソースで SageMaker AI 機能を使用する場合、リクエストで指定した実行ロール ( など<code class="code">CreateTrainingJob</code>) を使用してこれらのリソースにアクセスします。</p>
+                <p>IAM 管理ポリシー <code class="code">AmazonSageMakerFullAccess</code> を実行ロールにアタッチすると、そのロールには、名前に <code class="code">SageMaker</code>、<code class="code">Sagemaker</code>、<code class="code">sagemaker</code>、<code class="code">aws-glue</code> を持つ特定の Amazon S3 アクションをバケットやオブジェクトで実行するためのアクセス許可が付与されます。また、Amazon S3 リソースで以下のアクションを実行するアクセス許可が付与されます。</p>
+                <pre class="programlisting"><div class="code-btn-container"><div class="btn-copy-code" title="コピー"><awsui-icon name="copy"></awsui-icon></div></div><!--DEBUG: cli ()--><code class="">"s3:CreateBucket", 
+"s3:GetBucketLocation",
+"s3:ListBucket",
+"s3:ListAllMyBuckets",
+"s3:GetBucketCors",
+"s3:PutBucketCors"</code></pre>
+                <p>Amazon S3 の 1 つ以上の特定のバケットにアクセスするためのアクセス許可を実行ロールに付与するには、以下のようなポリシーをロールにアタッチします。このポリシーは、<code class="code">AmazonSageMakerFullAccess</code> が許可するすべてのアクションを実行するアクセス許可を IAM ロールに付与します。ただし、アクセスは amzn-s3-demo-bucket1 バケットと amzn-s3-demo-bucket2 バケットに制限されます。この機能に必要な Amazon S3 アクセス許可の詳細については、使用している特定の SageMaker AI 機能のセキュリティドキュメントを参照してください。</p>
+                <pre class="programlisting"><div class="code-btn-container"><div class="btn-copy-code" title="コピー"><awsui-icon name="copy"></awsui-icon></div></div><!--DEBUG: cli ()--><code class="nohighlight"><span>{</span>
+    "Version": "2012-10-17",
+    "Statement": [
+        <span>{</span>
+            "Effect": "Allow",
+            "Action": [
+                "s3:GetObject",
+                "s3:PutObject",
+                "s3:DeleteObject",
+                "s3:AbortMultipartUpload"
+            ],
+            "Resource": [
+                "arn:aws:s3:::<code class="replaceable">amzn-s3-demo-bucket1/*</code>",
+                "arn:aws:s3:::<code class="replaceable">amzn-s3-demo-bucket2/*</code>"
+            ]
+        }, 
+        <span>{</span>
+            "Effect": "Allow",
+            "Action": [
+                "s3:CreateBucket",
+                "s3:GetBucketLocation",
+                "s3:ListBucket",
+                "s3:ListAllMyBuckets",
+                "s3:GetBucketCors",
+                "s3:PutBucketCors"
+            ],
+            "Resource": "*"
+        },
+        <span>{</span>
+            "Effect": "Allow",
+            "Action": [
+                "s3:GetBucketAcl",
+                "s3:PutObjectAcl"
+            ],
+            "Resource": [
+                "arn:aws:s3:::<code class="replaceable">amzn-s3-demo-bucket1</code>",
+                "arn:aws:s3:::<code class="replaceable">amzn-s3-demo-bucket2</code>"
+            ]
+        }
+    ]
+}</code></pre>
+             
+         
+            <h2 id="sagemaker-roles-get-execution-role">実行ロールを取得する</h2>
+            <p><a href="https://console.aws.amazon.com/sagemaker" rel="noopener noreferrer" target="_blank"><span>SageMaker AI コンソール</span><awsui-icon class="awsdocs-link-icon" name="external"></awsui-icon></a>、<a href="https://sagemaker.readthedocs.io/en/stable" rel="noopener noreferrer" target="_blank"><span>Amazon SageMaker Python SDK</span><awsui-icon class="awsdocs-link-icon" name="external"></awsui-icon></a>、または を使用して<a href="https://docs.aws.amazon.com/cli/latest/userguide/cli-chap-welcome.html">AWS CLI</a>、SageMaker AI ドメイン、スペース、またはユーザープロファイルにアタッチされた実行ロールの ARN と名前を取得できます。</p>
+
+            <div class="highlights" id="inline-topiclist"><h6>トピック</h6><ul><li><p><a href="#sagemaker-roles-get-execution-role-domain">ドメインの実行ロールを取得する</a></p></li><li><p><a href="#sagemaker-roles-get-execution-role-space">スペースの実行ロールを取得する</a></p></li><li><p><a href="#sagemaker-roles-get-execution-role-user">ユーザーの実行ロールを取得する</a></p></li></ul></div>
+
+
+             
+                <h3 id="sagemaker-roles-get-execution-role-domain">ドメインの実行ロールを取得する</h3>
+                <p>ドメインの実行ロールを検索する手順は次のとおりです。</p>
+
+                <div class="collapsible" data-expand-section="_collapse_all_"><awsui-expandable-section variant="container" header="ドメイン実行ロールを取得する (コンソール) " id="sagemaker-roles-get-execution-role-domain-console" expanded="false"><div class="procedure"><h6>ドメインにアタッチされた実行ロールを検索する</h6><ol><li>
+                                <p>SageMaker AI コンソール、「https://<a href="https://console.aws.amazon.com/sagemaker/" rel="noopener noreferrer" target="_blank"><span>https://console.aws.amazon.com/sagemaker/</span><awsui-icon class="awsdocs-link-icon" name="external"></awsui-icon></a>.</p>
+                            </li><li>
+                                <p>左側のナビゲーションペインで、<b>[管理者設定]</b> の下にある <b>[ドメイン]</b> を選択します。</p>
+                            </li><li>
+                                <p>ドメインに対応するリンクをクリックします。</p>
+                            </li><li>
+                                <p><b>[ドメインの設定]</b> タブを選択します。</p>
+                            </li><li>
+                                <p><b>[全般設定]</b> セクションでは、<b>[実行ロール]</b> に実行ロール ARN が一覧表示されます。</p>
+                                <p>実行ロール ARN の 最後の <code class="code">/</code> の後にあるのが、実行ロール名です。</p>
+                            </li></ol></div></awsui-expandable-section></div>
+
+             
+
+
+             
+                <h3 id="sagemaker-roles-get-execution-role-space">スペースの実行ロールを取得する</h3>
+
+                <p>スペースの実行ロールを検索する手順は次のとおりです。</p>
+
+                <div class="collapsible" data-expand-section="_collapse_all_"><awsui-expandable-section variant="container" header="スペースの実行ロールを取得する (コンソール)" id="sagemaker-roles-get-execution-role-space-console" expanded="false"><div class="procedure"><h6>スペースにアタッチされた実行ロールを検索する</h6><ol><li>
+                                <p>SageMaker AI コンソール、「https://<a href="https://console.aws.amazon.com/sagemaker/" rel="noopener noreferrer" target="_blank"><span>https://console.aws.amazon.com/sagemaker/</span><awsui-icon class="awsdocs-link-icon" name="external"></awsui-icon></a>.</p>
+                            </li><li>
+                                <p>左側のナビゲーションペインで、<b>[管理者設定]</b> の下にある <b>[ドメイン]</b> を選択します。</p>
+                            </li><li>
+                                <p>ドメインに対応するリンクをクリックします。</p>
+                            </li><li>
+                                <p><b>[スペース管理]</b> タブをクリックします。</p>
+                            </li><li>
+                                <p><b>[詳細]</b> セクションでは、<b>[実行ロール]</b> に実行ロール ARN が一覧表示されます。</p>
+                                <p>実行ロール ARN の 最後の <code class="code">/</code> の後にあるのが、実行ロール名です。</p>
+                            </li></ol></div></awsui-expandable-section><awsui-expandable-section variant="container" header="スペースの実行ロールを取得する (SDK for Python)" id="sagemaker-roles-get-execution-role-space-sdk" expanded="false"><div class="awsdocs-note"><div class="awsdocs-note-title"><awsui-icon name="status-info" variant="link"></awsui-icon><h6>注記</h6></div><div class="awsdocs-note-text"><p>次のコードは、Amazon SageMaker Studio の IDEs と同様に、SageMaker AI 環境で実行されることを目的としています。 Amazon SageMaker  SageMaker AI 環境の<code class="code">get_execution_role</code>外部で を実行すると、エラーが表示されます。</p></div></div><p>次の <a href="https://sagemaker.readthedocs.io/en/stable/api/utility/session.html#sagemaker.session.get_execution_role" rel="noopener noreferrer" target="_blank"><span><code class="code">get_execution_role</code></span><awsui-icon class="awsdocs-link-icon" name="external"></awsui-icon></a> <a href="https://sagemaker.readthedocs.io/en/stable" rel="noopener noreferrer" target="_blank"><span>Amazon SageMaker Python SDK</span><awsui-icon class="awsdocs-link-icon" name="external"></awsui-icon></a> コマンドを使用すると、スペースにアタッチされた実行ロールの ARN を取得できます。</p><pre class="programlisting"><div class="code-btn-container"><div class="btn-copy-code" title="コピー"><awsui-icon name="copy"></awsui-icon></div></div><!--DEBUG: cli (python)--><code class="python ">from sagemaker import get_execution_role
+role = get_execution_role()
+print(role)</code></pre><p>実行ロール ARN の 最後の <code class="code">/</code> の後にあるのが、実行ロール名です。</p></awsui-expandable-section></div>
+
+
+             
+
+
+             
+                <h3 id="sagemaker-roles-get-execution-role-user">ユーザーの実行ロールを取得する</h3>
+
+                <p>ユーザーの実行ロールを検索する手順は次のとおりです。</p>
+                <div class="collapsible" data-expand-section="_collapse_all_"><awsui-expandable-section variant="container" header="ユーザーの実行ロールを取得する (コンソール) " id="sagemaker-roles-get-execution-role-user-console" expanded="false"><div class="procedure"><h6>ユーザーにアタッチされた実行ロールを検索する</h6><ol><li>
+                                <p>SageMaker AI コンソール、「https://<a href="https://console.aws.amazon.com/sagemaker/" rel="noopener noreferrer" target="_blank"><span>https://console.aws.amazon.com/sagemaker/</span><awsui-icon class="awsdocs-link-icon" name="external"></awsui-icon></a>://www.</p>
+                            </li><li>
+                                <p>左側のナビゲーションペインで、<b>[管理者設定]</b> の下にある <b>[ドメイン]</b> を選択します。</p>
+                            </li><li>
+                                <p>ドメインに対応するリンクをクリックします。</p>
+                            </li><li>
+                                <p><b>[ユーザープロファイル]</b> タブを選択します。</p>
+                            </li><li>
+                                <p>ユーザーに対応するリンクをクリックします。</p>
+                            </li><li>
+                                <p><b>[詳細]</b> セクションでは、<b>[実行ロール]</b> に実行ロール ARN が一覧表示されます。</p>
+                                <p>実行ロール ARN の 最後の <code class="code">/</code> の後にあるのが、実行ロール名です。</p>
+                            </li></ol></div></awsui-expandable-section><awsui-expandable-section variant="container" header="スペースの実行ロールを取得する (AWS CLI)" id="sagemaker-roles-get-execution-role-user-cli" expanded="false"><div class="awsdocs-note"><div class="awsdocs-note-title"><awsui-icon name="status-info" variant="link"></awsui-icon><h6>注記</h6></div><div class="awsdocs-note-text"><p>次の例を使用するには、 AWS Command Line Interface （AWS CLI) をインストールして設定する必要があります。詳細については、「<em>AWS Command Line Interface バージョン 2 用ユーザーガイド</em>」の「<a href="https://docs.aws.amazon.com/cli/latest/userguide/cli-chap-getting-started.html">Get started with the AWS CLI</a>」を参照してください。</p></div></div><p>次の <a href="https://awscli.amazonaws.com/v2/documentation/api/latest/reference/sts/get-caller-identity.html" rel="noopener noreferrer" target="_blank"><span><code class="code">get-caller-identity</code></span><awsui-icon class="awsdocs-link-icon" name="external"></awsui-icon></a> AWS CLI コマンドは、リクエストの認証に使用される IAM ID に関する情報を表示します。呼び出したのは IAM ユーザーです。</p><pre class="programlisting"><div class="code-btn-container"><div class="btn-copy-code" title="コピー"><awsui-icon name="copy"></awsui-icon></div></div><!--DEBUG: cli (cli)--><code class="nohighlight " data-source="untagged">aws sts get-caller-identity</code></pre><p>実行ロール ARN の 最後の <code class="code">/</code> の後にあるのが、実行ロール名です。</p></awsui-expandable-section></div>
+
+
+             
+         
+            <h2 id="sagemaker-roles-change-execution-role">実行ロールを変更する</h2>
+
+            <p>実行ロールは、SageMaker AI ID (SageMaker AI ユーザー、スペース、ドメインなど) が引き受ける IAM ロールです。IAM ロールを変更すると、そのロールを引き受けるすべての ID のアクセス許可が変更されます。</p>
+
+            <p>実行ロールを変更すると、対応するスペースの実行ロールも変更されます。変更の影響が伝播されるまでに時間がかかる場合があります。</p>
+            <div class="itemizedlist">
+                 
+                 
+            <ul class="itemizedlist"><li class="listitem">
+                    <p><em>ユーザー</em>の実行ロールを変更すると、そのユーザーが作成した<em>プライベートスペース</em>が、変更された実行ロールを引き受けます。</p>
+                </li><li class="listitem">
+                    <p><em>スペースのデフォルトの実行ロール</em>を変更すると、ドメインの<em>共有スペース</em>が、変更された実行ロールを引き受けます。</p>
+                </li></ul></div>
+            <p>実行ロールとスペースの詳細については、「<a href="./execution-roles-and-spaces.html">ドメインスペースのアクセス許可と実行ロールを理解する</a>」を参照してください。</p>
+
+            <p>次のいずれかの手順を使用して、アイデンティティの実行ロールを別の IAM ロールに変更できます。</p>
+
+            <p>代わりに、アイデンティティが引き受けているロールを<em>変更する</em>場合は、「<a href="#sagemaker-roles-modify-to-execution-role">実行ロールのアクセス許可を変更する</a>」を参照してください。</p>
+
+            <div class="highlights" id="inline-topiclist"><h6>トピック</h6><ul><li><p><a href="#sagemaker-roles-change-execution-role-domain">ドメインのデフォルト実行ロールを変更する</a></p></li><li><p><a href="#sagemaker-roles-change-execution-role-space">スペースのデフォルトの実行ロールを変更する</a></p></li><li><p><a href="#sagemaker-roles-change-execution-role-user">ユーザープロファイルの実行ロールを変更する</a></p></li></ul></div>
+
+
+             
+                <h3 id="sagemaker-roles-change-execution-role-domain">ドメインのデフォルト実行ロールを変更する</h3>
+
+                <p>ドメインのデフォルトの実行ロールを変更する手順は次のとおりです。</p>
+
+                <div class="collapsible" data-expand-section="_collapse_all_"><awsui-expandable-section variant="container" header="ドメインのデフォルト実行ロールを変更する (コンソール)" id="sagemaker-roles-change-execution-role-domain-console" expanded="false"><div class="procedure"><h6>ドメインにアタッチされたデフォルトの実行ロールを変更する</h6><ol><li>
+                                <p>SageMaker AI コンソール、「https://<a href="https://console.aws.amazon.com/sagemaker/" rel="noopener noreferrer" target="_blank"><span>https://console.aws.amazon.com/sagemaker/</span><awsui-icon class="awsdocs-link-icon" name="external"></awsui-icon></a>.</p>
+                            </li><li>
+                                <p>左側のナビゲーションペインで、<b>[管理者設定]</b> の下にある <b>[ドメイン]</b> を選択します。</p>
+                            </li><li>
+                                <p>ドメインに対応するリンクをクリックします。</p>
+                            </li><li>
+                                <p><b>[ドメインの設定]</b> タブを選択します。</p>
+                            </li><li>
+                                <p><b>[全般設定]</b> セクションで、<b>[編集]</b> をクリックします。</p>
+                            </li><li>
+                                <p><b>[アクセス許可]</b> セクションの <b>[デフォルトの実行ロール]</b> の下で、ドロップダウンリストを展開します。</p>
+                            </li><li>
+                                <p>ドロップダウンリストを使用して、既存のロールを選択することも、カスタム IAM ロール ARN を入力することも、新しいロールを作成することもできます。</p>
+                                <p>新しいロールを作成する場合は、<b>[ロール作成ウィザードを使用してロールを作成]</b> オプションを選択できます。</p>
+                            </li><li>
+                                <p>次のステップで [次へ] をクリックして、最後のステップで [送信] をクリックします。</p>
+                            </li></ol></div></awsui-expandable-section></div>
+
+             
+
+
+             
+                <h3 id="sagemaker-roles-change-execution-role-space">スペースのデフォルトの実行ロールを変更する</h3>
+                <p>スペースのデフォルトの実行ロールを変更する手順は次のとおりです。この実行ロールを変更すると、ドメイン内のすべての共有スペースが引き受けるロールが変更されます。</p>
+
+                <div class="collapsible" data-expand-section="_collapse_all_"><awsui-expandable-section variant="container" header="スペースのデフォルトの実行ロールを変更する (コンソール)" id="sagemaker-roles-change-execution-role-space-console" expanded="false"><div class="procedure"><h6>新しいスペースを作成する際に、スペースのデフォルトの実行ロールを変更する</h6><ol><li>
+                                <p>SageMaker AI コンソール、「https://<a href="https://console.aws.amazon.com/sagemaker/" rel="noopener noreferrer" target="_blank"><span>https://console.aws.amazon.com/sagemaker/</span><awsui-icon class="awsdocs-link-icon" name="external"></awsui-icon></a>.</p>
+                            </li><li>
+                                <p>左側のナビゲーションペインで、<b>[管理者設定]</b> の下にある <b>[ドメイン]</b> を選択します。</p>
+                            </li><li>
+                                <p>ドメインに対応するリンクをクリックします。</p>
+                            </li><li>
+                                <p><b>[ドメインの設定]</b> タブを選択します。</p>
+                            </li><li>
+                                <p><b>[全般設定]</b> セクションで、<b>[編集]</b> をクリックします。</p>
+                            </li><li>
+                                <p><b>[アクセス許可]</b> セクションの <b>[スペースのデフォルトの実行ロール]</b> の下で、ドロップダウンリストを展開します。</p>
+                            </li><li>
+                                <p>ドロップダウンリストを使用して、既存のロールを選択することも、カスタム IAM ロール ARN を入力することも、新しいロールを作成することもできます。</p>
+                                <p>新しいロールを作成する場合は、<b>[ロール作成ウィザードを使用してロールを作成]</b> オプションを選択できます。</p>
+                            </li><li>
+                                <p>次のステップで <b>[次へ]</b> をクリックして、最後のステップで <b>[送信]</b> をクリックします。</p>
+                            </li></ol></div></awsui-expandable-section></div>
+
+             
+
+
+             
+                <h3 id="sagemaker-roles-change-execution-role-user">ユーザープロファイルの実行ロールを変更する</h3>
+                <p>ユーザープロファイルの実行ロールを変更する手順は次のとおりです。この実行ロールを変更すると、このユーザーが作成したすべてのプライベートスペースが引き受けるロールが変更されます。</p>
+
+                <div class="collapsible" data-expand-section="_collapse_all_"><awsui-expandable-section variant="container" header="ユーザープロファイルの実行ロールを変更する (コンソール)" id="sagemaker-roles-change-execution-role-user-console" expanded="false"><div class="procedure"><h6>ユーザーにアタッチされた実行ロールを変更する</h6><ol><li>
+                                <p>SageMaker AI コンソール、「https://<a href="https://console.aws.amazon.com/sagemaker/" rel="noopener noreferrer" target="_blank"><span>https://console.aws.amazon.com/sagemaker/</span><awsui-icon class="awsdocs-link-icon" name="external"></awsui-icon></a>://www.</p>
+                            </li><li>
+                                <p>左側のナビゲーションペインで、<b>[管理者設定]</b> の下にある <b>[ドメイン]</b> を選択します。</p>
+                            </li><li>
+                                <p>ドメインに対応するリンクをクリックします。</p>
+                            </li><li>
+                                <p><b>[ユーザープロファイル]</b> タブを選択します。</p>
+                            </li><li>
+                                <p>ユーザープロファイル名に対応するリンクをクリックします。</p>
+                            </li><li>
+                                <p><b>[編集]</b> を選択します。</p>
+                            </li><li>
+                                <p>ドロップダウンリストを使用して、既存のロールを選択することも、カスタム IAM ロール ARN を入力することも、新しいロールを作成することもできます。</p>
+                                <p>新しいロールを作成する場合は、<b>[ロール作成ウィザードを使用してロールを作成]</b> オプションを選択できます。</p>
+                            </li><li>
+                                <p>次のステップで <b>[次へ]</b> をクリックして、最後のステップで <b>[送信]</b> をクリックします。</p>
+                            </li></ol></div></awsui-expandable-section></div>
+
+             
+
+         
+            <h2 id="sagemaker-roles-modify-to-execution-role">実行ロールのアクセス許可を変更する</h2>
+            <p>ID の実行ロール (SageMaker AI ユーザー、スペース、ドメインなど) に対する既存のアクセス許可を変更できます。これを行うには、アイデンティティが引き受けている適切な IAM ロールを検索してから、その IAM ロールを変更します。コンソールを使用してこれを実行する手順は次のとおりです。</p>
+
+            <p>実行ロールを変更すると、対応するスペースの実行ロールも変更されます。この変更は直ちには反映されない場合があります。</p>
+            <div class="itemizedlist">
+                 
+                 
+            <ul class="itemizedlist"><li class="listitem">
+                    <p><em>ユーザー</em>の実行ロールを変更すると、そのユーザーが作成した<em>プライベートスペース</em>が、変更された実行ロールを引き受けます。</p>
+                </li><li class="listitem">
+                    <p><em>スペースのデフォルトの実行ロール</em>を変更すると、ドメインの<em>共有スペース</em>が、変更された実行ロールを引き受けます。</p>
+                </li></ul></div>
+            <p>実行ロールとスペースの詳細については、「<a href="./execution-roles-and-spaces.html">ドメインスペースのアクセス許可と実行ロールを理解する</a>」を参照してください。</p>
+
+            <p>代わりに、アイデンティティが引き受けているロールを<em>変更する</em>場合は、「<a href="#sagemaker-roles-change-execution-role">実行ロールを変更する</a>」を参照してください。</p>
+
+            <div class="collapsible" data-expand-section="_collapse_all_"><awsui-expandable-section variant="container" header="アクセス許可を実行ロールに変更する (コンソール)" id="sagemaker-roles-modify-to-execution-role-console" expanded="false"><div class="procedure"><h6>アクセス許可を実行ロールに変更するには</h6><ol><li>
+                            <p>まず、変更する ID の名前を取得します。</p>
+                            <div class="itemizedlist">
+                                 
+                                 
+                                 
+                            <ul class="itemizedlist"><li class="listitem">
+                                    <p><a href="#sagemaker-roles-get-execution-role-domain">ドメインの実行ロールを取得する</a></p>
+                                </li><li class="listitem">
+                                    <p><a href="#sagemaker-roles-get-execution-role-space">スペースの実行ロールを取得する</a></p>
+                                </li><li class="listitem">
+                                    <p><a href="#sagemaker-roles-get-execution-role-user">ユーザーの実行ロールを取得する</a></p>
+                                </li></ul></div>
+                        </li><li>
+                            <p>ID が引き受けているロールを変更するには、「<em>AWS Identity and Access Management ユーザーガイド</em>」の「<a href="https://docs.aws.amazon.com/IAM/latest/UserGuide/id_roles_manage_modify.html">ロールの変更</a>」を参照してください。</p>
+                            <p>IAM ID にアクセス許可を追加する詳細と手順については、「<em>AWS Identity and Access Management ユーザーガイド</em>」の「<a href="https://docs.aws.amazon.com/IAM/latest/UserGuide/access_policies_manage-attach-detach.html">IAM ID のアクセス許可の追加および削除</a>」を参照してください。</p>
+                        </li></ol></div></awsui-expandable-section></div>
+
+         
+            <h2 id="sagemaker-roles-pass-role">ロールを渡す</h2>
+            <p>サービス間でロールを渡すなどのアクションは、SageMaker AI 内の一般的な機能です。<a href="https://docs.aws.amazon.com/service-authorization/latest/reference/list_amazonsagemaker.html#amazonsagemaker-actions-as-permissions">SageMaker AI のアクション、リソース、および条件キーの詳細については、「サービス認可リファレンス</a>」を参照してください。 <em></em></p>
+            <p>ロール (<code class="code">iam:PassRole</code>) は、以下の API コールを行う際に渡します。<a href="https://docs.aws.amazon.com/sagemaker/latest/APIReference/API_CreateAutoMLJob.html"><code class="code">CreateAutoMLJob</code></a>、<a href="https://docs.aws.amazon.com/sagemaker/latest/APIReference/API_CreateCompilationJob.html"><code class="code">CreateCompilationJob</code></a>、<a href="https://docs.aws.amazon.com/sagemaker/latest/APIReference/API_CreateDomain.html"><code class="code">CreateDomain</code></a>、<a href="https://docs.aws.amazon.com/sagemaker/latest/APIReference/API_CreateFeatureGroup.html"><code class="code">CreateFeatureGroup</code></a>、<a href="https://docs.aws.amazon.com/sagemaker/latest/APIReference/API_CreateFlowDefinition.html"><code class="code">CreateFlowDefiniton</code></a>、<a href="https://docs.aws.amazon.com/sagemaker/latest/APIReference/API_CreateHyperParameterTuningJob.html"><code class="code">CreateHyperParameterTuningJob</code></a>、<a href="https://docs.aws.amazon.com/sagemaker/latest/APIReference/API_CreateImage.html"><code class="code">CreateImage</code></a>、<a href="https://docs.aws.amazon.com/sagemaker/latest/APIReference/API_CreateLabelingJob.html"><code class="code">CreateLabelingJob</code></a>、<a href="https://docs.aws.amazon.com/sagemaker/latest/APIReference/API_CreateModel.html"><code class="code">CreateModel</code></a>、<a href="https://docs.aws.amazon.com/sagemaker/latest/APIReference/API_CreateMonitoringSchedule.html"><code class="code">CreateMonitoringSchedule</code></a>、<a href="https://docs.aws.amazon.com/sagemaker/latest/APIReference/API_CreateNotebookInstance.html"><code class="code">CreateNotebookInstance</code></a>、<a href="https://docs.aws.amazon.com/sagemaker/latest/APIReference/API_CreateProcessingJob.html"><code class="code">CreateProcessingJob</code></a>、<a href="https://docs.aws.amazon.com/sagemaker/latest/APIReference/API_CreateTrainingJob.html"><code class="code">CreateTrainingJob</code></a>、<a href="https://docs.aws.amazon.com/sagemaker/latest/APIReference/API_CreateUserProfile.html"><code class="code">CreateUserProfile</code></a>、<a href="https://docs.aws.amazon.com/sagemaker/latest/APIReference/API_RenderUiTemplate.html"><code class="code">RenderUiTemplate</code></a>、<a href="https://docs.aws.amazon.com/sagemaker/latest/APIReference/API_UpdateImage.html"><code class="code">UpdateImage</code></a>、<a href="https://docs.aws.amazon.com/sagemaker/latest/APIReference/API_UpdateNotebookInstance.html"><code class="code">UpdateNotebookInstance</code></a>。</p>
+            <p>ロールを引き受けるアクセス許可を SageMaker AI プリンシパルに付与する IAM ロールには、次の信頼ポリシーをアタッチします。これは、すべての実行ロールで同じです。</p>
+            <pre class="programlisting"><div class="code-btn-container"><div class="btn-copy-code" title="コピー"><awsui-icon name="copy"></awsui-icon></div></div><!--DEBUG: cli ()--><code class=""><span>{</span>
+    "Version": "2012-10-17",
+    "Statement": [
+        <span>{</span>
+            "Effect": "Allow",
+            "Principal": <span>{</span>
+                "Service": "sagemaker.amazonaws.com"
+            },
+            "Action": "sts:AssumeRole"
+        }
+    ]
+}</code></pre>
+            <p>ロールに付与する必要があるアクセス許可は、呼び出す API によって異なります。以下のセクションでは、これらのアクセス許可について説明します。</p>
+            <div class="awsdocs-note"><div class="awsdocs-note-title"><awsui-icon name="status-info" variant="link"></awsui-icon><h6>注記</h6></div><div class="awsdocs-note-text"><p>アクセス許可ポリシーを作成してアクセス許可を管理する代わりに、 AWSマネージドアクセス<code class="code">AmazonSageMakerFullAccess</code>許可ポリシーを使用できます。このポリシーのアクセス許可はかなり広く、SageMaker AI で実行したいアクションをすべて許可します。多くのアクセス許可を付与する理由に関する情報を含むポリシーのリストについては、「<a href="./security-iam-awsmanpol.html#security-iam-awsmanpol-AmazonSageMakerFullAccess">AWS マネージドポリシー: AmazonSageMakerFullAccess</a>」を参照してください。カスタムポリシーを作成してアクセス許可を管理し、実行ロールで実行する必要があるアクションにのみアクセス許可を適用する場合は、以下のトピックを参照してください。</p></div></div>
+            <div class="awsdocs-note awsdocs-important"><div class="awsdocs-note-title"><awsui-icon name="status-warning" variant="error"></awsui-icon><h6>重要</h6></div><div class="awsdocs-note-text"><p>問題が発生した場合は、「<a href="./security_iam_troubleshoot.html">Amazon SageMaker AI Identity and Access のトラブルシューティング</a>」を参照してください。</p></div></div>
+            <p>IAM ロールの詳細については、「<em>サービス認証リファレンス</em>」の「<a href="https://docs.aws.amazon.com/IAM/latest/UserGuide/id_roles.html">IAM ロール</a>」を参照してください。</p>
+        <div class="highlights"><h6>トピック</h6><ul><li><p><a href="#sagemaker-roles-autopilot-perms">CreateAutoMLJob と CreateAutoMLJobV2 API: 実行ロールのアクセス許可</a></p></li><li><p><a href="#sagemaker-roles-createdomain-perms">CreateDomain API: 実行ロールアクセス許可</a></p></li><li><p><a href="#sagemaker-roles-createimage-perms">CreateImage API と UpdateImage API: 実行ロールアクセス許可</a></p></li><li><p><a href="#sagemaker-roles-createnotebookinstance-perms">CreateNotebookInstance API: 実行ロールアクセス許可</a></p></li><li><p><a href="#sagemaker-roles-createhyperparametertiningjob-perms">CreateHyperParameterTuningJob API: 実行ロールアクセス許可</a></p></li><li><p><a href="#sagemaker-roles-createprocessingjob-perms">CreateProcessingJob API: 実行ロールのアクセス許可</a></p></li><li><p><a href="#sagemaker-roles-createtrainingjob-perms">CreateTrainingJob API: 実行ロールアクセス許可</a></p></li><li><p><a href="#sagemaker-roles-createmodel-perms">CreateModel API: 実行ロールアクセス許可</a></p></li><li><p><a href="./sagemaker-geospatial-roles.html">SageMaker 地理空間機能ロール</a></p></li></ul></div>
+            <h2 id="sagemaker-roles-autopilot-perms">CreateAutoMLJob と CreateAutoMLJobV2 API: 実行ロールのアクセス許可</h2>
+            <p><code class="code">CreateAutoMLJob</code> または <code class="code">CreateAutoMLJobV2</code> API リクエストで渡すことのできる実行ロールについては、次の最小アクセス許可ポリシーをロールにアタッチできます。</p>
+            <pre class="programlisting"><div class="code-btn-container"><div class="btn-copy-code" title="コピー"><awsui-icon name="copy"></awsui-icon></div></div><!--DEBUG: cli (json)--><code class="json "><span>{</span>
+    "Version": "2012-10-17",
+    "Statement": [
+        <span>{</span>
+            "Effect": "Allow",
+            "Action": [
+                "iam:PassRole"
+            ],
+            "Resource": "*",
+            "Condition": <span>{</span>
+                "StringEquals": <span>{</span>
+                    "iam:PassedToService": "sagemaker.amazonaws.com"
+                }
+            }
+        },
+        <span>{</span>
+            "Effect": "Allow",
+            "Action": [
+                "sagemaker:DescribeEndpointConfig",
+                "sagemaker:DescribeModel",
+                "sagemaker:InvokeEndpoint",
+                "sagemaker:ListTags",
+                "sagemaker:DescribeEndpoint",
+                "sagemaker:CreateModel",
+                "sagemaker:CreateEndpointConfig",
+                "sagemaker:CreateEndpoint",
+                "sagemaker:DeleteModel",
+                "sagemaker:DeleteEndpointConfig",
+                "sagemaker:DeleteEndpoint",
+                "cloudwatch:PutMetricData",
+                "logs:CreateLogStream",
+                "logs:PutLogEvents",
+                "logs:CreateLogGroup",
+                "logs:DescribeLogStreams",
+                "s3:GetObject",
+                "s3:PutObject",
+                "s3:ListBucket",
+                "ecr:GetAuthorizationToken",
+                "ecr:BatchCheckLayerAvailability",
+                "ecr:GetDownloadUrlForLayer",
+                "ecr:BatchGetImage"
+            ],
+            "Resource": "*"
+        }
+    ]
+}</code></pre>
+            <p>AutoML ジョブにプライベート VPC を指定する場合、次のアクセス許可を追加します。</p>
+            <pre class="programlisting"><div class="code-btn-container"><div class="btn-copy-code" title="コピー"><awsui-icon name="copy"></awsui-icon></div></div><!--DEBUG: cli ()--><code class=""><span>{</span>
+    "Effect": "Allow",
+    "Action": [
+        "ec2:CreateNetworkInterface",
+        "ec2:CreateNetworkInterfacePermission",
+        "ec2:DeleteNetworkInterface",
+        "ec2:DeleteNetworkInterfacePermission",
+        "ec2:DescribeNetworkInterfaces",
+        "ec2:DescribeVpcs",
+        "ec2:DescribeDhcpOptions",
+        "ec2:DescribeSubnets",
+        "ec2:DescribeSecurityGroups"
+    ]
+}</code></pre>
+            <p>入力が KMS マネージドキー (SSE-KMS) AWS によるサーバー側の暗号化を使用して暗号化されている場合は、次のアクセス許可を追加します。</p>
+            <pre class="programlisting"><div class="code-btn-container"><div class="btn-copy-code" title="コピー"><awsui-icon name="copy"></awsui-icon></div></div><!--DEBUG: cli ()--><code class=""><span>{</span>
+    "Effect": "Allow",
+    "Action": [
+        "kms:Decrypt"
+    ]
+}</code></pre>
+            <p>AutoML ジョブの出力設定に KMS キーを指定する場合、次のアクセス許可を追加します。</p>
+            <pre class="programlisting"><div class="code-btn-container"><div class="btn-copy-code" title="コピー"><awsui-icon name="copy"></awsui-icon></div></div><!--DEBUG: cli ()--><code class=""><span>{</span>
+    "Effect": "Allow",
+    "Action": [
+    "kms:Encrypt"
+    ]
+}</code></pre>
+            <p>AutoML ジョブのリソース設定にボリューム KMS キーを指定する場合、次のアクセス許可を追加します。</p>
+            <pre class="programlisting"><div class="code-btn-container"><div class="btn-copy-code" title="コピー"><awsui-icon name="copy"></awsui-icon></div></div><!--DEBUG: cli ()--><code class=""><span>{</span>
+    "Effect": "Allow",
+    "Action": [
+    "kms:CreateGrant"
+    ]
+}</code></pre>
+         
+            <h2 id="sagemaker-roles-createdomain-perms">CreateDomain API: 実行ロールアクセス許可</h2>
+            <p>IAM Identity Center を使用するドメインの実行ロールと IAM ドメインのユーザー/実行ロールは、<code class="code">CreateDomain</code>API リクエスト<code class="code">KmsKeyId</code>で AWS KMS カスタマーマネージドキーを として渡すときに、次のアクセス許可が必要です。アクセス許可は、<code class="code">CreateApp</code> API コールの際に適用されます。</p>
+            <p><code class="code">CreateDomain</code> API リクエストで渡すことのできる実行ロールについては、次のアクセス許可ポリシーをロールにアタッチできます。</p>
+            <pre class="programlisting"><div class="code-btn-container"><div class="btn-copy-code" title="コピー"><awsui-icon name="copy"></awsui-icon></div></div><!--DEBUG: cli (json)--><code class="json "><span>{</span>
+    "Version": "2012-10-17",
+    "Statement": [
+        <span>{</span>
+            "Effect": "Allow",
+            "Action": [
+                "kms:CreateGrant",
+                "kms:DescribeKey"
+            ],
+            "Resource": "arn:aws:kms:<code class="replaceable">region</code>:<code class="replaceable">account-id</code>:key/<code class="replaceable">kms-key-id</code>"
+        }
+    ]
+}</code></pre>
+            <p>また、アクセス許可が KMS ポリシーで指定されている場合は、以下のポリシーをロールにアタッチできます。</p>
+            <pre class="programlisting"><div class="code-btn-container"><div class="btn-copy-code" title="コピー"><awsui-icon name="copy"></awsui-icon></div></div><!--DEBUG: cli (json)--><code class="json "><span>{</span>
+    "Version": "2012-10-17",
+    "Statement": [
+        <span>{</span>
+            "Sid": "Allow use of the key",
+            "Effect": "Allow",
+            "Principal": <span>{</span>
+                "AWS": [
+                    "arn:aws:iam::<code class="replaceable">account-id</code>:role/<code class="replaceable">ExecutionRole</code>"
+                ]
+            },
+            "Action": [
+                "kms:CreateGrant",
+                "kms:DescribeKey"
+            ],
+            "Resource": "*"
+        }
+    ]
+}</code></pre>
+         
+            <h2 id="sagemaker-roles-createimage-perms">CreateImage API と UpdateImage API: 実行ロールアクセス許可</h2>
+            <p><code class="code">CreateImage</code> または <code class="code">UpdateImage</code> API リクエストで渡すことのできる実行ロールについては、以下のアクセス許可ポリシーをロールにアタッチできます。</p>
+            <pre class="programlisting"><div class="code-btn-container"><div class="btn-copy-code" title="コピー"><awsui-icon name="copy"></awsui-icon></div></div><!--DEBUG: cli (json)--><code class="json "><span>{</span>
+    "Version": "2012-10-17",
+    "Statement": [
+        <span>{</span>
+            "Effect": "Allow",
+            "Action": [
+                "ecr:BatchGetImage",
+                "ecr:GetDownloadUrlForLayer"
+            ],
+            "Resource": "*"
+        }
+    ]
+}</code></pre>
+         
+            <h2 id="sagemaker-roles-createnotebookinstance-perms">CreateNotebookInstance API: 実行ロールアクセス許可</h2>
+            <p><code class="code">CreateNotebookInstance</code> API を呼び出すために実行ロールに付与されるアクセス許可は、ノートブックインスタンスで行う予定の作業によって異なります。これを使用して SageMaker AI APIs を呼び出し、 および API を呼び出すときに同じロールを渡す場合は<code class="code">CreateTrainingJob</code><code class="code">CreateModel</code>APIs 、次のアクセス許可ポリシーをロールにアタッチします。</p>
+            <pre class="programlisting"><div class="code-btn-container"><div class="btn-copy-code" title="コピー"><awsui-icon name="copy"></awsui-icon></div></div><!--DEBUG: cli (json)--><code class="json "><span>{</span>
+    "Version": "2012-10-17",
+    "Statement": [
+        <span>{</span>
+            "Effect": "Allow",
+            "Action": [
+                "sagemaker:*",
+                "ecr:GetAuthorizationToken",
+                "ecr:GetDownloadUrlForLayer",
+                "ecr:BatchGetImage",
+                "ecr:BatchCheckLayerAvailability",
+                "ecr:SetRepositoryPolicy",
+                "ecr:CompleteLayerUpload",
+                "ecr:BatchDeleteImage",
+                "ecr:UploadLayerPart",
+                "ecr:DeleteRepositoryPolicy",
+                "ecr:InitiateLayerUpload",
+                "ecr:DeleteRepository",
+                "ecr:PutImage",
+                "ecr:CreateRepository",
+                "cloudwatch:PutMetricData",
+                "cloudwatch:GetMetricData",
+                "cloudwatch:GetMetricStatistics",
+                "cloudwatch:ListMetrics",
+                "logs:CreateLogGroup",
+                "logs:CreateLogStream",
+                "logs:DescribeLogStreams",
+                "logs:PutLogEvents",
+                "logs:GetLogEvents",
+                "s3:CreateBucket",
+                "s3:ListBucket",
+                "s3:GetBucketLocation",
+                "s3:GetObject",
+                "s3:PutObject",
+                "s3:DeleteObject",
+                "robomaker:CreateSimulationApplication",
+                "robomaker:DescribeSimulationApplication",
+                "robomaker:DeleteSimulationApplication",
+                "robomaker:CreateSimulationJob",
+                "robomaker:DescribeSimulationJob",
+                "robomaker:CancelSimulationJob",
+                "ec2:CreateVpcEndpoint",
+                "ec2:DescribeRouteTables",
+                "elasticfilesystem:DescribeMountTargets"
+            ],
+            "Resource": "*"
+        },
+        <span>{</span>
+            "Effect": "Allow",
+            "Action": [
+                "codecommit:GitPull",
+                "codecommit:GitPush"
+            ],
+            "Resource": [
+                "arn:aws:codecommit:*:*:*sagemaker*",
+                "arn:aws:codecommit:*:*:*SageMaker*",
+                "arn:aws:codecommit:*:*:*Sagemaker*"
+            ]
+        },
+        <span>{</span>
+            "Effect": "Allow",
+            "Action": [
+                "iam:PassRole"
+            ],
+            "Resource": "*",
+            "Condition": <span>{</span>
+                "StringEquals": <span>{</span>
+                    "iam:PassedToService": "sagemaker.amazonaws.com"
+                }
+            }
+        }
+    ]
+}</code></pre>
+            <p>アクセス許可を絞り込むには、次のように <code class="code">"Resource": "*"</code> を制限することで、アクセス許可を特定の Amazon S3 リソースや Amazon ECR リソースに限定します。</p>
+            <pre class="programlisting"><div class="code-btn-container"><div class="btn-copy-code" title="コピー"><awsui-icon name="copy"></awsui-icon></div></div><!--DEBUG: cli ()--><code class="nohighlight"><span>{</span>
+    "Version": "2012-10-17",
+    "Statement": [
+        <span>{</span>
+            "Effect": "Allow",
+            "Action": [
+                "sagemaker:*",
+                "ecr:GetAuthorizationToken",
+                "cloudwatch:PutMetricData",
+                "logs:CreateLogGroup",
+                "logs:CreateLogStream",
+                "logs:DescribeLogStreams",
+                "logs:PutLogEvents",
+                "logs:GetLogEvents"
+            ],
+            "Resource": "*"
+        },
+        <span>{</span>
+            "Effect": "Allow",
+            "Action": [
+                "iam:PassRole"
+            ],
+            "Resource": "*",
+            "Condition": <span>{</span>
+                "StringEquals": <span>{</span>
+                    "iam:PassedToService": "sagemaker.amazonaws.com"
+                }
+            }
+        },
+        <span>{</span>
+            "Effect": "Allow",
+            "Action": [
+                "s3:ListBucket"
+            ],
+            "Resource": [
+                "arn:aws:s3:::inputbucket"
+            ]
+        },
+        <span>{</span>
+            "Effect": "Allow",
+            "Action": [
+                "s3:GetObject",
+                "s3:PutObject",
+                "s3:DeleteObject"
+            ],
+            "Resource": [
+                "arn:aws:s3:::<code class="replaceable">inputbucket</code>/<code class="replaceable">object1</code>",
+                "arn:aws:s3:::<code class="replaceable">outputbucket</code>/<code class="replaceable">path</code>",
+                "arn:aws:s3:::<code class="replaceable">inputbucket</code>/<code class="replaceable">object2</code>",
+                "arn:aws:s3:::<code class="replaceable">inputbucket</code>/<code class="replaceable">object3</code>"
+            ]
+        },
+        <span>{</span>
+            "Effect": "Allow",
+            "Action": [
+                "ecr:BatchCheckLayerAvailability",
+                "ecr:GetDownloadUrlForLayer",
+                "ecr:BatchGetImage"
+            ],
+            "Resource": [
+                "arn:aws:ecr:<code class="replaceable">region</code>::repository/<code class="replaceable">my-repo1</code>",
+                "arn:aws:ecr:<code class="replaceable">region</code>::repository/<code class="replaceable">my-repo2</code>",
+                "arn:aws:ecr:<code class="replaceable">region</code>::repository/<code class="replaceable">my-repo3</code>"
+            ]
+        }
+    ]
+}</code></pre>
+            <p>Amazon DynamoDB や Amazon Relational Database Service などの他のリソースにアクセスする場合は、関連するアクセス許可をこのポリシーに追加します。</p>
+            <p>上記のポリシーでは、ポリシーの適用範囲を次のように指定します。</p>
+            <div class="itemizedlist">
+                 
+                 
+                 
+            <ul class="itemizedlist"><li class="listitem">
+                    <p><code class="code">s3:ListBucket</code> アクセス許可の適用範囲を、<code class="code">InputDataConfig.DataSource.S3DataSource.S3Uri</code> リクエストで <code class="code">CreateTrainingJob</code> として指定した特定のバケットに設定します。</p>
+                </li><li class="listitem">
+                    <p><code class="code">s3:GetObject </code>、<code class="code">s3:PutObject</code>、および <code class="code">s3:DeleteObject</code> アクセス許可の範囲を次のように設定します。</p>
+                    <div class="itemizedlist">
+                         
+                         
+                    <ul class="itemizedlist"><li class="listitem">
+                            <p><code class="code">CreateTrainingJob</code> リクエストで指定する以下の値に範囲を設定します。</p>
+                            <p><code class="code">InputDataConfig.DataSource.S3DataSource.S3Uri</code></p>
+                            <p><code class="code">OutputDataConfig.S3OutputPath</code></p>
+                        </li><li class="listitem">
+                            <p><code class="code">CreateModel</code> リクエストで指定する以下の値に範囲を設定します。</p>
+                            <p><code class="code">PrimaryContainer.ModelDataUrl</code></p>
+                            <p><code class="code">SuplementalContainers.ModelDataUrl</code></p>
+                        </li></ul></div>
+                </li><li class="listitem">
+                    <p><code class="code">ecr</code> アクセス許可の範囲を次のように設定します。</p>
+                    <div class="itemizedlist">
+                         
+                         
+                    <ul class="itemizedlist"><li class="listitem">
+                            <p><code class="code">AlgorithmSpecification.TrainingImage</code> リクエストで指定する <code class="code">CreateTrainingJob</code> 値に範囲を設定します。</p>
+                        </li><li class="listitem">
+                            <p><code class="code">PrimaryContainer.Image</code> リクエストで指定する <code class="code">CreateModel</code> 値に範囲を設定します。</p>
+                        </li></ul></div>
+                </li></ul></div>
+            <p><code class="code">cloudwatch</code> および <code class="code">logs</code> アクションは "*" リソースに適用できます。詳細については、Amazon CloudWatch ユーザーガイドの「<a href="https://docs.aws.amazon.com/AmazonCloudWatch/latest/monitoring/iam-access-control-overview-cw.html#CloudWatch_ARN_Format">CloudWatch リソースおよびオペレーション</a>」を参照してください。</p>
+            <p></p>
+            
+            
+         
+            <h2 id="sagemaker-roles-createhyperparametertiningjob-perms">CreateHyperParameterTuningJob API: 実行ロールアクセス許可</h2>
+            <p><code class="code">CreateHyperParameterTuningJob</code> API リクエストで渡すことのできる実行ロールについては、次のアクセス許可ポリシーをロールにアタッチできます。</p>
+            <pre class="programlisting"><div class="code-btn-container"><div class="btn-copy-code" title="コピー"><awsui-icon name="copy"></awsui-icon></div></div><!--DEBUG: cli ()--><code class=""><span>{</span>
+    "Version": "2012-10-17",
+    "Statement": [
+        <span>{</span>
+            "Effect": "Allow",
+            "Action": [
+                "cloudwatch:PutMetricData",
+                "logs:CreateLogStream",
+                "logs:PutLogEvents",
+                "logs:CreateLogGroup",
+                "logs:DescribeLogStreams",
+                "s3:GetObject",
+                "s3:PutObject",
+                "s3:ListBucket",
+                "ecr:GetAuthorizationToken",
+                "ecr:BatchCheckLayerAvailability",
+                "ecr:GetDownloadUrlForLayer",
+                "ecr:BatchGetImage"
+            ],
+            "Resource": "*"
+        }
+    ]
+}</code></pre>
+            <p><code class="code">"Resource": "*"</code> を指定する代わりに、これらのアクセス許可の範囲を特定の Amazon S3 リソース、Amazon ECR リソース、Amazon CloudWatch Logs リソースに設定できます。</p>
+            <pre class="programlisting"><div class="code-btn-container"><div class="btn-copy-code" title="コピー"><awsui-icon name="copy"></awsui-icon></div></div><!--DEBUG: cli ()--><code class="nohighlight"><span>{</span>
+    "Version": "2012-10-17",
+    "Statement": [
+        <span>{</span>
+            "Effect": "Allow",
+            "Action": [
+                "cloudwatch:PutMetricData",
+                "ecr:GetAuthorizationToken"
+            ],
+            "Resource": "*"
+        },
+        <span>{</span>
+            "Effect": "Allow",
+            "Action": [
+                "s3:ListBucket"
+            ],
+            "Resource": [
+                "arn:aws:s3:::<code class="replaceable">inputbucket</code>"
+            ]
+        },
+        <span>{</span>
+            "Effect": "Allow",
+            "Action": [
+                "s3:GetObject",
+                "s3:PutObject"
+            ],
+            "Resource": [
+                "arn:aws:s3:::<code class="replaceable">inputbucket</code>/<code class="replaceable">object</code>",
+                "arn:aws:s3:::<code class="replaceable">outputbucket</code>/<code class="replaceable">path</code>"
+            ]
+        },
+        <span>{</span>
+            "Effect": "Allow",
+            "Action": [
+                "ecr:BatchCheckLayerAvailability",
+                "ecr:GetDownloadUrlForLayer",
+                "ecr:BatchGetImage"
+            ],
+            "Resource": "arn:aws:ecr:<code class="replaceable">region</code>::repository/<code class="replaceable">my-repo</code>"
+        },
+        <span>{</span>
+            "Effect": "Allow",
+            "Action": [
+                "logs:CreateLogStream",
+                "logs:PutLogEvents",
+                "logs:CreateLogGroup",
+                "logs:DescribeLogStreams"
+            ],
+            "Resource": "arn:aws:logs:*:*:log-group:/aws/sagemaker/TrainingJobs*"
+        }
+    ]
+}
+</code></pre>
+            <p>ハイパーパラメータチューニングジョブに関連付けられているトレーニングコンテナが、DynamoDB リソースや Amazon RDS リソースなどの他のデータソースにアクセスする必要がある場合、このポリシーに適切なアクセス許可を追加します。</p>
+            <p>上記のポリシーでは、ポリシーの適用範囲を次のように指定します。</p>
+            <div class="itemizedlist">
+                 
+                 
+                 
+                 
+            <ul class="itemizedlist"><li class="listitem">
+                    <p><code class="code">s3:ListBucket</code> アクセス許可の範囲を、<code class="code">InputDataConfig.DataSource.S3DataSource.S3Uri</code> リクエストで <code class="code">CreateTrainingJob</code> として指定した特定のバケットに設定します。</p>
+                </li><li class="listitem">
+                    <p><code class="code">s3:GetObject </code>および <code class="code">s3:PutObject</code> アクセス許可の範囲を、<code class="code">CreateHyperParameterTuningJob</code> リクエストの入力および出力データ設定で指定する次のオブジェクトに設定します。</p>
+                    <p><code class="code">InputDataConfig.DataSource.S3DataSource.S3Uri</code></p>
+                    <p><code class="code">OutputDataConfig.S3OutputPath</code></p>
+                </li><li class="listitem">
+                    <p>Amazon ECR アクセス許可の範囲を、<code class="code">CreateHyperParameterTuningJob</code> リクエストで指定するレジストリパス (<code class="code">AlgorithmSpecification.TrainingImage</code>) に設定します。</p>
+                </li><li class="listitem">
+                    <p>Amazon CloudWatch Logs のアクセス許可の範囲を、SageMaker トレーニングジョブのロググループに設定します。</p>
+                </li></ul></div>
+            <p><code class="code">cloudwatch</code> アクションは "*" リソースに適用できます。詳細については、「Amazon CloudWatch ユーザーガイド」の「<a href="https://docs.aws.amazon.com/AmazonCloudWatch/latest/logs/iam-access-control-overview-cwl.html#CWL_ARN_Format">CloudWatch Resources and Operations</a>」を参照してください。</p>
+            <p>ハイパーパラメータ調整ジョブにプライベート VPC を指定する場合は、次のアクセス許可を追加します。</p>
+            
+            <pre class="programlisting"><div class="code-btn-container"><div class="btn-copy-code" title="コピー"><awsui-icon name="copy"></awsui-icon></div></div><!--DEBUG: cli ()--><code class=""><span>{</span>
+    "Effect": "Allow",
+    "Action": [
+        "ec2:CreateNetworkInterface",
+        "ec2:CreateNetworkInterfacePermission",
+        "ec2:DeleteNetworkInterface",
+        "ec2:DeleteNetworkInterfacePermission",
+        "ec2:DescribeNetworkInterfaces",
+        "ec2:DescribeVpcs",
+        "ec2:DescribeDhcpOptions",
+        "ec2:DescribeSubnets",
+        "ec2:DescribeSecurityGroups"
+    ]
+}</code></pre>
+            <p>入力が KMS マネージドキー (SSE-KMS) AWS によるサーバー側の暗号化を使用して暗号化されている場合は、次のアクセス許可を追加します。</p>
+            <pre class="programlisting"><div class="code-btn-container"><div class="btn-copy-code" title="コピー"><awsui-icon name="copy"></awsui-icon></div></div><!--DEBUG: cli ()--><code class=""><span>{</span>
+    "Effect": "Allow",
+    "Action": [
+        "kms:Decrypt"
+    ]
+}</code></pre>
+            <p>ハイパーパラメータの調整ジョブの出力設定に KMS キーを指定する場合は、次のアクセス許可を追加します。</p>
+            <pre class="programlisting"><div class="code-btn-container"><div class="btn-copy-code" title="コピー"><awsui-icon name="copy"></awsui-icon></div></div><!--DEBUG: cli ()--><code class=""><span>{</span>
+    "Effect": "Allow",
+    "Action": [
+    "kms:Encrypt"
+    ]
+}</code></pre>
+            <p>ハイパーパラメータの調整ジョブのリソース設定にボリューム KMS キーを指定する場合は、次のアクセス許可を追加します。</p>
+            <pre class="programlisting"><div class="code-btn-container"><div class="btn-copy-code" title="コピー"><awsui-icon name="copy"></awsui-icon></div></div><!--DEBUG: cli ()--><code class=""><span>{</span>
+    "Effect": "Allow",
+    "Action": [
+    "kms:CreateGrant"
+    ]
+}</code></pre>
+         
+            <h2 id="sagemaker-roles-createprocessingjob-perms">CreateProcessingJob API: 実行ロールのアクセス許可</h2>
+            <p><code class="code">CreateProcessingJob</code> API リクエストで渡すことのできる実行ロールについては、次のアクセス許可ポリシーをロールにアタッチできます。</p>
+            <pre class="programlisting"><div class="code-btn-container"><div class="btn-copy-code" title="コピー"><awsui-icon name="copy"></awsui-icon></div></div><!--DEBUG: cli ()--><code class=""><span>{</span>
+    "Version": "2012-10-17",
+    "Statement": [
+        <span>{</span>
+            "Effect": "Allow",
+            "Action": [
+                "cloudwatch:PutMetricData",
+                "logs:CreateLogStream",
+                "logs:PutLogEvents",
+                "logs:CreateLogGroup",
+                "logs:DescribeLogStreams",
+                "s3:GetObject",
+                "s3:PutObject",
+                "s3:ListBucket",
+                "ecr:GetAuthorizationToken",
+                "ecr:BatchCheckLayerAvailability",
+                "ecr:GetDownloadUrlForLayer",
+                "ecr:BatchGetImage"
+            ],
+            "Resource": "*"
+        }
+    ]
+}</code></pre>
+            <p><code class="code">"Resource": "*"</code> を指定する代わりに、これらのアクセス許可の範囲を特定の Amazon S3 リソースおよび Amazon ECR リソースに設定できます。</p>
+            <pre class="programlisting"><div class="code-btn-container"><div class="btn-copy-code" title="コピー"><awsui-icon name="copy"></awsui-icon></div></div><!--DEBUG: cli ()--><code class="nohighlight"><span>{</span>
+    "Version": "2012-10-17",
+    "Statement": [
+        <span>{</span>
+            "Effect": "Allow",
+            "Action": [
+                "cloudwatch:PutMetricData",
+                "logs:CreateLogStream",
+                "logs:PutLogEvents",
+                "logs:CreateLogGroup",
+                "logs:DescribeLogStreams",
+                "ecr:GetAuthorizationToken"
+            ],
+            "Resource": "*"
+        },
+        <span>{</span>
+            "Effect": "Allow",
+            "Action": [
+                "s3:ListBucket"
+            ],
+            "Resource": [
+                "arn:aws:s3:::<code class="replaceable">inputbucket</code>"
+            ]
+        },
+        <span>{</span>
+            "Effect": "Allow",
+            "Action": [
+                "s3:GetObject",
+                "s3:PutObject"
+            ],
+            "Resource": [
+                "arn:aws:s3:::<code class="replaceable">inputbucket</code>/<code class="replaceable">object</code>",
+                "arn:aws:s3:::<code class="replaceable">outputbucket</code>/<code class="replaceable">path</code>"
+            ]
+        },
+        <span>{</span>
+            "Effect": "Allow",
+            "Action": [
+                "ecr:BatchCheckLayerAvailability",
+                "ecr:GetDownloadUrlForLayer",
+                "ecr:BatchGetImage"
+            ],
+            "Resource": "arn:aws:ecr:<code class="replaceable">region</code>::repository/<code class="replaceable">my-repo</code>"
+        }
+    ]
+}</code></pre>
+            <p><code class="code">CreateProcessingJob.AppSpecification.ImageUri</code> が DynamoDB リソースや Amazon RDS リソースなどの他のデータソースにアクセスする必要がある場合は、関連するアクセス許可をこのポリシーに追加します。</p>
+            <p>上記のポリシーでは、ポリシーの適用範囲を次のように指定します。</p>
+            <div class="itemizedlist">
+                 
+                 
+                 
+            <ul class="itemizedlist"><li class="listitem">
+                    <p><code class="code">s3:ListBucket</code> アクセス許可の範囲を、<code class="code">ProcessingInputs</code> リクエストで <code class="code">CreateProcessingJob</code> として指定した特定のバケットに設定します。</p>
+                </li><li class="listitem">
+                    <p><code class="code">s3:GetObject </code> および <code class="code">s3:PutObject</code> アクセス許可の範囲を、<code class="code">CreateProcessingJob</code> リクエストの <code class="code">ProcessingInputs</code> および <code class="code">ProcessingOutputConfig</code> でダウンロードもしくはアップロードされるオブジェクトに設定します。</p>
+                    
+                </li><li class="listitem">
+                    <p>Amazon ECR アクセス許可の範囲を、<code class="code">CreateProcessingJob</code> リクエストで指定するレジストリパス (<code class="code">AppSpecification.ImageUri</code>) に設定します。</p>
+                </li></ul></div>
+            <p><code class="code">cloudwatch</code> および <code class="code">logs</code> アクションは "*" リソースに適用できます。詳細については、Amazon CloudWatch ユーザーガイドの「<a href="https://docs.aws.amazon.com/AmazonCloudWatch/latest/monitoring/iam-access-control-overview-cw.html#CloudWatch_ARN_Format">CloudWatch リソースおよびオペレーション</a>」を参照してください。</p>
+            <p>処理ジョブにプライベート VPC を指定する場合は、次のアクセス許可を追加します。ポリシーの範囲に条件やリソースフィルターを含めないでください。そうしないと、処理ジョブの作成中に行われる検証チェックが失敗します。</p>
+            
+            <pre class="programlisting"><div class="code-btn-container"><div class="btn-copy-code" title="コピー"><awsui-icon name="copy"></awsui-icon></div></div><!--DEBUG: cli ()--><code class=""><span>{</span>
+    "Effect": "Allow",
+    "Action": [
+        "ec2:CreateNetworkInterface",
+        "ec2:CreateNetworkInterfacePermission",
+        "ec2:DeleteNetworkInterface",
+        "ec2:DeleteNetworkInterfacePermission",
+        "ec2:DescribeNetworkInterfaces",
+        "ec2:DescribeVpcs",
+        "ec2:DescribeDhcpOptions",
+        "ec2:DescribeSubnets",
+        "ec2:DescribeSecurityGroups"
+    ]
+}</code></pre>
+            <p>入力が KMS マネージドキー (SSE-KMS) AWS によるサーバー側の暗号化を使用して暗号化されている場合は、次のアクセス許可を追加します。</p>
+            <pre class="programlisting"><div class="code-btn-container"><div class="btn-copy-code" title="コピー"><awsui-icon name="copy"></awsui-icon></div></div><!--DEBUG: cli ()--><code class=""><span>{</span>
+    "Effect": "Allow",
+    "Action": [
+        "kms:Decrypt"
+    ]
+}</code></pre>
+            <p>処理ジョブの出力設定に KMS キーを指定する場合は、次のアクセス許可を追加します。</p>
+            <pre class="programlisting"><div class="code-btn-container"><div class="btn-copy-code" title="コピー"><awsui-icon name="copy"></awsui-icon></div></div><!--DEBUG: cli ()--><code class=""><span>{</span>
+    "Effect": "Allow",
+    "Action": [
+    "kms:Encrypt"
+    ]
+}</code></pre>
+            <p>処理ジョブのリソース設定でボリューム KMS キーを指定する場合は、次のアクセス許可を追加します。</p>
+            <pre class="programlisting"><div class="code-btn-container"><div class="btn-copy-code" title="コピー"><awsui-icon name="copy"></awsui-icon></div></div><!--DEBUG: cli ()--><code class=""><span>{</span>
+    "Effect": "Allow",
+    "Action": [
+    "kms:CreateGrant"
+    ]
+}</code></pre>
+         
+            <h2 id="sagemaker-roles-createtrainingjob-perms">CreateTrainingJob API: 実行ロールアクセス許可</h2>
+            <p><code class="code">CreateTrainingJob</code> API リクエストで渡すことのできる実行ロールについては、次のアクセス許可ポリシーをロールにアタッチできます。</p>
+            <pre class="programlisting"><div class="code-btn-container"><div class="btn-copy-code" title="コピー"><awsui-icon name="copy"></awsui-icon></div></div><!--DEBUG: cli ()--><code class=""><span>{</span>
+    "Version": "2012-10-17",
+    "Statement": [
+        <span>{</span>
+            "Effect": "Allow",
+            "Action": [
+                "cloudwatch:PutMetricData",
+                "logs:CreateLogStream",
+                "logs:PutLogEvents",
+                "logs:CreateLogGroup",
+                "logs:DescribeLogStreams",
+                "s3:GetObject",
+                "s3:PutObject",
+                "s3:ListBucket",
+                "ecr:GetAuthorizationToken",
+                "ecr:BatchCheckLayerAvailability",
+                "ecr:GetDownloadUrlForLayer",
+                "ecr:BatchGetImage"
+            ],
+            "Resource": "*"
+        }
+    ]
+}</code></pre>
+            <p><code class="code">"Resource": "*"</code> を指定する代わりに、これらのアクセス許可の範囲を特定の Amazon S3 リソースおよび Amazon ECR リソースに設定できます。</p>
+            <pre class="programlisting"><div class="code-btn-container"><div class="btn-copy-code" title="コピー"><awsui-icon name="copy"></awsui-icon></div></div><!--DEBUG: cli ()--><code class="nohighlight"><span>{</span>
+    "Version": "2012-10-17",
+    "Statement": [
+        <span>{</span>
+            "Effect": "Allow",
+            "Action": [
+                "cloudwatch:PutMetricData",
+                "logs:CreateLogStream",
+                "logs:PutLogEvents",
+                "logs:CreateLogGroup",
+                "logs:DescribeLogStreams",
+                "ecr:GetAuthorizationToken"
+            ],
+            "Resource": "*"
+        },
+        <span>{</span>
+            "Effect": "Allow",
+            "Action": [
+                "s3:ListBucket"
+            ],
+            "Resource": [
+                "arn:aws:s3:::<code class="replaceable">inputbucket</code>"
+            ]
+        },
+        <span>{</span>
+            "Effect": "Allow",
+            "Action": [
+                "s3:GetObject",
+                "s3:PutObject"
+            ],
+            "Resource": [
+                "arn:aws:s3:::<code class="replaceable">inputbucket</code>/<code class="replaceable">object</code>",
+                "arn:aws:s3:::<code class="replaceable">outputbucket</code>/<code class="replaceable">path</code>"
+            ]
+        },
+        <span>{</span>
+            "Effect": "Allow",
+            "Action": [
+                "ecr:BatchCheckLayerAvailability",
+                "ecr:GetDownloadUrlForLayer",
+                "ecr:BatchGetImage"
+            ],
+            "Resource": "arn:aws:ecr:<code class="replaceable">region</code>::repository/<code class="replaceable">my-repo</code>"
+        }
+    ]
+}
+</code></pre>
+            <p><code class="code">CreateTrainingJob.AlgorithSpecifications.TrainingImage</code> が DynamoDB リソースや Amazon RDS リソースなどの他のデータソースにアクセスする必要がある場合は、関連するアクセス許可をこのポリシーに追加します。</p>
+            <p>上記のポリシーでは、ポリシーの適用範囲を次のように指定します。</p>
+            <div class="itemizedlist">
+                 
+                 
+                 
+            <ul class="itemizedlist"><li class="listitem">
+                    <p><code class="code">s3:ListBucket</code> アクセス許可の範囲を、<code class="code">InputDataConfig.DataSource.S3DataSource.S3Uri</code> リクエストで <code class="code">CreateTrainingJob</code> として指定した特定のバケットに設定します。</p>
+                </li><li class="listitem">
+                    <p><code class="code">s3:GetObject </code>および <code class="code">s3:PutObject</code> アクセス許可の範囲を、<code class="code">CreateTrainingJob</code> リクエストの入力および出力データ設定で指定する次のオブジェクトに設定します。</p>
+                    <p><code class="code">InputDataConfig.DataSource.S3DataSource.S3Uri</code></p>
+                    <p><code class="code">OutputDataConfig.S3OutputPath</code></p>
+                </li><li class="listitem">
+                    <p>Amazon ECR アクセス許可の範囲を、<code class="code">CreateTrainingJob</code> リクエストで指定するレジストリパス (<code class="code">AlgorithmSpecification.TrainingImage</code>) に設定します。</p>
+                </li></ul></div>
+            <p><code class="code">cloudwatch</code> および <code class="code">logs</code> アクションは "*" リソースに適用できます。詳細については、Amazon CloudWatch ユーザーガイドの「<a href="https://docs.aws.amazon.com/AmazonCloudWatch/latest/monitoring/iam-access-control-overview-cw.html#CloudWatch_ARN_Format">CloudWatch リソースおよびオペレーション</a>」を参照してください。</p>
+            <p>トレーニングジョブにプライベート VPC を指定する場合は、次のアクセス許可を追加します。</p>
+            
+            <pre class="programlisting"><div class="code-btn-container"><div class="btn-copy-code" title="コピー"><awsui-icon name="copy"></awsui-icon></div></div><!--DEBUG: cli ()--><code class=""><span>{</span>
+    "Effect": "Allow",
+    "Action": [
+      "ec2:CreateNetworkInterface",
+      "ec2:CreateNetworkInterfacePermission",
+      "ec2:DeleteNetworkInterface",
+      "ec2:DeleteNetworkInterfacePermission",
+      "ec2:DescribeNetworkInterfaces",
+      "ec2:DescribeVpcs",
+      "ec2:DescribeDhcpOptions",
+      "ec2:DescribeSubnets",
+      "ec2:DescribeSecurityGroups"
+    ]
+}</code></pre>
+            <p>入力が KMS マネージドキー (SSE-KMS) AWS によるサーバー側の暗号化を使用して暗号化されている場合は、次のアクセス許可を追加します。</p>
+            <pre class="programlisting"><div class="code-btn-container"><div class="btn-copy-code" title="コピー"><awsui-icon name="copy"></awsui-icon></div></div><!--DEBUG: cli ()--><code class=""><span>{</span>
+    "Effect": "Allow",
+    "Action": [
+        "kms:Decrypt"
+    ]
+}</code></pre>
+            <p>トレーニングジョブの出力設定に KMS キーを指定する場合は、次のアクセス許可を追加します。</p>
+            <pre class="programlisting"><div class="code-btn-container"><div class="btn-copy-code" title="コピー"><awsui-icon name="copy"></awsui-icon></div></div><!--DEBUG: cli ()--><code class=""><span>{</span>
+    "Effect": "Allow",
+    "Action": [
+    "kms:Encrypt"
+    ]
+}</code></pre>
+            <p>トレーニングジョブのリソース設定にボリューム KMS キーを指定する場合は、次のアクセス許可を追加します。</p>
+            <pre class="programlisting"><div class="code-btn-container"><div class="btn-copy-code" title="コピー"><awsui-icon name="copy"></awsui-icon></div></div><!--DEBUG: cli ()--><code class=""><span>{</span>
+    "Effect": "Allow",
+    "Action": [
+    "kms:CreateGrant"
+    ]
+}</code></pre>
+         
+            <h2 id="sagemaker-roles-createmodel-perms">CreateModel API: 実行ロールアクセス許可</h2>
+            <p><code class="code">CreateModel</code> API リクエストで渡すことのできる実行ロールについては、次のアクセス許可ポリシーをロールにアタッチできます。</p>
+            <pre class="programlisting"><div class="code-btn-container"><div class="btn-copy-code" title="コピー"><awsui-icon name="copy"></awsui-icon></div></div><!--DEBUG: cli ()--><code class=""><span>{</span>
+    "Version": "2012-10-17",
+    "Statement": [
+        <span>{</span>
+            "Effect": "Allow",
+            "Action": [
+                "cloudwatch:PutMetricData",
+                "logs:CreateLogStream",
+                "logs:PutLogEvents",
+                "logs:CreateLogGroup",
+                "logs:DescribeLogStreams",
+                "s3:GetObject",
+                "s3:ListBucket",
+                "ecr:GetAuthorizationToken",
+                "ecr:BatchCheckLayerAvailability",
+                "ecr:GetDownloadUrlForLayer",
+                "ecr:BatchGetImage"
+            ],
+            "Resource": "*"
+        }
+    ]
+}</code></pre>
+            <p><code class="code">"Resource": "*"</code> を指定する代わりに、これらのアクセス許可の範囲を特定の Amazon S3 リソースおよび Amazon ECR リソースに設定できます。</p>
+            <pre class="programlisting"><div class="code-btn-container"><div class="btn-copy-code" title="コピー"><awsui-icon name="copy"></awsui-icon></div></div><!--DEBUG: cli ()--><code class="nohighlight"><span>{</span>
+    "Version": "2012-10-17",
+    "Statement": [
+        <span>{</span>
+            "Effect": "Allow",
+            "Action": [
+                "cloudwatch:PutMetricData",
+                "logs:CreateLogStream",
+                "logs:PutLogEvents",
+                "logs:CreateLogGroup",
+                "logs:DescribeLogStreams",
+                "ecr:GetAuthorizationToken"
+            ],
+            "Resource": "*"
+        },
+        <span>{</span>
+            "Effect": "Allow",
+            "Action": [
+                "s3:GetObject"
+            ],
+            "Resource": [
+                "arn:aws:s3:::<code class="replaceable">inputbucket</code>/<code class="replaceable">object</code>"
+            ]
+        },
+        <span>{</span>
+            "Effect": "Allow",
+            "Action": [
+                "ecr:BatchCheckLayerAvailability",
+                "ecr:GetDownloadUrlForLayer",
+                "ecr:BatchGetImage"
+            ],
+            "Resource": [
+                "arn:aws:ecr:<code class="replaceable">region</code>::repository/<code class="replaceable">my-repo</code>",
+                "arn:aws:ecr:<code class="replaceable">region</code>::repository/<code class="replaceable">my-repo</code>"
+             ]
+        }
+    ]
+}
+</code></pre>
+            <p><code class="code">CreateModel.PrimaryContainer.Image</code> が Amazon DynamoDB リソースや Amazon RDS リソースなどの他のデータソースにアクセスする必要がある場合は、関連するアクセス許可をこのポリシーに追加します。</p>
+            <p>上記のポリシーでは、ポリシーの適用範囲を次のように指定します。</p>
+            <div class="itemizedlist">
+                 
+                 
+            <ul class="itemizedlist"><li class="listitem">
+                    <p>S3 アクセス許可の範囲を、<code class="code">PrimaryContainer.ModelDataUrl</code> リクエストの <a href="https://docs.aws.amazon.com/sagemaker/latest/APIReference/API_CreateModel.html"><code class="code">CreateModel</code></a> で指定するオブジェクトに設定します。</p>
+                </li><li class="listitem">
+                    <p>Amazon ECR アクセス許可の範囲を、<code class="code">CreateModel</code> リクエストで <code class="code">PrimaryContainer.Image</code> および <code class="code">SecondaryContainer.Image</code> として指定する特定のレジストリパスに設定します。</p>
+                </li></ul></div>
+            <p><code class="code">cloudwatch</code> および <code class="code">logs</code> アクションは "*" リソースに適用できます。詳細については、Amazon CloudWatch ユーザーガイドの「<a href="https://docs.aws.amazon.com/AmazonCloudWatch/latest/monitoring/iam-access-control-overview-cw.html#CloudWatch_ARN_Format">CloudWatch リソースおよびオペレーション</a>」を参照してください。</p>
+            <div class="awsdocs-note"><div class="awsdocs-note-title"><awsui-icon name="status-info" variant="link"></awsui-icon><h6>注記</h6></div><div class="awsdocs-note-text"><p>本番環境でのモデル<a href="https://docs.aws.amazon.com/sagemaker/latest/dg/deployment-guardrails.html">デプロイに SageMaker AI デプロイガードレール機能</a>を使用する場合は、実行ロールに自動ロールバックアラームで<code class="code">cloudwatch:DescribeAlarms</code>アクションを実行するアクセス許可があることを確認してください。</p></div></div>
+            <p>モデルにプライベート VPC を指定する場合は、次のアクセス許可を追加します。</p>
+            
+            <pre class="programlisting"><div class="code-btn-container"><div class="btn-copy-code" title="コピー"><awsui-icon name="copy"></awsui-icon></div></div><!--DEBUG: cli ()--><code class=""><span>{</span>
+    "Effect": "Allow",
+    "Action": [
+        "ec2:CreateNetworkInterface",
+        "ec2:CreateNetworkInterfacePermission",
+        "ec2:DeleteNetworkInterface",
+        "ec2:DeleteNetworkInterfacePermission",
+        "ec2:DescribeNetworkInterfaces",
+        "ec2:DescribeVpcs",
+        "ec2:DescribeDhcpOptions",
+        "ec2:DescribeSubnets",
+        "ec2:DescribeSecurityGroups"
+    ]
+}</code></pre>
+        <awsdocs-copyright class="copyright-print"></awsdocs-copyright><awsdocs-thumb-feedback right-edge="{{$ctrl.thumbFeedbackRightEdge}}"></awsdocs-thumb-feedback></div><noscript><div><div><div><div id="js_error_message"><p><img src="https://d1ge0kk1l5kms0.cloudfront.net/images/G/01/webservices/console/warning.png" alt="警告" /> <strong>ブラウザで JavaScript が無効になっているか、使用できません。</strong></p><p>AWS ドキュメントを使用するには、JavaScript を有効にする必要があります。手順については、使用するブラウザのヘルプページを参照してください。</p></div></div></div></div></noscript><div id="main-col-footer" class="awsui-util-font-size-0"><div id="doc-conventions"><a target="_top" href="/general/latest/gr/docconventions.html">ドキュメントの表記規則</a></div><div class="prev-next"><div id="previous" class="prev-link" accesskey="p" href="./security-confused-deputy-prevention.html">サービス間の混乱した代理の防止</div><div id="next" class="next-link" accesskey="n" href="./sagemaker-geospatial-roles.html">SageMaker 地理空間機能ロール</div></div></div><awsdocs-page-utilities></awsdocs-page-utilities></div><div id="quick-feedback-yes" style="display: none;"><div class="title">このページは役に立ちましたか? - はい</div><div class="content"><p>ページが役に立ったことをお知らせいただき、ありがとうございます。</p><p>お時間がある場合は、何が良かったかお知らせください。今後の参考にさせていただきます。</p><p><awsui-button id="fblink" rel="noopener noreferrer" target="_blank" text="フィードバック" click="linkClick($event)" href="https://docs.aws.amazon.com/forms/aws-doc-feedback?hidden_service_name=SageMaker&amp;topic_url=https://docs.aws.amazon.com/ja_jp/sagemaker/latest/dg/sagemaker-roles.html"></awsui-button></p></div></div><div id="quick-feedback-no" style="display: none;"><div class="title">このページは役に立ちましたか? - いいえ</div><div class="content"><p>このページは修正が必要なことをお知らせいただき、ありがとうございます。ご期待に沿うことができず申し訳ありません。</p><p>お時間がある場合は、ドキュメントを改善する方法についてお知らせください。</p><p><awsui-button id="fblink" rel="noopener noreferrer" target="_blank" text="フィードバック" click="linkClick($event)" href="https://docs.aws.amazon.com/forms/aws-doc-feedback?hidden_service_name=SageMaker&amp;topic_url=https://docs.aws.amazon.com/ja_jp/sagemaker/latest/dg/sagemaker-roles.html"></awsui-button></p></div></div></div></body></div></awsdocs-view><div class="page-loading-indicator" id="page-loading-indicator"><awsui-spinner size="large"></awsui-spinner></div></div><div id="tools-panel" dom-region="tools"><awsdocs-tools-panel id="awsdocs-tools-panel"></awsdocs-tools-panel></div></awsui-app-layout><awsdocs-cookie-banner class="doc-cookie-banner"></awsdocs-cookie-banner></div></body></html>

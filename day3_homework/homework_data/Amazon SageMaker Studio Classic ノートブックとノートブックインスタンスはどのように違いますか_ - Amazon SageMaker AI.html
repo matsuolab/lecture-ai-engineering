@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+    <html xmlns="http://www.w3.org/1999/xhtml" lang="ja-JP"><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8" /><title>Amazon SageMaker Studio Classic ノートブックとノートブックインスタンスはどのように違いますか? - Amazon SageMaker AI</title><meta name="viewport" content="width=device-width,initial-scale=1" /><meta name="assets_root" content="/assets" /><meta name="target_state" content="notebooks-comparison" /><meta name="default_state" content="notebooks-comparison" /><link rel="icon" type="image/ico" href="/assets/images/favicon.ico" /><link rel="shortcut icon" type="image/ico" href="/assets/images/favicon.ico" /><link rel="canonical" href="https://docs.aws.amazon.com/ja_jp/sagemaker/latest/dg/notebooks-comparison.html" /><meta name="description" content="新しいノートブックを起動する場合は、Amazon SageMaker AI コンソールからノートブックインスタンスを起動する代わりに、Amazon SageMaker Studio Classic でノートブックを作成することをお勧めします。Studio Classic ノートブックには、次のような多くの利点があります。" /><meta name="deployment_region" content="IAD" /><meta name="product" content="Amazon SageMaker AI" /><meta name="guide" content="デベロッパーガイド" /><meta name="abstract" content="SageMaker AI を使用して、 で機械学習モデルを構築、トレーニング、ホストします AWS。" /><meta name="guide-locale" content="ja_jp" /><meta name="tocs" content="toc-contents.json" /><link rel="canonical" href="https://docs.aws.amazon.com/ja_jp/sagemaker/latest/dg/notebooks-comparison.html" /><link rel="alternative" href="https://docs.aws.amazon.com/id_id/sagemaker/latest/dg/notebooks-comparison.html" hreflang="id-id" /><link rel="alternative" href="https://docs.aws.amazon.com/id_id/sagemaker/latest/dg/notebooks-comparison.html" hreflang="id" /><link rel="alternative" href="https://docs.aws.amazon.com/de_de/sagemaker/latest/dg/notebooks-comparison.html" hreflang="de-de" /><link rel="alternative" href="https://docs.aws.amazon.com/de_de/sagemaker/latest/dg/notebooks-comparison.html" hreflang="de" /><link rel="alternative" href="https://docs.aws.amazon.com/sagemaker/latest/dg/notebooks-comparison.html" hreflang="en-us" /><link rel="alternative" href="https://docs.aws.amazon.com/sagemaker/latest/dg/notebooks-comparison.html" hreflang="en" /><link rel="alternative" href="https://docs.aws.amazon.com/es_es/sagemaker/latest/dg/notebooks-comparison.html" hreflang="es-es" /><link rel="alternative" href="https://docs.aws.amazon.com/es_es/sagemaker/latest/dg/notebooks-comparison.html" hreflang="es" /><link rel="alternative" href="https://docs.aws.amazon.com/fr_fr/sagemaker/latest/dg/notebooks-comparison.html" hreflang="fr-fr" /><link rel="alternative" href="https://docs.aws.amazon.com/fr_fr/sagemaker/latest/dg/notebooks-comparison.html" hreflang="fr" /><link rel="alternative" href="https://docs.aws.amazon.com/it_it/sagemaker/latest/dg/notebooks-comparison.html" hreflang="it-it" /><link rel="alternative" href="https://docs.aws.amazon.com/it_it/sagemaker/latest/dg/notebooks-comparison.html" hreflang="it" /><link rel="alternative" href="https://docs.aws.amazon.com/ja_jp/sagemaker/latest/dg/notebooks-comparison.html" hreflang="ja-jp" /><link rel="alternative" href="https://docs.aws.amazon.com/ja_jp/sagemaker/latest/dg/notebooks-comparison.html" hreflang="ja" /><link rel="alternative" href="https://docs.aws.amazon.com/ko_kr/sagemaker/latest/dg/notebooks-comparison.html" hreflang="ko-kr" /><link rel="alternative" href="https://docs.aws.amazon.com/ko_kr/sagemaker/latest/dg/notebooks-comparison.html" hreflang="ko" /><link rel="alternative" href="https://docs.aws.amazon.com/pt_br/sagemaker/latest/dg/notebooks-comparison.html" hreflang="pt-br" /><link rel="alternative" href="https://docs.aws.amazon.com/pt_br/sagemaker/latest/dg/notebooks-comparison.html" hreflang="pt" /><link rel="alternative" href="https://docs.aws.amazon.com/zh_cn/sagemaker/latest/dg/notebooks-comparison.html" hreflang="zh-cn" /><link rel="alternative" href="https://docs.aws.amazon.com/zh_tw/sagemaker/latest/dg/notebooks-comparison.html" hreflang="zh-tw" /><link rel="alternative" href="https://docs.aws.amazon.com/sagemaker/latest/dg/notebooks-comparison.html" hreflang="x-default" /><meta name="feedback-item" content="SageMaker" /><meta name="this_doc_product" content="Amazon SageMaker AI" /><meta name="this_doc_guide" content="デベロッパーガイド" /><script defer="" src="/assets/r/vendor4.js?version=2021.12.02"></script><script defer="" src="/assets/r/vendor3.js?version=2021.12.02"></script><script defer="" src="/assets/r/vendor1.js?version=2021.12.02"></script><script defer="" src="/assets/r/awsdocs-common.js?version=2021.12.02"></script><script defer="" src="/assets/r/awsdocs-doc-page.js?version=2021.12.02"></script><link href="/assets/r/vendor4.css?version=2021.12.02" rel="stylesheet" /><link href="/assets/r/awsdocs-common.css?version=2021.12.02" rel="stylesheet" /><link href="/assets/r/awsdocs-doc-page.css?version=2021.12.02" rel="stylesheet" /><script async="" id="awsc-panorama-bundle" type="text/javascript" src="https://prod.pa.cdn.uis.awsstatic.com/panorama-nav-init.js" data-config="{'appEntity':'aws-documentation','region':'us-east-1','service':'sagemaker'}"></script><meta id="panorama-serviceSubSection" value="デベロッパーガイド" /><meta id="panorama-serviceConsolePage" value="Amazon SageMaker Studio Classic ノートブックとノートブックインスタンスはどのように違いますか?" /></head><body class="awsdocs awsui"><div class="awsdocs-container"><awsdocs-header></awsdocs-header><awsui-app-layout id="app-layout" class="awsui-util-no-gutters" ng-controller="ContentController as $ctrl" header-selector="awsdocs-header" navigation-hide="false" navigation-width="$ctrl.navWidth" navigation-open="$ctrl.navOpen" navigation-change="$ctrl.onNavChange($event)" tools-hide="$ctrl.hideTools" tools-width="$ctrl.toolsWidth" tools-open="$ctrl.toolsOpen" tools-change="$ctrl.onToolsChange($event)"><div id="guide-toc" dom-region="navigation"><awsdocs-toc></awsdocs-toc></div><div id="main-column" dom-region="content" tabindex="-1"><awsdocs-view class="awsdocs-view"><div id="awsdocs-content"><head><title>Amazon SageMaker Studio Classic ノートブックとノートブックインスタンスはどのように違いますか? - Amazon SageMaker AI</title><meta name="pdf" content="sagemaker-dg.pdf#notebooks-comparison" /><meta name="rss" content="amazon-sagemaker-release-notes.rss" /><meta name="forums" content="https://repost.aws/ja/tags/TAT80swPyVRPKPcA0rsJYPuA" /><meta name="feedback" content="https://docs.aws.amazon.com/forms/aws-doc-feedback?hidden_service_name=SageMaker&amp;topic_url=https://docs.aws.amazon.com/ja_jp/sagemaker/latest/dg/notebooks-comparison.html" /><meta name="feedback-yes" content="feedbackyes.html?topic_url=https://docs.aws.amazon.com/ja_jp/sagemaker/latest/dg/notebooks-comparison.html" /><meta name="feedback-no" content="feedbackno.html?topic_url=https://docs.aws.amazon.com/ja_jp/sagemaker/latest/dg/notebooks-comparison.html" /><meta name="keywords" content="SageMaker,Amazon SageMaker,機械学習,ノートブックインスタンス,機械学習環境,サポート対象,インタラクティブ開発環境,IDE" /><script type="application/ld+json">
+{
+    "@context" : "https://schema.org",
+    "@type" : "BreadcrumbList",
+    "itemListElement" : [
+      {
+        "@type" : "ListItem",
+        "position" : 1,
+        "name" : "AWS",
+        "item" : "https://aws.amazon.com"
+      },
+      {
+        "@type" : "ListItem",
+        "position" : 2,
+        "name" : "Amazon SageMaker",
+        "item" : "https://docs.aws.amazon.com/sagemaker/index.html"
+      },
+      {
+        "@type" : "ListItem",
+        "position" : 3,
+        "name" : "デベロッパーガイド",
+        "item" : "https://docs.aws.amazon.com/ja_jp/sagemaker/latest/dg"
+      },
+      {
+        "@type" : "ListItem",
+        "position" : 4,
+        "name" : "Amazon SageMaker AI が提供する機械学習環境",
+        "item" : "https://docs.aws.amazon.com/ja_jp/sagemaker/latest/dg/machine-learning-environments.html"
+      },
+      {
+        "@type" : "ListItem",
+        "position" : 5,
+        "name" : "Amazon SageMaker Studio Classic",
+        "item" : "https://docs.aws.amazon.com/ja_jp/sagemaker/latest/dg/studio.html"
+      },
+      {
+        "@type" : "ListItem",
+        "position" : 6,
+        "name" : "Amazon SageMaker Studio Classic ノートブックを使用する",
+        "item" : "https://docs.aws.amazon.com/ja_jp/sagemaker/latest/dg/notebooks.html"
+      },
+      {
+        "@type" : "ListItem",
+        "position" : 7,
+        "name" : "Amazon SageMaker Studio Classic ノートブックとノートブックインスタンスはどのように違いますか?",
+        "item" : "https://docs.aws.amazon.com/ja_jp/sagemaker/latest/dg/notebooks.html"
+      }
+    ]
+}
+</script></head><body><div id="main"><div style="display: none"><a href="sagemaker-dg.pdf#notebooks-comparison" target="_blank" rel="noopener noreferrer" title="PDF を開く"></a></div><div id="breadcrumbs" class="breadcrumb"><a href="/index.html">ドキュメント</a><a href="/sagemaker/index.html">Amazon SageMaker</a><a href="whatis.html">デベロッパーガイド</a></div><div id="main-content" class="awsui-util-container"><div id="main-col-body"><awsdocs-language-banner data-service="$ctrl.pageService"></awsdocs-language-banner><awsui-alert class="awsdocs-page-banner awsui-util-mb-l"><p>翻訳は機械翻訳により提供されています。提供された翻訳内容と英語版の間で齟齬、不一致または矛盾がある場合、英語版が優先します。</p></awsui-alert><h1 class="topictitle" id="notebooks-comparison">Amazon SageMaker Studio Classic ノートブックとノートブックインスタンスはどのように違いますか?</h1><div class="awsdocs-page-header-container"><awsdocs-page-header></awsdocs-page-header><awsdocs-filter-selector id="awsdocs-filter-selector"></awsdocs-filter-selector></div><div class="awsdocs-note awsdocs-important"><div class="awsdocs-note-title"><awsui-icon name="status-warning" variant="error"></awsui-icon><h6>重要</h6></div><div class="awsdocs-note-text"><p>2023 年 11 月 30 日以降、従来の Amazon SageMaker Studio のエクスペリエンスは Amazon SageMaker Studio Classic と名前が変更されました。以下のセクションは、Studio Classic アプリケーションの使用を前提とした内容です。更新後の Studio エクスペリエンスを使用する場合は、「<a href="./studio-updated.html">Amazon SageMaker Studio</a>」を参照してください。</p></div></div><p>新しいノートブックを起動する場合は、Amazon SageMaker AI コンソールからノートブックインスタンスを起動する代わりに、Amazon SageMaker Studio Classic でノートブックを作成することをお勧めします。Studio Classic ノートブックには、次のような多くの利点があります。</p><div class="itemizedlist">
+       
+       
+       
+       
+       
+       
+       
+    <ul class="itemizedlist"><li class="listitem">
+        <p><b>高速な起動:</b> Studio Classic ノートブックは、インスタンスベースのノートブックよりも早く起動します。通常、インスタンスベースのノートブックと比べて、5～10 倍早く起動します。</p>
+      </li><li class="listitem">
+        <p><b>ノートブックを簡単に共有:</b> ノートブックの共有機能は Studio Classic に組み込まれています。わずか数回のクリックで、ノートブックコードと、その実行に必要な SageMaker イメージを再現する共有可能なリンクを生成できます。</p>
+      </li><li class="listitem">
+        <p><b>最新の Python SDK:</b> Studio Classic ノートブックには、最新の <a href="https://sagemaker.readthedocs.io/en/stable" rel="noopener noreferrer" target="_blank"><span>Amazon SageMaker Python SDK</span><awsui-icon class="awsdocs-link-icon" name="external"></awsui-icon></a> がプリインストールされています。</p>
+      </li><li class="listitem">
+        <p><b>Studio Classic のすべての機能へのアクセス:</b> Studio Classic ノートブックには Studio Classic 内からアクセスできます。これにより、Studio Classic を終了することなく、モデルの構築、トレーニング、デバッグ、追跡、監視を行うことができます。</p>
+      </li><li class="listitem">
+        <p><b>永続的なユーザーディレクトリ:</b> Studio チームの各メンバーには、ノートブックやその他のファイルを保存するための独自のホームディレクトリが割り当てられます。このディレクトリは、起動時にすべてのインスタンスとカーネルに自動的にマウントされるため、ノートブックやその他のファイルを常に利用することができます。ホームディレクトリは Amazon Elastic File System (Amazon EFS) に保存されているため、他のサービスからアクセスできます。</p>
+      </li><li class="listitem">
+        <p><b>直接アクセス:</b> IAM アイデンティティセンターを使用する場合、固有の URL を通じて IAM アイデンティティセンターの認証情報を使用して Studio Classic に直接アクセスできます。ノートブック AWS Management Console を実行するために を操作する必要はありません。</p>
+      </li><li class="listitem">
+        <p><b>最適化されたイメージ:</b> Studio Classic ノートブックには、あらかじめ定義された一連の SageMaker イメージ設定が用意されており、すぐに使用を開始することができます。</p>
+      </li></ul></div><div class="awsdocs-note"><div class="awsdocs-note-title"><awsui-icon name="status-info" variant="link"></awsui-icon><h6>注記</h6></div><div class="awsdocs-note-text"><p>Studio Classic ノートブックは<em>ローカルモード</em>をサポートしていません。ただし、ノートブックインスタンスを使用してデータセットのサンプルをローカルでトレーニングし、Studio Classic ノートブックで同じコードを使用してデータセット全体をトレーニングすることはできます。</p></div></div><p>SageMaker Studio Classic でノートブックを開くと、ビューは JupyterLab インターフェイスの拡張機能になります。主な機能が同じであるため、このビューには Jupyter Notebook と JupyterLab の一般的な機能が表示されます。Studio Classic インターフェイスの詳細については、「<a href="./studio-ui.html">Amazon SageMaker Studio Classic の UI の概要</a>」を参照してください。</p><awsdocs-copyright class="copyright-print"></awsdocs-copyright><awsdocs-thumb-feedback right-edge="{{$ctrl.thumbFeedbackRightEdge}}"></awsdocs-thumb-feedback></div><noscript><div><div><div><div id="js_error_message"><p><img src="https://d1ge0kk1l5kms0.cloudfront.net/images/G/01/webservices/console/warning.png" alt="警告" /> <strong>ブラウザで JavaScript が無効になっているか、使用できません。</strong></p><p>AWS ドキュメントを使用するには、JavaScript を有効にする必要があります。手順については、使用するブラウザのヘルプページを参照してください。</p></div></div></div></div></noscript><div id="main-col-footer" class="awsui-util-font-size-0"><div id="doc-conventions"><a target="_top" href="/general/latest/gr/docconventions.html">ドキュメントの表記規則</a></div><div class="prev-next"><div id="previous" class="prev-link" accesskey="p" href="./notebooks.html">Studio Classic ノートブックを使用する</div><div id="next" class="next-link" accesskey="n" href="./notebooks-get-started.html">使用を開始する</div></div></div><awsdocs-page-utilities></awsdocs-page-utilities></div><div id="quick-feedback-yes" style="display: none;"><div class="title">このページは役に立ちましたか? - はい</div><div class="content"><p>ページが役に立ったことをお知らせいただき、ありがとうございます。</p><p>お時間がある場合は、何が良かったかお知らせください。今後の参考にさせていただきます。</p><p><awsui-button id="fblink" rel="noopener noreferrer" target="_blank" text="フィードバック" click="linkClick($event)" href="https://docs.aws.amazon.com/forms/aws-doc-feedback?hidden_service_name=SageMaker&amp;topic_url=https://docs.aws.amazon.com/ja_jp/sagemaker/latest/dg/notebooks-comparison.html"></awsui-button></p></div></div><div id="quick-feedback-no" style="display: none;"><div class="title">このページは役に立ちましたか? - いいえ</div><div class="content"><p>このページは修正が必要なことをお知らせいただき、ありがとうございます。ご期待に沿うことができず申し訳ありません。</p><p>お時間がある場合は、ドキュメントを改善する方法についてお知らせください。</p><p><awsui-button id="fblink" rel="noopener noreferrer" target="_blank" text="フィードバック" click="linkClick($event)" href="https://docs.aws.amazon.com/forms/aws-doc-feedback?hidden_service_name=SageMaker&amp;topic_url=https://docs.aws.amazon.com/ja_jp/sagemaker/latest/dg/notebooks-comparison.html"></awsui-button></p></div></div></div></body></div></awsdocs-view><div class="page-loading-indicator" id="page-loading-indicator"><awsui-spinner size="large"></awsui-spinner></div></div><div id="tools-panel" dom-region="tools"><awsdocs-tools-panel id="awsdocs-tools-panel"></awsdocs-tools-panel></div></awsui-app-layout><awsdocs-cookie-banner class="doc-cookie-banner"></awsdocs-cookie-banner></div></body></html>
