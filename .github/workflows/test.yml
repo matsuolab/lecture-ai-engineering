@@ -44,7 +44,7 @@ jobs:
           pytest day5/演習3/tests/test_model.py -v
 
       - name: Commit and push updated accuracy baseline
-        if: ${{ github.event_name == 'push' && github.ref == 'refs/heads/main' }
+        if: ${{ github.event_name == 'push' && github.ref == 'refs/heads/main' }}
         run: |
           git config user.name "github-actions[bot]"
           git config user.email "github-actions[bot]@users.noreply.github.com"
