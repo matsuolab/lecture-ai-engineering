@@ -47,6 +47,6 @@ jobs:
         run: |
           git config user.name "github-actions[bot]"
           git config user.email "github-actions[bot]@users.noreply.github.com"
-          git add models/previous_accuracy.json
+          git add day5/演習3/models/previous_accuracy.json
           git diff --cached --quiet || \
             (git commit -m "ci: update accuracy baseline" && git push)
