@@ -4,38 +4,50 @@ on:
   # push:
   #   branches: [ main, master  ]
   pull_request:
-    branches: [ main, master ]
+    branches: [main, master]
 
 jobs:
   test:
     runs-on: ubuntu-latest
     steps:
-    - uses: actions/checkout@v3
-    
-    - name: Set up Python
-      uses: actions/setup-python@v4
-      with:
-        python-version: '3.10'
-        
-    - name: Install dependencies
-      run: |
-        python -m pip install --upgrade pip
-        pip install pytest great_expectations pandas scikit-learn flake8 black mypy pytest-cov
-        if [ -f requirements.txt ]; then pip install -r requirements.txt; fi
-        
-    - name: Lint with flake8
-      run: |
-        flake8 day5/演習3 --count --select=E9,F63,F7,F82 --show-source --statistics
-        flake8 day5/演習3 --count --exit-zero --max-complexity=10 --max-line-length=88 --statistics
-        
-    - name: Format check with black
-      run: |
-        black --check day5/演習3
-        
-    - name: Run data tests
-      run: |
-        pytest day5/演習3/tests/test_data.py -v
-        
-    - name: Run model tests
-      run: |
-        pytest day5/演習3/tests/test_model.py -v
+      - uses: actions/checkout@v3
+        with:
+          fetch-depth: 0 # full history
+          persist-credentials: true # push できるように
+      - name: Set up Python
+        uses: actions/setup-python@v4
+        with:
+          python-version: "3.10"
+
+      - name: Install dependencies
+        run: |
+          python -m pip install --upgrade pip
+          pip install pytest great_expectations pandas scikit-learn flake8 black mypy pytest-cov
+          if [ -f requirements.txt ]; then pip install -r requirements.txt; fi
+
+      - name: Lint with flake8
+        run: |
+          flake8 day5/演習3 --count --select=E9,F63,F7,F82 --show-source --statistics
+          flake8 day5/演習3 --count --exit-zero --max-complexity=10 --max-line-length=88 --statistics
+
+      - name: Format check with black
+        run: |
+          black --check day5/演習3
+
+      - name: Run data tests
+        run: |
+          pytest day5/演習3/tests/test_data.py -v
+
+      - name: Run model tests
+        run: |
+          pytest day5/演習3/tests/test_model.py -v
+
+      - name: Commit and push updated accuracy baseline
+        if: ${{  success() }}
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+          git add models/previous_accuracy.json
+          # 変更があればコミット
+          git diff --cached --quiet || \
+            (git commit -m "ci: update accuracy baseline" && git push)

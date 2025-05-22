@@ -4,6 +4,7 @@ import pandas as pd
 import numpy as np
 import pickle
 import time
+
 from sklearn.ensemble import RandomForestClassifier
 from sklearn.model_selection import train_test_split
 from sklearn.metrics import accuracy_score
@@ -16,7 +17,8 @@ from sklearn.pipeline import Pipeline
 DATA_PATH = os.path.join(os.path.dirname(__file__), "../data/Titanic.csv")
 MODEL_DIR = os.path.join(os.path.dirname(__file__), "../models")
 MODEL_PATH = os.path.join(MODEL_DIR, "titanic_model.pkl")
-
+# 前回精度を保存するファイル
+ACC_FILE = os.path.join(MODEL_DIR, "previous_accuracy.json")
 
 @pytest.fixture
 def sample_data():
@@ -116,7 +118,23 @@ def test_model_accuracy(train_model):
     # 予測と精度計算
     y_pred = model.predict(X_test)
     accuracy = accuracy_score(y_test, y_pred)
+    # 前回保存した精度と比較
+    if not os.path.exists(ACC_FILE):
+        # 初回実行時は基準値として 0.75 を使用
+        prev_acc = 0.75
+    else:
+        with open(ACC_FILE, "r") as f:
+            prev_acc = json.load(f).get("accuracy", 0.75)
 
+    # 今回の精度が前回を下回っていないことを検証
+    assert accuracy >= prev_acc, (
+        f"モデルの精度が前回の {prev_acc:.4f} を下回っています: {accuracy:.4f}"
+    )
+
+    # 今回の精度を保存（次回の比較用）
+    os.makedirs(MODEL_DIR, exist_ok=True)
+    with open(ACC_FILE, "w") as f:
+        json.dump({"accuracy": accuracy}, f)]
     # Titanicデータセットでは0.75以上の精度が一般的に良いとされる
     assert accuracy >= 0.75, f"モデルの精度が低すぎます: {accuracy}"
 
