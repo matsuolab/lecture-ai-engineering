@@ -21,10 +21,37 @@ class DataLoader:
         if path:
             return pd.read_csv(path)
         else:
-            # ローカルのファイル
+            # ローカルファイルが存在すればそれを読み込む
             local_path = "data/Titanic.csv"
             if os.path.exists(local_path):
                 return pd.read_csv(local_path)
+            else:
+                # CIや初回実行時のためにOpenMLから取得
+                try:
+                    from sklearn.datasets import fetch_openml
+
+                    titanic = fetch_openml("titanic", version=1, as_frame=True)
+                    df = titanic.data
+                    df["Survived"] = titanic.target
+
+                    # 必要なカラムのみに絞る
+                    df = df[
+                        [
+                            "Pclass",
+                            "Sex",
+                            "Age",
+                            "SibSp",
+                            "Parch",
+                            "Fare",
+                            "Embarked",
+                            "Survived",
+                        ]
+                    ]
+                    return df
+                except Exception as e:
+                    raise FileNotFoundError(
+                        f"Titanicデータの読み込みに失敗しました: {e}"
+                    )
 
     @staticmethod
     def preprocess_titanic_data(data):
