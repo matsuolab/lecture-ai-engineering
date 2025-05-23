@@ -1,0 +1,2 @@
+# 改行コードを LF に統一
+*.py text eol=lf
