@@ -175,20 +175,17 @@ def test_model_reproducibility(sample_data, preprocessor):
         predictions1, predictions2
     ), "モデルの予測結果に再現性がありません"
 
-    def test_model_is_better_than_random(train_model):
-        "モデルの精度がランダム予測より有意に高いことを検証"
 
+def test_model_is_better_than_random(train_model):
+    """モデルの精度がランダム予測より有意に高いことを検証"""
     model, X_test, y_test = train_model
 
-    # モデルの予測と精度
     y_pred = model.predict(X_test)
     model_acc = accuracy_score(y_test, y_pred)
 
-    # ランダム予測（クラス0, 1をランダムに予測）
     random_preds = np.random.choice([0, 1], size=len(y_test))
     random_acc = accuracy_score(y_test, random_preds)
 
-    # 比較
     assert (
         model_acc >= random_acc + 0.1
     ), f"モデルの精度がランダムと大差ありません: model={model_acc:.3f}, random={random_acc:.3f}"
