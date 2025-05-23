@@ -5,6 +5,8 @@ import numpy as np
 import great_expectations as gx
 from sklearn.datasets import fetch_openml
 import warnings
+from day5.演習2.main import DataLoader, ModelTester
+from sklearn.model_selection import train_test_split
 
 # 警告を抑制
 warnings.filterwarnings("ignore")
@@ -129,3 +131,54 @@ def test_value_ranges(sample_data):
         results.append(result)
         is_successful = all(result.success for result in results)
     assert is_successful, "データの値範囲が期待通りではありません"
+
+
+@pytest.fixture
+def train_model():
+    """モデルを学習して返す fixture"""
+    data = DataLoader.load_titanic_data()
+    X, y = DataLoader.preprocess_titanic_data(data)
+    X_train, X_test, y_train, y_test = train_test_split(
+        X, y, test_size=0.2, random_state=42
+    )
+    model = ModelTester.train_model(X_train, y_train)
+    return model, X_test, y_test
+
+
+def test_feature_count(train_model):
+    """前処理後の特徴量数とモデルが学習時に認識した特徴量数が一致するか確認"""
+    model, X_test, _ = train_model
+
+    # 前処理後の特徴量数（transform後のshape）
+    preprocessed_features = model.named_steps["preprocessor"].transform(X_test)
+    n_features_transformed = preprocessed_features.shape[1]
+
+    # モデルが学習時に記録している特徴量数
+    n_features_model = model.named_steps["classifier"].n_features_in_
+
+    assert (
+        n_features_transformed == n_features_model
+    ), f"前処理後の特徴量数 ({n_features_transformed}) とモデルが期待する特徴量数 ({n_features_model}) が一致しません"
+
+
+def test_model_invalid_input(train_model):
+    """不正な形式の入力に対して適切なエラーが出ることを確認"""
+    model, _, _ = train_model
+
+    # 数値ではなく文字列を含む入力を意図的に与える
+    invalid_input = pd.DataFrame(
+        [["invalid", None, "bad", "input", "data", "xxx", "???"]],
+        columns=["Pclass", "Sex", "Age", "SibSp", "Parch", "Fare", "Embarked"],
+    )
+
+    with pytest.raises(Exception) as exc_info:
+        model.predict(invalid_input)
+
+    # エラー内容を確認する場合（オプション）
+    error_msg = str(exc_info.value)
+    print("予想されるエラーメッセージ:", error_msg)
+
+    # エラーメッセージを一部確認しておくと堅牢性アップ
+    assert (
+        "could not convert" in error_msg or "input" in error_msg.lower()
+    ), f"期待される形式のエラーメッセージではありません: {error_msg}"
