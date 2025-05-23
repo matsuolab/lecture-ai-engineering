@@ -134,6 +134,9 @@ def test_model_inference_time(train_model):
 
     # 推論時間が1秒未満であることを確認
     assert inference_time < 1.0, f"推論時間が長すぎます: {inference_time}秒"
+    assert (
+        inference_time < 2.0
+    ), f"推論時間が長すぎて何か大きな修正が必要です: {inference_time}秒"
 
 
 def test_model_reproducibility(sample_data, preprocessor):
@@ -171,3 +174,18 @@ def test_model_reproducibility(sample_data, preprocessor):
     assert np.array_equal(
         predictions1, predictions2
     ), "モデルの予測結果に再現性がありません"
+
+
+def test_model_is_better_than_random(train_model):
+    """モデルの精度がランダム予測より有意に高いことを検証"""
+    model, X_test, y_test = train_model
+
+    y_pred = model.predict(X_test)
+    model_acc = accuracy_score(y_test, y_pred)
+
+    random_preds = np.random.choice([0, 1], size=len(y_test))
+    random_acc = accuracy_score(y_test, random_preds)
+
+    assert (
+        model_acc >= random_acc + 0.1
+    ), f"モデルの精度がランダムと大差ありません: model={model_acc:.3f}, random={random_acc:.3f}"
