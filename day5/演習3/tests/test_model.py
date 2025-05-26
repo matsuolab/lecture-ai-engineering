@@ -117,6 +117,9 @@ def test_model_accuracy(train_model):
     y_pred = model.predict(X_test)
     accuracy = accuracy_score(y_test, y_pred)
 
+    # 精度を出力（CIログで確認できる）
+    print(f"\n[INFO] モデル精度: {accuracy:.3f}")
+
     # Titanicデータセットでは0.75以上の精度が一般的に良いとされる
     assert accuracy >= 0.75, f"モデルの精度が低すぎます: {accuracy}"
 
