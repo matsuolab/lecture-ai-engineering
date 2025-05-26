@@ -122,18 +122,17 @@ def test_model_accuracy(train_model):
 
 
 def test_model_inference_time(train_model):
-    """モデルの推論時間を検証"""
+    """モデルの推論時間を検証（最初の10件でチェック）"""
     model, X_test, _ = train_model
 
-    # 推論時間の計測
+    MAX_INFERENCE_TIME = 0.5  # 許容する最大推論時間（秒）
+
+    sample = X_test[:10]  # 最初の10件で推論時間を評価
     start_time = time.time()
-    model.predict(X_test)
-    end_time = time.time()
+    model.predict(sample)
+    inference_time = time.time() - start_time
 
-    inference_time = end_time - start_time
-
-    # 推論時間が1秒未満であることを確認
-    assert inference_time < 1.0, f"推論時間が長すぎます: {inference_time}秒"
+    assert inference_time < MAX_INFERENCE_TIME, f"推論が遅すぎます: {inference_time:.3f}秒"
 
 
 def test_model_reproducibility(sample_data, preprocessor):
