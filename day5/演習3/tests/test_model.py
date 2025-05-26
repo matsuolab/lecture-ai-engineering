@@ -110,15 +110,18 @@ def test_model_exists():
 
 
 def test_model_accuracy(train_model):
-    """モデルの精度を検証"""
+    """モデルの精度を検証（百分率表示 と 閾値を定数化）"""
     model, X_test, y_test = train_model
 
-    # 予測と精度計算
     y_pred = model.predict(X_test)
     accuracy = accuracy_score(y_test, y_pred)
 
-    # Titanicデータセットでは0.75以上の精度が一般的に良いとされる
-    assert accuracy >= 0.75, f"モデルの精度が低すぎます: {accuracy}"
+    # 精度を百分率で表示
+    print(f"\n[INFO] モデル精度: {accuracy * 100:.2f}%")
+
+    # 合格ラインを定数化
+    THRESHOLD = 0.75
+    assert accuracy >= THRESHOLD, f"モデルの精度が低すぎます: {accuracy:.3f}"
 
 
 def test_model_inference_time(train_model):
