@@ -199,5 +199,5 @@ def test_model_performance_no_regression(train_model):
     else:
         # ベースラインモデルがない場合は、現在のモデルをベースラインとして保存
         print("ベースラインモデルが存在しないため、現在のモデルをベースラインとして保存します")
-        with open(BASELINE_MODEL_PATH, 'wb') as f:
+        with open(BASELINE_MODEL_PATH, "wb") as f:
             pickle.dump(current_model, f)
