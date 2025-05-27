@@ -19,12 +19,30 @@ class DataLoader:
     def load_titanic_data(path=None):
         """Titanicデータセットを読み込む"""
         if path:
-            return pd.read_csv(path)
+            # 引数にパスが指定された場合はそれを優先
+            if os.path.exists(path):
+                return pd.read_csv(path)
+            else:
+                print(f"Error: Specified path '{path}' does not exist.")
+                return None
         else:
-            # ローカルのファイル
-            local_path = "/Users/yutsudoryo/Documents/AIE/lecture-ai-engineering/day5/演習2/data/Titanic.csv"
-            if os.path.exists(local_path):
-                return pd.read_csv(local_path)
+            # 引数が指定されない場合、現在のスクリプトからの相対パスを試す
+            # スクリプトがあるディレクトリの絶対パスを取得
+            script_dir = os.path.dirname(__file__)
+            # 'data'ディレクトリがスクリプトの隣にあると仮定
+            relative_path = os.path.join(script_dir, "data", "Titanic.csv")
+
+            # または、より上位の 'lecture-ai-engineering' ディレクトリ直下に 'data' がある場合
+            # project_root = os.path.abspath(os.path.join(script_dir, '..', '..')) # day5/演習2 から2つ上に上がる
+            # relative_path = os.path.join(project_root, "data", "Titanic.csv")
+
+            if os.path.exists(relative_path):
+                print(f"Loading data from: {relative_path}")  # デバッグ用
+                return pd.read_csv(relative_path)
+            else:
+                print(f"Error: Data file not found at local path '{relative_path}'.")
+                # ここでエラーを発生させるか、Noneを返すかを決める
+                return None  # Noneを返すと、その後の処理でNoneTypeエラーが発生する可能性がある
 
     @staticmethod
     def preprocess_titanic_data(data):
