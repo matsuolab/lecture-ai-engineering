@@ -171,3 +171,33 @@ def test_model_reproducibility(sample_data, preprocessor):
     assert np.array_equal(
         predictions1, predictions2
     ), "モデルの予測結果に再現性がありません"
+
+
+def test_model_performance_no_regression(train_model):
+    """過去のベストモデルと比較して性能劣化がないことを検証"""
+    current_model, X_test, y_test = train_model
+
+    # 現在のモデルの精度を計算
+    y_pred_current = current_model.predict(X_test)
+    current_accuracy = accuracy_score(y_test, y_pred_current)
+
+    # 過去のベストモデルを読み込む（存在する場合）
+    BASELINE_MODEL_PATH = os.path.join(MODEL_DIR, "baseline_titanic_model.pkl")
+    if os.path.exists(BASELINE_MODEL_PATH):
+        with open(BASELINE_MODEL_PATH, 'rb') as f:
+            baseline_model = pickle.load(f)
+
+        # 過去のモデルでも同じテストデータで評価
+        y_pred_baseline = baseline_model.predict(X_test)
+        baseline_accuracy = accuracy_score(y_test, y_pred_baseline)
+
+        # 精度が悪化していないことを確認
+        assert current_accuracy > baseline_accuracy, (
+            f"モデルの精度が過去のバージョンより低下しています: "
+            f"現在={current_accuracy:.4f}, 過去={baseline_accuracy:.4f}"
+        )
+    else:
+        # ベースラインモデルがない場合は、現在のモデルをベースラインとして保存
+        print("ベースラインモデルが存在しないため、現在のモデルをベースラインとして保存します")
+        with open(BASELINE_MODEL_PATH, 'wb') as f:
+            pickle.dump(current_model, f)
