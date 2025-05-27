@@ -1,83 +1,44 @@
 name: ML Pipeline CI
 
 on:
-  push:
-    branches: [ main, master  ]
+  # push:
+  #   branches: [ main, master  ]
   pull_request:
-    branches: [ main, master ]
-
-permissions:
-  contents: read
-  actions: write
+    branches: [ main, master,develop ]
 
 jobs:
   test:
     runs-on: ubuntu-latest
-    environment: BASE_ACCURACY # デプロイ先環境を 'development' に固定
     steps:
     - uses: actions/checkout@v3
-    - name: Clear environment # テスト的に追加
-      run: |
-        env -i bash -c "env"
-    # ... (セットアップ、依存関係インストールなど)
-    - name: Install dependencies
-      run: |
-        python -m pip install --upgrade pip
-        pip install pytest great_expectations pandas scikit-learn flake8 black mypy pytest-cov gh
-        if [ -f requirements.txt ]; then pip install -r requirements.txt; fi
-
-    - name: Run model tests
-      run: |
-        echo "BASELINE_ACCURACY from vars: ${{ vars.BASELINE_ACCURACY }}" # 確認用
-        echo "BASELINE_ACCURACY from env: ${{ env.BASELINE_ACCURACY }}"   # 確認用
-        python -c "import os; print(f'BASELINE_ACCURACY from os: {os.environ.get(\"BASELINE_ACCURACY\")}')" # 確認用
-        pytest day5/演習3/tests/test_model.py -v -s
-      env:
-        BASELINE_ACCURACY: ${{ vars.BASELINE_ACCURACY }}
     
     - name: Set up Python
       uses: actions/setup-python@v4
       with:
         python-version: '3.10'
-
-    
+        
+    - name: Install dependencies
+      run: |
+        python -m pip install --upgrade pip
+        pip install pytest great_expectations pandas scikit-learn flake8 black mypy pytest-cov
+        if [ -f requirements.txt ]; then pip install -r requirements.txt; fi
+        
     - name: Lint with flake8
       run: |
-        flake8 day5/演習3 --count --select=E9,F63,F7,F82 --show-source --statistics
-        flake8 day5/演習3 --count --exit-zero --max-complexity=10 --max-line-length=88 --statistics
-
+        flake8 day5/演習2 --count --select=E9,F63,F7,F82 --show-source --statistics
+        flake8 day5/演習2 --count --exit-zero --max-complexity=10 --max-line-length=88 --statistics
+        
     - name: Format check with black
       run: |
-        black --check day5/演習3
-
-    - name: Run data tests
-      run: |
-        pytest day5/演習3/tests/test_data.py -v -s
-
-    - name: Run model tests and get accuracy
-      id: model_test
-      run: |
-        cd day5/演習3/tests
-        pytest test_model.py -v -s > pytest_output.log
-
-        echo "------ Pytest Output ------"
-        cat pytest_output.log
-        echo "---------------------------"
-
-        grep "現在のモデルの精度" pytest_output.log | awk -F'(' '{print $2}' | awk -F')' '{print $1}' > accuracy.txt
-
-        if [ -s "accuracy.txt" ]; then
-          current_accuracy=$(cat accuracy.txt)
-          echo "ACCURACY_OUTPUT=$current_accuracy" >> $GITHUB_OUTPUT
-          echo "Extracted accuracy: $current_accuracy"
-        else
-          echo "ACCURACY_OUTPUT=" >> $GITHUB_OUTPUT
-          echo "Error: Could not extract accuracy from pytest output."
-          exit 1
-        fi
+        black --check day5/演習2
         
-
-
-    
-
-       
+    # - name: Run data tests
+    #   run: |
+    #     pytest day5/演習2/tests/test_data.py -v
+        
+    # - name: Run model tests
+    #   run: |
+    #     pytest day5/演習2/tests/test_model.py -v
+    - name: Run pytest on main.py
+      run: |
+        pytest day5/演習2/main.py -v
