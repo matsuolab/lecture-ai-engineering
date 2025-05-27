@@ -22,7 +22,7 @@ class DataLoader:
             return pd.read_csv(path)
         else:
             # ローカルのファイル
-            local_path = "data/Titanic.csv"
+            local_path = "/Users/yutsudoryo/Documents/AIE/lecture-ai-engineering/day5/演習2/data/Titanic.csv"
             if os.path.exists(local_path):
                 return pd.read_csv(local_path)
 
@@ -256,7 +256,7 @@ if __name__ == "__main__":
 
     # データバリデーション
     success, results = DataValidator.validate_titanic_data(X)
-    print(f"データ検証結果: {'成功' if success else '失敗'}")
+    print(f"データ検証結果: {'成功✅' if success else '失敗❌'}")
     for result in results:
         # "success": falseの場合はエラーメッセージを表示
         if not result["success"]:
@@ -285,4 +285,4 @@ if __name__ == "__main__":
 
     # ベースラインとの比較
     baseline_ok = ModelTester.compare_with_baseline(metrics)
-    print(f"ベースライン比較: {'合格' if baseline_ok else '不合格'}")
+    print(f"ベースライン比較: {'合格✅' if baseline_ok else '不合格❌'}")
