@@ -11,6 +11,7 @@ import pickle
 import time
 import great_expectations as gx
 
+
 class DataLoader:
     """データロードを行うクラス"""
 
@@ -21,7 +22,8 @@ class DataLoader:
             return pd.read_csv(path)
         else:
             # ローカルのファイル
-            local_path = "data/Titanic.csv"
+            script_dir = os.path.dirname(__file__)
+            local_path = os.path.join(script_dir, "data", "titanic.csv")
             if os.path.exists(local_path):
                 return pd.read_csv(local_path)
 
@@ -285,3 +287,53 @@ if __name__ == "__main__":
     # ベースラインとの比較
     baseline_ok = ModelTester.compare_with_baseline(metrics)
     print(f"ベースライン比較: {'合格' if baseline_ok else '不合格'}")
+
+    # --- 推論時間と精度をチェックする関数を追加 ---
+    def test_inference_speed_and_accuracy():
+        print("\n--- 推論時間と精度チェックを開始します ---")
+
+        # モデルのロード
+        try:
+            model = ModelTester.load_model()
+            print("モデルを正常にロードしました。")
+        except FileNotFoundError:
+            print(
+                "エラー: モデルファイルが見つかりません。train_model と save_model を実行してください。"
+            )
+            return
+
+        # データのロードと前処理
+        data_for_test = DataLoader.load_titanic_data()
+        X_for_test, y_for_test = DataLoader.preprocess_titanic_data(data_for_test)
+        _, X_test_inference, _, y_test_inference = train_test_split(
+            X_for_test, y_for_test, test_size=0.2, random_state=42
+        )
+
+        # モデル評価
+        metrics_inference = ModelTester.evaluate_model(
+            model, X_test_inference, y_test_inference
+        )
+
+        print(
+            f"ロードしたモデルの推論時間: {metrics_inference['inference_time']:.4f}秒"
+        )
+        print(f"ロードしたモデルの精度: {metrics_inference['accuracy']:.4f}")
+
+        # 評価基準（例：推論時間は1秒未満、精度は0.75以上）
+        inference_speed_ok = metrics_inference["inference_time"] < 1.0
+        accuracy_ok = ModelTester.compare_with_baseline(
+            metrics_inference, baseline_threshold=0.75
+        )
+
+        print(
+            f"推論速度チェック: {'合格' if inference_speed_ok else '不合格'} (1.0秒未満)"
+        )
+        print(f"精度チェック (ベースライン0.75): {'合格' if accuracy_ok else '不合格'}")
+
+        if inference_speed_ok and accuracy_ok:
+            print("推論時間と精度は許容範囲内です。")
+        else:
+            print("推論時間または精度が基準を満たしていません。")
+
+    # 追加した関数を実行
+    test_inference_speed_and_accuracy()

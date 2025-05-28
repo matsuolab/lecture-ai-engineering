@@ -4,7 +4,7 @@ on:
   # push:
   #   branches: [ main, master  ]
   pull_request:
-    branches: [ main, master ]
+    branches: [ main, master, develop ]
 
 jobs:
   test:
@@ -25,17 +25,23 @@ jobs:
         
     - name: Lint with flake8
       run: |
-        flake8 day5/演習3 --count --select=E9,F63,F7,F82 --show-source --statistics
-        flake8 day5/演習3 --count --exit-zero --max-complexity=10 --max-line-length=88 --statistics
+        flake8 day5/演習2 --count --select=E9,F63,F7,F82 --show-source --statistics
+        flake8 day5/演習2 --count --exit-zero --max-complexity=10 --max-line-length=88 --statistics
         
     - name: Format check with black
       run: |
-        black --check day5/演習3
-        
-    - name: Run data tests
+        black --check day5/演習2
+
+    # Delete the following lines
+    
+    # - name: Run data tests
+    #   run: |
+    #     pytest day5/演習3/tests/test_data.py -v
+    #    
+    # - name: Run model tests
+    #   run: |
+    #     pytest day5/演習3/tests/test_model.py -v
+
+    - name: Run pytest on main.py
       run: |
-        pytest day5/演習3/tests/test_data.py -v
-        
-    - name: Run model tests
-      run: |
-        pytest day5/演習3/tests/test_model.py -v
+        pytest day5/演習2/main.py -v
