@@ -16,22 +16,19 @@ class DataLoader:
     """データロードを行うクラス"""
 
     @staticmethod
-    def load_titanic_data(path=None):
+    def load_titanic_data(path: str = None) -> pd.DataFrame:
         """Titanicデータセットを読み込む"""
+        # 1) path引数が指定されていればそちらを優先
         if path:
             return pd.read_csv(path)
-        # base_dir = os.path.dirname(os.path.abspath(__file__))
-        local_path = "data/Titanic.csv"
-        if os.path.exists(local_path):
-            return pd.read_csv(local_path)
 
-        # 3) それでも見つからなければエラーを投げる（None返却を防ぐ）
-        raise FileNotFoundError(f"Titanic.csv が見つかりません: {local_path}")
-        # else:
-        # ローカルのファイル
-        # local_path = "data/Titanic.csv"
-        # if os.path.exists(local_path):
-        # return pd.read_csv(local_path)
+        base_dir = os.path.dirname(os.path.abspath(__file__))
+        data_path = os.path.join(base_dir, "data", "Titanic.csv")
+
+        if not os.path.exists(data_path):
+            raise FileNotFoundError(f"Titanic.csv が見つかりません: {data_path}")
+
+        return pd.read_csv(data_path)
 
     @staticmethod
     def preprocess_titanic_data(data):
