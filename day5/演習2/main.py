@@ -2,7 +2,7 @@ import os
 import pandas as pd
 from sklearn.ensemble import RandomForestClassifier
 from sklearn.model_selection import train_test_split
-from sklearn.metrics import accuracy_score
+from sklearn.metrics import accuracy_score, log_loss
 from sklearn.preprocessing import StandardScaler, OneHotEncoder
 from sklearn.compose import ColumnTransformer
 from sklearn.pipeline import Pipeline
@@ -11,19 +11,24 @@ import pickle
 import time
 import great_expectations as gx
 
+
 class DataLoader:
     """データロードを行うクラス"""
 
     @staticmethod
-    def load_titanic_data(path=None):
+    def load_titanic_data(path: str = None) -> pd.DataFrame:
         """Titanicデータセットを読み込む"""
+        # 1) path引数が指定されていればそちらを優先
         if path:
             return pd.read_csv(path)
-        else:
-            # ローカルのファイル
-            local_path = "data/Titanic.csv"
-            if os.path.exists(local_path):
-                return pd.read_csv(local_path)
+
+        base_dir = os.path.dirname(os.path.abspath(__file__))
+        data_path = os.path.join(base_dir, "data", "Titanic.csv")
+
+        if not os.path.exists(data_path):
+            raise FileNotFoundError(f"Titanic.csv が見つかりません: {data_path}")
+
+        return pd.read_csv(data_path)
 
     @staticmethod
     def preprocess_titanic_data(data):
@@ -177,10 +182,12 @@ class ModelTester:
         """モデルを評価する"""
         start_time = time.time()
         y_pred = model.predict(X_test)
+        y_proba = model.predict_proba(X_test)
         inference_time = time.time() - start_time
 
         accuracy = accuracy_score(y_test, y_pred)
-        return {"accuracy": accuracy, "inference_time": inference_time}
+        loss = log_loss(y_test, y_proba)
+        return {"accuracy": accuracy, "inference_time": inference_time, "loss": loss}
 
     @staticmethod
     def save_model(model, path="models/titanic_model.pkl"):
@@ -202,6 +209,37 @@ class ModelTester:
     def compare_with_baseline(current_metrics, baseline_threshold=0.75):
         """ベースラインと比較する"""
         return current_metrics["accuracy"] >= baseline_threshold
+
+    @staticmethod
+    def verify_performance(
+        metrics, acc_threshold=0.75, time_threshold=1.0, loss_threshold=None
+    ):
+        """
+        モデルの accuracy と inference_time をチェックし、
+        結果を [PASS]/[FAIL] で表示する
+        """
+        acc = metrics["accuracy"]
+        inf_time = metrics["inference_time"]
+        loss = metrics.get("loss")
+
+        # 精度チェック
+        if acc >= acc_threshold:
+            print(f"[PASS] Accuracy = {acc:.3f} ≥ {acc_threshold}")
+        else:
+            print(f"[FAIL] Accuracy = {acc:.3f} < {acc_threshold}")
+
+        # 推論時間チェック
+        if inf_time < time_threshold:
+            print(f"[PASS] Inference time = {inf_time:.3f}s < {time_threshold}s")
+        else:
+            print(f"[FAIL] Inference time = {inf_time:.3f}s ≥ {time_threshold}s")
+
+        # 損失関数チェック（指定されている場合）
+        if loss_threshold is not None and loss is not None:
+            if loss <= loss_threshold:
+                print(f"[PASS] Loss = {loss:.3f} ≤ {loss_threshold}")
+            else:
+                print(f"[FAIL] Loss = {loss:.3f} > {loss_threshold}")
 
 
 # テスト関数（pytestで実行可能）
@@ -278,9 +316,15 @@ if __name__ == "__main__":
 
     print(f"精度: {metrics['accuracy']:.4f}")
     print(f"推論時間: {metrics['inference_time']:.4f}秒")
+    print(f"損失: {metrics['loss']:.4f}")
 
     # モデル保存
     model_path = ModelTester.save_model(model)
+
+    # 推論精度・推論時間のチェックコメントを出力
+    ModelTester.verify_performance(
+        metrics, acc_threshold=0.75, time_threshold=1.0, loss_threshold=0.5
+    )
 
     # ベースラインとの比較
     baseline_ok = ModelTester.compare_with_baseline(metrics)

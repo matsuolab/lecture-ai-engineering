@@ -6,198 +6,163 @@ import time
 # ============================================
 # ページ設定
 # ============================================
-# st.set_page_config(
-#     page_title="Streamlit デモ",
-#     layout="wide",
-#     initial_sidebar_state="expanded"
-# )
+st.set_page_config(
+    page_title="Streamlit カスタムUIデモ",
+    layout="wide",
+    initial_sidebar_state="expanded",
+    menu_items={
+        'Get Help': None,
+        'Report a bug': None,
+        'About': 'Enhanced UI demo with custom CSS'
+    }
+)
 
 # ============================================
-# タイトルと説明
+# カスタムCSS / テーマ
 # ============================================
-st.title("Streamlit 初心者向けデモ")
-st.markdown("### コメントを解除しながらStreamlitの機能を学びましょう")
-st.markdown("このデモコードでは、コメントアウトされた部分を順番に解除しながらUIの変化を確認できます。")
+st.markdown("""
+<style>
+/* フォントと背景 */
+body {
+    font-family: 'Helvetica Neue', Arial, sans-serif;
+    background-color: #f5f7fa;
+}
+
+/* ヘッダースタイル */
+.css-1v0mbdj {
+    background-color: #0066cc !important;
+    color: white !important;
+    padding: 1rem 2rem;
+    border-radius: 0 0 1rem 1rem;
+}
+
+/* .big-font を拡張 */
+.big-font {
+    font-size: 24px !important;
+    font-weight: 700 !important;
+    color: #0066cc !important;
+    text-transform: uppercase;
+    margin-bottom: 1em;
+}
+
+/* カード風コンテナ */
+.card {
+    background: white;
+    padding: 1rem;
+    margin: 1rem 0;
+    border-radius: 1rem;
+    box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+}
+
+/* サイドバーカスタム */
+.stSidebar {
+    background-color: #e1ecf7;
+}
+
+.stSidebar .sidebar-content {
+    color: #003366;
+}
+
+/* ボタンカスタム */
+.stButton > button {
+    background-color: #0066cc;
+    color: white;
+    border-radius: 0.75rem;
+    padding: 0.5rem 1.5rem;
+    font-weight: bold;
+    transition: background-color 0.3s ease;
+}
+.stButton > button:hover {
+    background-color: #0052a3;
+}
+
+/* メトリクスカード */
+.css-1hynsf2 {
+    background-color: #ffffff;
+    border-radius: 1rem;
+    padding: 1rem;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+}
+</style>
+""", unsafe_allow_html=True)
+
+# ============================================
+# ヘッダー
+# ============================================
+st.markdown('<h1 class="big-font">Streamlit カスタムUIデモ</h1>', unsafe_allow_html=True)
+st.markdown('<p class="card">コメントを解除しながらStreamlitの機能を学びましょう。</p>', unsafe_allow_html=True)
 
 # ============================================
 # サイドバー 
 # ============================================
 st.sidebar.header("デモのガイド")
-st.sidebar.info("コードのコメントを解除して、Streamlitのさまざまな機能を確認しましょう。")
+st.sidebar.info(
+    "1. コメントを解除する\n"
+    "2. UIの変化を確認する\n"
+    "3. 自由にアレンジしよう!"
+)
 
 # ============================================
-# 基本的なUI要素
+# 基本要素 in カード
 # ============================================
-st.header("基本的なUI要素")
+st.markdown('<div class="card"><h2>基本的なUI要素</h2></div>', unsafe_allow_html=True)
 
 # テキスト入力
-st.subheader("テキスト入力")
+st.markdown('<div class="card"><h3>テキスト入力</h3></div>', unsafe_allow_html=True)
 name = st.text_input("あなたの名前", "ゲスト")
-st.write(f"こんにちは、{name}さん！")
+st.success(f"こんにちは、{name}さん！")
 
 # ボタン
-# st.subheader("ボタン")
-# if st.button("クリックしてください"):
-#     st.success("ボタンがクリックされました！")
+st.markdown('<div class="card"><h3>ボタン</h3></div>', unsafe_allow_html=True)
+if st.button("クリックしてください"):
+    st.balloons()
+    st.success("ボタンがクリックされました！")
 
 # チェックボックス
-# st.subheader("チェックボックス")
-# if st.checkbox("チェックを入れると追加コンテンツが表示されます"):
-#     st.info("これは隠れたコンテンツです！")
+st.markdown('<div class="card"><h3>チェックボックス</h3></div>', unsafe_allow_html=True)
+if st.checkbox("詳細を表示"):
+    st.info("隠れたコンテンツがここに表示されます！")
 
 # スライダー
-# st.subheader("スライダー")
-# age = st.slider("年齢", 0, 100, 25)
-# st.write(f"あなたの年齢: {age}")
-
-# セレクトボックス
-# st.subheader("セレクトボックス")
-# option = st.selectbox(
-#     "好きなプログラミング言語は?",
-#     ["Python", "JavaScript", "Java", "C++", "Go", "Rust"]
-# )
-# st.write(f"あなたは{option}を選びました")
+st.markdown('<div class="card"><h3>スライダー</h3></div>', unsafe_allow_html=True)
+age = st.slider("年齢", 0, 100, 25)
+st.write(f"あなたの年齢: {age}")
 
 # ============================================
-# レイアウト
+# レイアウト: カラム & タブ
 # ============================================
-# st.header("レイアウト")
+st.markdown('<div class="card"><h2>レイアウトサンプル</h2></div>', unsafe_allow_html=True)
+col1, col2 = st.columns([2,1])
+with col1:
+    st.metric("温度", "23°C", "+1.5°C")
+    st.metric("湿度", "45%", "-3%")
+with col2:
+    st.image("https://placekitten.com/200/200", caption="サンプル画像")
 
-# カラム
-# st.subheader("カラムレイアウト")
-# col1, col2 = st.columns(2)
-# with col1:
-#     st.write("これは左カラムです")
-#     st.number_input("数値を入力", value=10)
-# with col2:
-#     st.write("これは右カラムです")
-#     st.metric("メトリクス", "42", "2%")
-
-# タブ
-# st.subheader("タブ")
-# tab1, tab2 = st.tabs(["第1タブ", "第2タブ"])
-# with tab1:
-#     st.write("これは第1タブの内容です")
-# with tab2:
-#     st.write("これは第2タブの内容です")
-
-# エクスパンダー
-# st.subheader("エクスパンダー")
-# with st.expander("詳細を表示"):
-#     st.write("これはエクスパンダー内の隠れたコンテンツです")
-#     st.code("print('Hello, Streamlit！')")
+tab1, tab2 = st.tabs(["グラフ", "データ"])
+with tab1:
+    chart_data = pd.DataFrame(np.random.randn(20,3), columns=['A','B','C'])
+    st.line_chart(chart_data)
+with tab2:
+    df = pd.DataFrame({
+        '名前': ['田中','鈴木','佐藤'],
+        '点数': [88, 92, 79]
+    })
+    st.table(df)
 
 # ============================================
-# データ表示
-# ============================================
-# st.header("データの表示")
-
-# サンプルデータフレームを作成
-# df = pd.DataFrame({
-#     '名前': ['田中', '鈴木', '佐藤', '高橋', '伊藤'],
-#     '年齢': [25, 30, 22, 28, 33],
-#     '都市': ['東京', '大阪', '福岡', '札幌', '名古屋']
-# })
-
-# データフレーム表示
-# st.subheader("データフレーム")
-# st.dataframe(df, use_container_width=True)
-
-# テーブル表示
-# st.subheader("テーブル")
-# st.table(df)
-
-# メトリクス表示
-# st.subheader("メトリクス")
-# col1, col2, col3 = st.columns(3)
-# col1.metric("温度", "23°C", "1.5°C")
-# col2.metric("湿度", "45%", "-5%")
-# col3.metric("気圧", "1013hPa", "0.1hPa")
-
-# ============================================
-# グラフ表示
-# ============================================
-# st.header("グラフの表示")
-
-# ラインチャート
-# st.subheader("ラインチャート")
-# chart_data = pd.DataFrame(
-#     np.random.randn(20, 3),
-#     columns=['A', 'B', 'C'])
-# st.line_chart(chart_data)
-
-# バーチャート
-# st.subheader("バーチャート")
-# chart_data = pd.DataFrame({
-#     'カテゴリ': ['A', 'B', 'C', 'D'],
-#     '値': [10, 25, 15, 30]
-# }).set_index('カテゴリ')
-# st.bar_chart(chart_data)
-
-# ============================================
-# インタラクティブ機能
-# ============================================
-# st.header("インタラクティブ機能")
-
 # プログレスバー
-# st.subheader("プログレスバー")
-# progress = st.progress(0)
-# if st.button("進捗をシミュレート"):
-#     for i in range(101):
-#         time.sleep(0.01)
-#         progress.progress(i / 100)
-#     st.balloons()
-
-# ファイルアップロード
-# st.subheader("ファイルアップロード")
-# uploaded_file = st.file_uploader("ファイルをアップロード", type=["csv", "txt"])
-# if uploaded_file is not None:
-#     # ファイルのデータを表示
-#     bytes_data = uploaded_file.getvalue()
-#     st.write(f"ファイルサイズ: {len(bytes_data)} bytes")
-#     
-#     # CSVの場合はデータフレームとして読み込む
-#     if uploaded_file.name.endswith('.csv'):
-#         df = pd.read_csv(uploaded_file)
-#         st.write("CSVデータのプレビュー:")
-#         st.dataframe(df.head())
+# ============================================
+st.markdown('<div class="card"><h2>プログレスバー</h2></div>', unsafe_allow_html=True)
+progress = st.progress(0)
+if st.button("進捗をシミュレート"):
+    for i in range(101):
+        time.sleep(0.01)
+        progress.progress(i)
+    st.success("完了しました！🎉")
 
 # ============================================
-# カスタマイズ
-# ============================================
-# st.header("スタイルのカスタマイズ")
-
-# カスタムCSS
-# st.markdown("""
-# <style>
-# .big-font {
-#     font-size:20px ！important;
-#     font-weight: bold;
-#     color: #0066cc;
-# }
-# </style>
-# """, unsafe_allow_html=True)
-# 
-# st.markdown('<p class="big-font">これはカスタムCSSでスタイリングされたテキストです！</p>', unsafe_allow_html=True)
-
-# ============================================
-# デモの使用方法
+# フッター
 # ============================================
 st.divider()
-st.subheader("このデモの使い方")
-st.markdown("""
-1. コードエディタでコメントアウトされた部分を見つけます（#で始まる行）
-2. 確認したい機能のコメントを解除します（先頭の#を削除）
-3. 変更を保存して、ブラウザで結果を確認します
-4. 様々な組み合わせを試して、UIがどのように変化するか確認しましょう
-""")
-
-st.code("""
-# コメントアウトされた例:
-# if st.button("クリックしてください"):
-#     st.success("ボタンがクリックされました！")
-
-# コメントを解除した例:
-if st.button("クリックしてください"):
-    st.success("ボタンがクリックされました！")
-""")
+st.markdown('<p style="text-align:center; color:#888;">© 2025 Streamlit カスタムUIデモ</p>', unsafe_allow_html=True)
