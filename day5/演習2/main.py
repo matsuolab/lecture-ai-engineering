@@ -23,7 +23,7 @@ class DataLoader:
         else:
             # ローカルのファイル
             script_dir = os.path.dirname(__file__)
-            local_path = os.path.join(script_dir, "data", "titanic.csv")
+            local_path = os.path.join(script_dir, "data", "Titanic.csv")
             if os.path.exists(local_path):
                 return pd.read_csv(local_path)
 
