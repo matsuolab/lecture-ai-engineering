@@ -15,8 +15,14 @@ def load_model():
 
         # アクセストークンを保存
         hf_token = st.secrets["huggingface"]["token"]
+
+        if torch.cuda.is_available():
+            device = "cuda"
+        elif torch.backends.mps.is_available():
+            device = "mps"
+        else:
+            device = "cpu"
         
-        device = "cuda" if torch.cuda.is_available() else "cpu"
         st.info(f"Using device: {device}") # 使用デバイスを表示
         pipe = pipeline(
             "text-generation",
